@@ -5,12 +5,12 @@ Azure Cache for Redis REST API enables management of fully managed Redis cache i
 
 ## Tags:
 
- - Cache, Redis, In-Memory Database, Performance
+ - Cache, In-Memory Database, Performance, Redis
 
 ## Timestamps
 
 - **Created:** 2026-03-13
-- **Modified:** 2026-03-13
+- **Modified:** 2026-04-28
 
 ## APIs
 
@@ -18,6 +18,12 @@ Azure Cache for Redis REST API enables management of fully managed Redis cache i
 Azure Cache for Redis REST API enables management of fully managed Redis cache instances for high-performance data caching. It supports creating cache instances, configuring clustering, setting up geo-replication, managing access keys, and monitoring cache performance.
 
 **Human URL:** [https://learn.microsoft.com/en-us/rest/api/redis/](https://learn.microsoft.com/en-us/rest/api/redis/)
+
+**Base URL:** https://management.azure.com/
+
+#### Tags:
+
+ - Cache, In-Memory Database, Performance, Redis
 
 #### Properties
 
