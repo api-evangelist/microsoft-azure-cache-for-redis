@@ -4,24 +4,21 @@ apis:
   - aid: microsoft-azure-cache-for-redis:rest-api
     name: Azure Cache for Redis REST API
     tags:
-    - Cache
-    - In-Memory Database
-    - Performance
-    - Redis
+      - Cache
+      - In-Memory Database
+      - Performance
+      - Redis
     image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
     baseURL: https://management.azure.com/
     humanURL: https://learn.microsoft.com/en-us/rest/api/redis/
     properties:
-    - url: openapi/microsoft-azure-cache-for-redis-openapi.yml
-      type: OpenAPI
-    - url: https://learn.microsoft.com/en-us/rest/api/redis/
-      type: Documentation
-    - type: NaftikoCapability
-      url: capabilities/microsoft-azure-cache-for-redis-operations.yaml
-    - type: NaftikoCapability
-      url: capabilities/microsoft-azure-cache-for-redis-redis.yaml
-    description: Azure Cache for Redis REST API enables management of fully managed Redis cache instances for high-performance
-      data caching. It supports creating cache instances, configuring clustering, setting up geo-replication, managing access
+      - url: openapi/microsoft-azure-cache-for-redis-openapi.yml
+        type: OpenAPI
+      - url: https://learn.microsoft.com/en-us/rest/api/redis/
+        type: Documentation
+    description: >-
+      Azure Cache for Redis REST API enables management of fully managed Redis cache instances for high-performance data
+      caching. It supports creating cache instances, configuring clustering, setting up geo-replication, managing access
       keys, and monitoring cache performance.
 common:
   - type: GitHubOrganization
