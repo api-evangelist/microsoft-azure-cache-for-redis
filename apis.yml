@@ -21,6 +21,8 @@ apis:
       caching. It supports creating cache instances, configuring clustering, setting up geo-replication, managing access
       keys, and monitoring cache performance.
 common:
+  - type: OAuthScopes
+    url: scopes/microsoft-azure-cache-for-redis-scopes.yml
   - type: GitHubOrganization
     url: https://github.com/Azure
   - type: Portal
@@ -35,6 +37,8 @@ common:
     url: https://support.microsoft.com/
   - type: LlmsText
     url: https://portal.azure.com/llms.txt
+  - url: https://azure.microsoft.com/en-us/blog/feed/
+    type: Blog
 created: '2026-03-13'
 modified: '2026-05-19'
 maintainers:
