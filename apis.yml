@@ -21,6 +21,8 @@ apis:
       caching. It supports creating cache instances, configuring clustering, setting up geo-replication, managing access
       keys, and monitoring cache performance.
 common:
+  - type: AgenticAccess
+    url: agentic-access/microsoft-azure-cache-for-redis-agentic-access.yml
   - type: DomainSecurity
     url: security/microsoft-azure-cache-for-redis-domain-security.yml
   - type: Authentication
