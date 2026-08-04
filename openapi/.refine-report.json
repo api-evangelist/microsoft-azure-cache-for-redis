@@ -1,0 +1,16 @@
+{
+  "provider": "microsoft-azure-cache-for-redis",
+  "sources": [
+    "microsoft-azure-cache-for-redis-operations-api-openapi.yml",
+    "microsoft-azure-cache-for-redis-redis-api-openapi.yml"
+  ],
+  "outputs": [
+    "microsoft-azure-cache-for-redis-operations-api-openapi.yml",
+    "microsoft-azure-cache-for-redis-redis-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
