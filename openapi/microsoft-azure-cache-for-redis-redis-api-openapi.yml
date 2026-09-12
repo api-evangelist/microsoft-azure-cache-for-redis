@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Azure Cache for REST Operations Redis API
   description: Azure Cache for Redis is a fully managed in-memory data store. The REST API manages Redis caches, firewall rules, patch schedules, linked servers, and access keys.
@@ -170,6 +170,18 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
   schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+            target:
+              type: string
     ResourceList:
       type: object
       properties:
@@ -202,31 +214,19 @@ components:
         properties:
           type: object
           description: Resource-specific properties.
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-            target:
-              type: string
   parameters:
-    resourceGroupName:
-      name: resourceGroupName
-      in: path
-      required: true
-      description: The name of the resource group.
-      schema:
-        type: string
     apiVersion:
       name: api-version
       in: query
       required: true
       description: The API version to use for this operation.
+      schema:
+        type: string
+    resourceGroupName:
+      name: resourceGroupName
+      in: path
+      required: true
+      description: The name of the resource group.
       schema:
         type: string
     subscriptionId:

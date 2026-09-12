@@ -55,6 +55,8 @@ apis:
   - type: Documentation
     url: https://learn.microsoft.com/en-us/rest/api/redis/
 common:
+  - type: Website
+    url: https://www.microsoft.com/
   - type: AgenticAccess
     url: agentic-access/microsoft-azure-cache-for-redis-agentic-access.yml
   - type: DomainSecurity
@@ -85,3 +87,5 @@ maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com
 description: Reference for Azure Cache for Redis REST APIs.
+x-parent: microsoft-azure
+x-relationship: product
