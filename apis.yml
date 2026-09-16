@@ -43,7 +43,7 @@ apis:
   - type: Documentation
     url: https://learn.microsoft.com/en-us/rest/api/redis/
 - aid: microsoft-azure-cache-for-redis:microsoft-azure-cache-for-redis-redis-api
-  name: microsoft-azure-cache-for-redis Redis API
+  name: microsoft-azure-cache-for-redis API
   description: Redis operations
   humanURL: https://learn.microsoft.com/en-us/rest/api/redis/
   baseURL: https://management.azure.com/
@@ -55,37 +55,37 @@ apis:
   - type: Documentation
     url: https://learn.microsoft.com/en-us/rest/api/redis/
 common:
-  - type: Website
-    url: https://www.microsoft.com/
-  - type: AgenticAccess
-    url: agentic-access/microsoft-azure-cache-for-redis-agentic-access.yml
-  - type: DomainSecurity
-    url: security/microsoft-azure-cache-for-redis-domain-security.yml
-  - type: Authentication
-    url: authentication/microsoft-azure-cache-for-redis-authentication.yml
-  - type: OAuthScopes
-    url: scopes/microsoft-azure-cache-for-redis-scopes.yml
-  - type: GitHubOrganization
-    url: https://github.com/Azure
-  - type: Portal
-    url: https://portal.azure.com/
-  - type: Pricing
-    url: https://azure.microsoft.com/en-us/pricing/
-  - type: TermsOfService
-    url: https://www.microsoft.com/en-us/legal/terms-of-use
-  - type: PrivacyPolicy
-    url: https://privacy.microsoft.com/en-us/privacystatement
-  - type: Support
-    url: https://support.microsoft.com/
-  - type: LlmsText
-    url: https://portal.azure.com/llms.txt
-  - url: https://azure.microsoft.com/en-us/blog/feed/
-    type: Blog
+- type: Website
+  url: https://www.microsoft.com/
+- type: AgenticAccess
+  url: agentic-access/microsoft-azure-cache-for-redis-agentic-access.yml
+- type: DomainSecurity
+  url: security/microsoft-azure-cache-for-redis-domain-security.yml
+- type: Authentication
+  url: authentication/microsoft-azure-cache-for-redis-authentication.yml
+- type: OAuthScopes
+  url: scopes/microsoft-azure-cache-for-redis-scopes.yml
+- type: GitHubOrganization
+  url: https://github.com/Azure
+- type: Portal
+  url: https://portal.azure.com/
+- type: Pricing
+  url: https://azure.microsoft.com/en-us/pricing/
+- type: TermsOfService
+  url: https://www.microsoft.com/en-us/legal/terms-of-use
+- type: PrivacyPolicy
+  url: https://privacy.microsoft.com/en-us/privacystatement
+- type: Support
+  url: https://support.microsoft.com/
+- type: LlmsText
+  url: https://portal.azure.com/llms.txt
+- url: https://azure.microsoft.com/en-us/blog/feed/
+  type: Blog
 created: '2026-03-13'
-modified: '2026-05-19'
+modified: '2026-09-16'
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
 description: Reference for Azure Cache for Redis REST APIs.
 x-parent: microsoft-azure
 x-relationship: product
