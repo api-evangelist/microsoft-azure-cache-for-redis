@@ -1,0 +1,185 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/async-operations,
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling,
+  https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-import-export-data,
+  https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-scale
+  — cross-checked against openapi/microsoft-azure-cache-for-redis-*-openapi.yml (api-version
+  2024-11-01).
+provider: microsoft-azure-cache-for-redis
+surface: Azure Resource Manager control plane (management.azure.com), Microsoft.Cache/redis
+auth:
+  style: OAuth 2.0 bearer token from Microsoft Entra ID
+  scheme: azure_auth (oauth2, implicit flow in the contract; Entra supports code/client-credentials)
+  scope: user_impersonation
+  header: 'Authorization: Bearer <token>'
+  discovery: well-known/microsoft-azure-cache-for-redis-openid-configuration.json
+  cross_ref: authentication/microsoft-azure-cache-for-redis-authentication.yml
+versioning:
+  style: mandatory query parameter
+  parameter: api-version
+  current: '2024-11-01'
+  required: true
+  note: >-
+    Every request must carry ?api-version=. Omitting it returns HTTP 400
+    MissingApiVersionParameter — observed live on management.azure.com during this pass.
+    Versions are dated, never removed on a whim, and each is pinned per resource provider; the
+    stable ladder for Microsoft.Cache/Redis runs 2015-08-01 ... 2024-03-01, 2024-11-01.
+  cross_ref: lifecycle/microsoft-azure-cache-for-redis-lifecycle.yml
+pagination:
+  style: continuation token in the response body
+  response_field: nextLink
+  items_field: value
+  params: []
+  note: >-
+    List operations return {value: [...], nextLink: "<absolute url>"}. Follow nextLink verbatim
+    until it is absent. There is no page/limit/offset parameter — the server decides page size.
+async_operations:
+  applies_to:
+  - Redis_Create
+  - Redis_Update
+  - Redis_Delete
+  - Redis_ExportData
+  - Redis_ImportData
+  - Redis_FlushCache
+  - AccessPolicy_CreateUpdate
+  - AccessPolicy_Delete
+  - AccessPolicyAssignment_CreateUpdate
+  - AccessPolicyAssignment_Delete
+  - LinkedServer_Create
+  - LinkedServer_Delete
+  - PrivateEndpointConnections_Put
+  pattern: >-
+    202 Accepted (or 201 with a non-terminal provisioningState). Poll the URL in the
+    Azure-AsyncOperation response header; if that header is absent poll Location. Honour
+    Retry-After between polls. Terminal provisioningState values are Succeeded, Failed,
+    Canceled.
+  headers:
+  - Azure-AsyncOperation
+  - Location
+  - Retry-After
+  status_operation: AsyncOperationStatus_Get
+request_id_tracing:
+  client_supplied: x-ms-client-request-id
+  server_returned:
+  - x-ms-request-id
+  - x-ms-correlation-request-id
+  echo_header: x-ms-return-client-request-id
+  note: >-
+    ARM platform convention, shared by every resource provider; not redeclared per operation in
+    the Microsoft.Cache contract.
+error_envelope:
+  shape: '{"error": {"code": "...", "message": "...", "target": "...", "details": [...], "additionalInfo": [...]}}'
+  schema: ErrorResponse (Azure common-types resource-management v4)
+  media_type: application/json
+  rfc9457: false
+  note: >-
+    Not RFC 9457 problem+json. Microsoft's own common-type describes it as "the OData error
+    response format". Declared on every operation as the `default` response.
+  cross_ref: errors/microsoft-azure-cache-for-redis-problem-types.yml
+rate_limit_signaling:
+  status: 429
+  retry_header: Retry-After
+  remaining_headers:
+  - x-ms-ratelimit-remaining-subscription-reads
+  - x-ms-ratelimit-remaining-subscription-writes
+  - x-ms-ratelimit-remaining-subscription-deletes
+  - x-ms-ratelimit-remaining-tenant-reads
+  - x-ms-ratelimit-remaining-tenant-writes
+  - x-ms-ratelimit-remaining-subscription-resource-requests
+  - x-ms-ratelimit-remaining-subscription-resource-entities-read
+  cross_ref: rate-limits/microsoft-azure-cache-for-redis-rate-limits.yml
+field_expansion:
+  supported: false
+  note: No $expand / $select / sparse-fieldset support on Microsoft.Cache/redis.
+metadata:
+  supported: true
+  field: tags
+  note: Free-form key/value resource tags on the Redis resource, settable on create and update.
+idempotency:
+  mechanism: idempotent HTTP verbs (resource-identity PUT), not an Idempotency-Key header
+  header: null
+  retention: null
+  coverage: partial
+  scope:
+  - Redis_Create
+  - Redis_Update
+  - Redis_Delete
+  - FirewallRules_CreateOrUpdate
+  - FirewallRules_Delete
+  - PatchSchedules_CreateOrUpdate
+  - PatchSchedules_Delete
+  - LinkedServer_Create
+  - LinkedServer_Delete
+  - AccessPolicy_CreateUpdate
+  - AccessPolicy_Delete
+  - AccessPolicyAssignment_CreateUpdate
+  - AccessPolicyAssignment_Delete
+  - PrivateEndpointConnections_Put
+  - PrivateEndpointConnections_Delete
+  not_covered:
+  - Redis_ExportData
+  - Redis_ImportData
+  - Redis_FlushCache
+  - Redis_ForceReboot
+  - Redis_RegenerateKey
+  - Redis_ListKeys
+  note: >-
+    15 of the 20 mutating operations are addressed PUT/DELETE by resource name, so a retry
+    after a lost response converges on the same state — that is replay protection by identity.
+    The 5 POST action operations are NOT protected: a replayed Redis_RegenerateKey rotates the
+    key a second time, a replayed Redis_ForceReboot reboots again, and a replayed
+    Redis_ImportData re-runs an import that deletes preexisting cache data. There is no
+    Idempotency-Key header anywhere in the surface, so an agent cannot make those five safe.
+    Hence partial, not full.
+reversibility:
+  grade: documented
+  note: >-
+    Reversal paths exist and are documented for two of the write surfaces; NO published
+    document states a window for any of them, so this grades documented rather than verified.
+  surfaces:
+  - operation: Redis_ExportData
+    reversal: Redis_ImportData
+    reversal_operation: Redis_ImportData
+    window: null
+    docs: https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-import-export-data
+    note: >-
+      An exported RDB blob can be imported back into a cache. The docs state importing
+      "deletes preexisting cache data" and the cache is unreachable during the import, so the
+      restore is itself destructive. No retention window is stated — the blob lives in the
+      customer's own storage account for as long as they keep it.
+  - operation: Redis_Update
+    reversal: Redis_Update (scale back)
+    reversal_operation: Redis_Update
+    window: null
+    docs: https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-how-to-scale
+    note: >-
+      Scale up can be reversed by scaling down on Basic/Standard/Premium ("When you scale down,
+      the reverse happens"). Enterprise and Enterprise Flash CANNOT be reversed — the docs say
+      plainly "You can only scale up at this time. You can't scale down."
+  - operation: Redis_Delete
+    reversal: null
+    window: null
+    note: >-
+      No restore, undelete or soft-delete operation exists in the contract and none is
+      documented. Deleting a cache is final; data is recoverable only from a customer-owned
+      persistence/export blob taken beforehand.
+  - operation: Redis_FlushCache
+    reversal: null
+    window: null
+    note: Flush deletes all keys. No reversal operation exists.
+  - operation: Redis_RegenerateKey
+    reversal: null
+    window: null
+    note: >-
+      Rotating an access key invalidates the old one immediately. Regenerating the other key
+      does not restore it.
+dry_run_mode:
+  supported: partial
+  operations:
+  - Redis_CheckNameAvailability
+  note: >-
+    Name availability can be checked before a create. There is no general preview/validate mode
+    for Microsoft.Cache/redis writes (ARM template what-if is a deployment-layer feature, not a
+    resource-provider operation in this contract).

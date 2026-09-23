@@ -1,0 +1,111 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-whats-new,
+  https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/retirement-faq,
+  https://azure.microsoft.com/en-us/pricing/details/cache/ (retirement banner),
+  https://azure.status.microsoft/en-us/status,
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/async-operations
+provider: microsoft-azure-cache-for-redis
+status: retiring
+headline: >-
+  THE SERVICE ITSELF IS RETIRING. Microsoft announced in October 2025 the retirement of every
+  Azure Cache for Redis SKU. Enterprise and Enterprise Flash are migrated to Azure Managed
+  Redis on 2027-03-31; Basic, Standard and Premium are turned off on 2028-09-30. The REST
+  contract in openapi/ is real and current, and it describes a product with a published end
+  date.
+versioning:
+  scheme: dated api-version query parameter
+  current: '2024-11-01'
+  parameter: api-version
+  required: true
+  stable_versions:
+  - '2015-08-01'
+  - '2016-04-01'
+  - '2017-02-01'
+  - '2017-10-01'
+  - '2018-03-01'
+  - '2020-06-01'
+  - '2020-12-01'
+  - '2021-06-01'
+  - '2022-05-01'
+  - '2022-06-01'
+  - '2023-04-01'
+  - '2023-08-01'
+  - '2024-03-01'
+  - '2024-11-01'
+  source: https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/Redis/stable
+  note: >-
+    Fourteen stable api-versions published since 2015, none withdrawn. A caller pins a version
+    in every request, so a new version cannot break an existing integration.
+deprecation_policy:
+  published: true
+  url: https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/retirement-faq
+  changelog_url: https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-whats-new
+  sunset_headers: false
+  rfc8594: false
+  note: >-
+    Deprecation is announced by dated notice on the What's New page, the Retirement FAQ and a
+    banner on the pricing page, not by Sunset/Deprecation response headers. No RFC 8594 signal
+    is emitted on the wire, so an agent polling the API cannot see the retirement — it has to
+    read the docs.
+  timeline:
+  - date: '2025-10'
+    event: Retirement of all Azure Cache for Redis SKUs announced.
+  - date: '2026-04-01'
+    event: >-
+      Creation of new Basic/Standard/Premium caches blocked for NEW customers (Azure public
+      cloud). Creation of new Enterprise and Enterprise Flash caches blocked.
+  - date: '2026-07'
+    event: >-
+      The planned 2026-10-01 creation block for EXISTING customers was removed. A tenant with
+      any Azure Cache for Redis instance before 2026-04-01 can keep creating Basic/Standard/
+      Premium caches until retirement.
+  - date: '2027-03-31'
+    event: Remaining Enterprise and Enterprise Flash caches are migrated to Azure Managed Redis.
+  - date: '2028-09-30'
+    event: >-
+      All Basic, Standard and Premium caches are retired (Azure public cloud, Azure Government
+      and Azure operated by 21Vianet).
+  - date: '2028-10-01'
+    event: Remaining Basic/Standard/Premium caches are turned off.
+  successor:
+    name: Azure Managed Redis
+    migration_docs:
+    - https://learn.microsoft.com/en-us/azure/redis/migrate/migrate-basic-standard-premium-overview
+    - https://learn.microsoft.com/en-us/azure/redis/migrate/migrate-basic-standard-premium-with-tooling
+    - https://learn.microsoft.com/en-us/azure/redis/migrate/migrate-redis-enterprise-overview
+    - https://learn.microsoft.com/en-us/azure/redis/migrate/migrate-redis-enterprise-with-tooling
+    note: >-
+      First-party migration tooling is GA for Enterprise and in public preview for
+      Basic/Standard/Premium.
+deprecated_operations: []
+deprecated_operations_note: >-
+  No operation in the 2024-11-01 contract carries deprecated: true. The deprecation is at the
+  product level, not the operation level.
+status_page:
+  url: https://azure.status.microsoft/en-us/status
+  probed: '2026-09-17'
+  http_status: 200
+  history: https://azure.status.microsoft/en-us/status/history/
+  note: Platform-wide Azure status page; Azure Cache for Redis is covered as an Azure service.
+sla:
+  published: true
+  url: https://www.microsoft.com/licensing/docs/view/Service-Level-Agreements-SLA-for-Online-Services
+  tiers:
+  - tier: Basic
+    availability: none
+    note: Single node, no SLA.
+  - tier: Standard
+    availability: 99.9%
+  - tier: Premium
+    availability: up to 99.9%
+  - tier: Enterprise
+    availability: up to 99.999%
+  - tier: Enterprise Flash
+    availability: up to 99.999%
+  source: https://azure.microsoft.com/en-us/pricing/details/cache/
+support:
+  url: https://azure.microsoft.com/en-us/support/options/
+  probed: '2026-09-17'
+  http_status: 200

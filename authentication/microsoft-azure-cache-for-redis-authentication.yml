@@ -1,6 +1,10 @@
-generated: '2026-07-11'
+generated: '2026-09-17'
 method: derived
-source: openapi/microsoft-azure-cache-for-redis-openapi.yml
+source: openapi/microsoft-azure-cache-for-redis-linkedserver-api-openapi.yml, openapi/microsoft-azure-cache-for-redis-operations-api-openapi.yml,
+  openapi/microsoft-azure-cache-for-redis-privateendpointconnections-api-openapi.yml, openapi/microsoft-azure-cache-for-redis-rediscacheaccesspolicies-api-openapi.yml,
+  openapi/microsoft-azure-cache-for-redis-rediscacheaccesspolicyassignments-api-openapi.yml,
+  openapi/microsoft-azure-cache-for-redis-redisfirewallrules-api-openapi.yml, openapi/microsoft-azure-cache-for-redis-redispatchschedules-api-openapi.yml,
+  openapi/microsoft-azure-cache-for-redis-redisresources-api-openapi.yml, openapi/microsoft-azure-cache-for-redis-subscriptions-api-openapi.yml
 summary:
   types:
   - oauth2
@@ -15,4 +19,12 @@ schemes:
     scopes: 1
   description: Azure Active Directory OAuth2 Flow.
   sources:
-  - openapi/microsoft-azure-cache-for-redis-openapi.yml
+  - openapi/microsoft-azure-cache-for-redis-linkedserver-api-openapi.yml
+  - openapi/microsoft-azure-cache-for-redis-operations-api-openapi.yml
+  - openapi/microsoft-azure-cache-for-redis-privateendpointconnections-api-openapi.yml
+  - openapi/microsoft-azure-cache-for-redis-rediscacheaccesspolicies-api-openapi.yml
+  - openapi/microsoft-azure-cache-for-redis-rediscacheaccesspolicyassignments-api-openapi.yml
+  - openapi/microsoft-azure-cache-for-redis-redisfirewallrules-api-openapi.yml
+  - openapi/microsoft-azure-cache-for-redis-redispatchschedules-api-openapi.yml
+  - openapi/microsoft-azure-cache-for-redis-redisresources-api-openapi.yml
+  - openapi/microsoft-azure-cache-for-redis-subscriptions-api-openapi.yml

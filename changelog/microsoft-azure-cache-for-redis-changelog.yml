@@ -1,0 +1,84 @@
+generated: '2026-09-17'
+method: searched
+source: https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-whats-new
+provider: microsoft-azure-cache-for-redis
+name: What's New in Azure Cache for Redis
+url: https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/cache-whats-new
+scheme: dated prose entries, month granularity, newest first
+current_api_version: '2024-11-01'
+window: recent entries only (2023-09 onward)
+entries:
+- date: '2026-07'
+  breaking: false
+  highlights:
+  - >-
+    The planned 2026-10-01 creation block for existing customers was removed in all clouds; a
+    tenant that had an Azure Cache for Redis instance before 2026-04-01 can create Basic,
+    Standard and Premium caches until retirement on 2028-09-30.
+- date: '2026-04'
+  breaking: false
+  highlights:
+  - Migration tooling from Azure Cache for Redis Enterprise to Azure Managed Redis is GA.
+  - >-
+    Migration tooling from Azure Cache for Redis (Basic/Standard/Premium) to Azure Managed
+    Redis is in public preview; it repoints the existing endpoint at a precreated Managed Redis.
+- date: '2025-10'
+  breaking: true
+  highlights:
+  - >-
+    Retirement of ALL Azure Cache for Redis SKUs announced. Enterprise and Enterprise Flash
+    retire 2027-03-31; Basic, Standard and Premium retire 2028-09-30. Customers are directed to
+    Azure Managed Redis.
+- date: '2025-05'
+  breaking: false
+  highlights:
+  - Azure Managed Redis reaches General Availability (successor product).
+- date: '2024-11'
+  breaking: false
+  highlights:
+  - >-
+    Standard and Premium caches are created zone-redundant by default
+    (Automatic_Zonal_Allocation) in every region that supports zones.
+- date: '2024-09'
+  breaking: false
+  highlights:
+  - Enterprise tier E1 SKU reaches GA (dev/test; no scale-out, no active geo-replication).
+- date: '2024-08'
+  breaking: false
+  highlights:
+  - Availability zones (preview) for Standard and Premium, with automatic zone selection.
+- date: '2024-06'
+  breaking: false
+  highlights:
+  - Redis 7.2 (preview) on Enterprise and Enterprise Flash, with manual and automatic upgrade.
+  - Connection auditing GA across all SKUs.
+- date: '2024-05'
+  breaking: false
+  highlights:
+  - Azure Functions integration GA.
+  - Microsoft Entra ID authentication and RBAC GA across all supported regions.
+- date: '2024-04'
+  breaking: false
+  highlights:
+  - >-
+    Control-plane flush operation GA for Basic, Standard and Premium (Redis_FlushCache in the
+    contract).
+- date: '2024-02'
+  breaking: false
+  highlights:
+  - Customer-managed key (CMK) disk encryption GA on Enterprise tiers.
+- date: '2024-01'
+  breaking: false
+  highlights:
+  - TLS 1.3 supported on all tiers.
+- date: '2023-10'
+  breaking: false
+  highlights:
+  - Control-plane flush operation (preview) for Basic/Standard/Premium.
+  - Update channels (Preview / Stable) for Basic/Standard/Premium.
+- date: '2023-09'
+  breaking: true
+  highlights:
+  - >-
+    TLS 1.0 and 1.1 removed. Phase 1 stopped offering them as MinimumTLSVersion on new caches;
+    Phase 2 ended support on 2024-10-01 — clients must use TLS 1.2 or later.

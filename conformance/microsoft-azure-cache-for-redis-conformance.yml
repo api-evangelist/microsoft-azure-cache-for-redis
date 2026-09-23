@@ -1,0 +1,116 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  openapi/microsoft-azure-cache-for-redis-*-openapi.yml (api-version 2024-11-01),
+  well-known/microsoft-azure-cache-for-redis-openid-configuration.json,
+  https://learn.microsoft.com/en-us/azure/azure-government/compliance/azure-services-in-fedramp-auditscope,
+  https://learn.microsoft.com/en-us/azure/compliance/,
+  https://www.microsoft.com/en-us/trust-center
+provider: microsoft-azure-cache-for-redis
+conformance:
+- id: oauth2
+  conforms: true
+  evidence: >-
+    securitySchemes.azure_auth is oauth2 with authorizationUrl
+    https://login.microsoftonline.com/common/oauth2/authorize and scope user_impersonation, in
+    every document under openapi/.
+- id: oidc
+  conforms: true
+  evidence: >-
+    https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration returned 200
+    with issuer, jwks_uri, authorization_endpoint, token_endpoint and response_types_supported
+    (saved verbatim to well-known/). Probed 2026-09-17.
+- id: rfc9457
+  conforms: false
+  evidence: >-
+    The default error response is the ARM ErrorResponse object
+    ({"error":{"code","message","target","details","additionalInfo"}}), media type
+    application/json, not application/problem+json.
+- id: odata-error-format
+  conforms: true
+  evidence: >-
+    Azure common-types resource-management v4 types.json describes ErrorResponse as "Common
+    error response for all Azure Resource Manager APIs ... (This also follows the OData error
+    response format.)" — the definition inlined into components.schemas.ErrorResponse in
+    openapi/.
+- id: pagination
+  conforms: true
+  evidence: >-
+    List responses carry value[] plus a nextLink continuation URL (RedisListResult,
+    RedisFirewallRuleListResult, RedisLinkedServerWithPropertiesList, AccessPolicyList,
+    AccessPolicyAssignmentList, OperationListResult) — the ARM x-ms-pageable convention.
+- id: idempotency
+  conforms: partial
+  evidence: >-
+    15 of 20 mutating operations are resource-identity PUT/DELETE and therefore idempotent; the
+    5 POST actions (export, import, flush, forceReboot, regenerateKey) are not, and no
+    Idempotency-Key header exists. See conventions/ idempotency.coverage = partial.
+- id: long-running-operations
+  conforms: true
+  evidence: >-
+    13 operations carry x-ms-long-running-operation and follow the ARM async pattern
+    (202 + Azure-AsyncOperation / Location + Retry-After), with AsyncOperationStatus_Get as the
+    poll operation.
+- id: cloudevents-1.0
+  conforms: true
+  evidence: >-
+    The four Microsoft.Cache.* events are delivered by Azure Event Grid in either the Event Grid
+    schema or CloudEvents 1.0 (specversion "1.0", type, source, subject, time, data), per
+    https://learn.microsoft.com/en-us/azure/event-grid/event-schema-azure-cache. Captured in
+    asyncapi/.
+- id: tls-1.2-minimum
+  conforms: true
+  evidence: >-
+    TLS 1.0/1.1 support ended 2024-10-01 and all tiers support TLS 1.3 (What's New, 2024-01 and
+    2023-09 entries). security/microsoft-azure-cache-for-redis-domain-security.yml records
+    TLSv1.3 on management.azure.com.
+domain_standards:
+- id: redis-protocol
+  name: Redis serialization protocol / Redis command surface
+  conforms: true
+  scope: data plane
+  evidence: >-
+    The service runs the open-source Redis software and is spoken to with ordinary Redis
+    clients; the control-plane contract in openapi/ models redisVersion, redisConfiguration and
+    Redis modules (RedisBloom, RedisJSON, RediSearch, RedisTimeSeries) as first-class
+    properties. A consumer who already speaks Redis needs no bespoke connector for the data
+    plane. NOTE: the data plane is NOT described by an OpenAPI and is not in openapi/.
+compliance:
+  published: true
+  product_specific: true
+  certifications:
+  - id: fedramp-high
+    name: FedRAMP High
+    in_audit_scope: true
+    evidence: >-
+      "Azure Cache for Redis" is listed with a check under FedRAMP High at
+      https://learn.microsoft.com/en-us/azure/azure-government/compliance/azure-services-in-fedramp-auditscope
+      (fetched 2026-09-17, HTTP 200).
+  - id: dod-il2
+    name: DoD Impact Level 2
+    in_audit_scope: true
+    evidence: same table, Azure Cache for Redis row.
+  - id: dod-il4
+    name: DoD Impact Level 4
+    in_audit_scope: true
+    evidence: same table, Azure Cache for Redis row.
+  - id: dod-il5
+    name: DoD Impact Level 5
+    in_audit_scope: true
+    evidence: same table, Azure Cache for Redis row.
+  - id: dod-il6
+    name: DoD Impact Level 6
+    in_audit_scope: true
+    evidence: same table, Azure Cache for Redis row.
+  platform_programs:
+    note: >-
+      Azure platform-wide programs covering this service are published as audit reports on the
+      Microsoft Service Trust Portal (https://servicetrust.microsoft.com/, 200) and indexed at
+      https://learn.microsoft.com/en-us/azure/compliance/ (200) — SOC 1/2/3, ISO/IEC 27001,
+      ISO 27018, PCI DSS, HIPAA/HITRUST and GDPR among them. Report access requires sign-in, so
+      only the per-service FedRAMP/DoD scope above is recorded as directly verified for THIS
+      product.
+    urls:
+    - https://servicetrust.microsoft.com/
+    - https://learn.microsoft.com/en-us/azure/compliance/
+    - https://www.microsoft.com/en-us/trust-center

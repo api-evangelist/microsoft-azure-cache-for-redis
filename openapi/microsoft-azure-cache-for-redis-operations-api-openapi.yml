@@ -1,100 +1,157 @@
 openapi: 3.2.0
 info:
-  title: Azure Cache for Redis REST Operations API
-  description: Azure Cache for Redis is a fully managed in-memory data store. The REST API manages Redis caches, firewall rules, patch schedules, linked servers, and access keys.
-  version: '2024-01-01'
+  title: RedisManagementClient Operations API
+  version: '2024-11-01'
+  description: REST API for Azure Redis Cache Service.
+  x-typespec-generated:
+  - emitter: '@azure-tools/typespec-autorest'
 servers:
 - url: https://management.azure.com
-  description: Azure Resource Manager
 security:
 - azure_auth:
   - user_impersonation
 tags:
 - name: Operations
-  description: Operations operations
 paths:
   /providers/Microsoft.Cache/operations:
     get:
-      operationId: listOperations
-      summary: Azure Cache for Redis REST API List operations
-      description: Lists all available REST API operations for Microsoft.Cache.
+      operationId: Operations_List
       tags:
       - Operations
+      description: List the operations for the provider
       parameters:
-      - $ref: '#/components/parameters/apiVersion'
+      - $ref: null
       responses:
         '200':
-          description: Operations list
+          description: Azure operation completed successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OperationList'
+                $ref: '#/components/schemas/OperationListResult'
         default:
-          description: Error
+          description: An unexpected error response.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: null
+      x-ms-examples:
+        RedisCacheOperations:
+          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-operations-example.json
+      x-ms-pageable:
+        nextLinkName: nextLink
 components:
-  parameters:
-    apiVersion:
-      name: api-version
-      in: query
-      required: true
-      description: The API version to use for this operation.
-      schema:
-        type: string
   schemas:
-    OperationList:
+    OperationDisplay:
       type: object
+      description: The object that describes the operation.
+      properties:
+        provider:
+          type: string
+          description: Friendly name of the resource provider
+        operation:
+          type: string
+          description: 'Operation type: read, write, delete, listKeys/action, etc.'
+        resource:
+          type: string
+          description: Resource type on which the operation is performed.
+        description:
+          type: string
+          description: Friendly name of the operation
+    OperationListResult:
+      type: object
+      description: Result of the request to list REST API operations. It contains a list of operations and a URL nextLink
+        to get the next set of results.
       properties:
         value:
           type: array
+          description: List of operations supported by the resource provider.
           items:
             $ref: '#/components/schemas/Operation'
+          x-ms-identifiers:
+          - name
         nextLink:
           type: string
-    ErrorResponse:
-      type: object
-      properties:
-        error:
-          type: object
-          properties:
-            code:
-              type: string
-            message:
-              type: string
-            target:
-              type: string
+          description: URL to get the next set of operation list results if there are any.
+      required:
+      - value
     Operation:
       type: object
+      description: REST API operation
       properties:
         name:
           type: string
+          description: 'Operation name: {provider}/{resource}/{operation}'
         display:
+          $ref: '#/components/schemas/OperationDisplay'
+          description: The object that describes the operation.
+    ErrorResponse:
+      type: object
+      title: Error response
+      description: Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+        (This also follows the OData error response format.).
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+          description: The error object.
+    ErrorDetail:
+      type: object
+      description: The error detail.
+      properties:
+        code:
+          type: string
+          description: The error code.
+          readOnly: true
+        message:
+          type: string
+          description: The error message.
+          readOnly: true
+        target:
+          type: string
+          description: The error target.
+          readOnly: true
+        details:
+          type: array
+          description: The error details.
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          readOnly: true
+          x-ms-identifiers:
+          - message
+          - target
+        additionalInfo:
+          type: array
+          description: The error additional info.
+          items:
+            $ref: '#/components/schemas/ErrorAdditionalInfo'
+          readOnly: true
+          x-ms-identifiers: []
+    ErrorAdditionalInfo:
+      type: object
+      description: The resource management error additional info.
+      properties:
+        type:
+          type: string
+          description: The additional info type.
+          readOnly: true
+        info:
           type: object
-          properties:
-            provider:
-              type: string
-            resource:
-              type: string
-            operation:
-              type: string
-            description:
-              type: string
-        isDataAction:
-          type: boolean
+          description: The additional info.
+          readOnly: true
   securitySchemes:
     azure_auth:
       type: oauth2
-      description: Azure Active Directory OAuth2 Flow.
       flows:
         implicit:
-          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
           scopes:
-            user_impersonation: Impersonate your user account
-externalDocs:
-  description: Azure Cache for Redis REST API Documentation
-  url: https://learn.microsoft.com/en-us/rest/api/redis/
-x-generated-from: https://learn.microsoft.com/en-us/rest/api/redis/
-x-generated-by: claude-crawl-2026-05-08
+            user_impersonation: impersonate your user account
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+      description: Azure Active Directory OAuth2 Flow.
+  parameters:
+    ApiVersionParameter:
+      name: api-version
+      in: query
+      description: The API version to use for this operation.
+      required: true
+      schema:
+        type: string
+        minLength: 1

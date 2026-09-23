@@ -1,0 +1,50 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enrichment overlay — RedisManagementClient Redis Patch Schedules API
+  version: 1.0.0
+extends: microsoft-azure-cache-for-redis-redispatchschedules-api-openapi.yml
+x-generated: '2026-09-17'
+x-method: generated
+x-source: Generated from the repository artifacts; extends the harvested Microsoft contract without mutating it.
+actions:
+- target: $.info
+  update:
+    x-api-evangelist:
+      provider: microsoft-azure-cache-for-redis
+      harvested_from: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/redis/resource-manager/Microsoft.Cache/Redis/stable/2024-11-01/redis.json
+      api_version: '2024-11-01'
+      artifacts:
+        conventions: conventions/microsoft-azure-cache-for-redis-conventions.yml
+        errors: errors/microsoft-azure-cache-for-redis-problem-types.yml
+        rate_limits: rate-limits/microsoft-azure-cache-for-redis-rate-limits.yml
+        authentication: authentication/microsoft-azure-cache-for-redis-authentication.yml
+        scopes: scopes/microsoft-azure-cache-for-redis-scopes.yml
+        lifecycle: lifecycle/microsoft-azure-cache-for-redis-lifecycle.yml
+        data_model: data-model/microsoft-azure-cache-for-redis-data-model.yml
+        events: asyncapi/microsoft-azure-cache-for-redis-events-asyncapi.yml
+        skills: skills/_index.yml
+      lifecycle_warning: 'Azure Cache for Redis is retiring: Enterprise/Enterprise Flash 2027-03-31, Basic/Standard/Premium
+        2028-09-30.'
+- target: $
+  description: Record the error envelope and throttling signal the contract does not declare per status code.
+  update:
+    x-error-envelope:
+      shape: ARM ErrorResponse — {"error":{"code","message","target","details","additionalInfo"}}
+      rfc9457: false
+      catalog: errors/microsoft-azure-cache-for-redis-problem-types.yml
+    x-rate-limit-signal:
+      status: 429
+      retry_after: Retry-After
+      remaining_headers:
+      - x-ms-ratelimit-remaining-subscription-reads
+      - x-ms-ratelimit-remaining-subscription-writes
+      - x-ms-ratelimit-remaining-subscription-deletes
+    x-idempotency:
+      mechanism: idempotent PUT/DELETE by resource identity; no Idempotency-Key header
+      coverage: partial
+- target: $
+  description: Point at the 4 verbatim Microsoft request/response examples saved alongside this document.
+  update:
+    x-examples-dir: examples/
+    x-examples-note: x-ms-examples $refs in this document resolve to examples/ in this repository; the payloads
+      are Microsoft's own, saved verbatim.

@@ -1,0 +1,20 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://github.com/Azure/azure-rest-api-specs/tree/main/specification/redis/resource-manager/Microsoft.Cache/Redis/stable/2024-11-01/examples
+  — Microsoft's own x-ms-examples payloads for the 2024-11-01 contract, downloaded verbatim
+  (46 files, all HTTP 200, 2026-09-17).
+provider: microsoft-azure-cache-for-redis
+api_version: '2024-11-01'
+count: 46
+shape: >-
+  Each file is {"parameters": {...}, "responses": {"<status>": {"body": {...}}}} — a complete
+  request/response pair for one operation, keyed to the operationId that references it.
+wired: >-
+  The x-ms-examples $refs in openapi/microsoft-azure-cache-for-redis-*-openapi.yml were
+  rewritten from Microsoft's repo-relative ./examples/<File>.json to ../examples/<slug>-<file>
+  so they resolve inside this repository. No payload was altered.
+note: >-
+  Example subscription IDs are the all-zero placeholder Microsoft publishes
+  (00000000-0000-0000-0000-000000000000); the key fields in RedisCacheListKeys are Microsoft's
+  own doc placeholders, not live credentials.

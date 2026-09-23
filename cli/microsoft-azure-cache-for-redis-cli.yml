@@ -1,0 +1,141 @@
+generated: '2026-09-17'
+method: searched
+source: https://learn.microsoft.com/en-us/cli/azure/redis
+provider: microsoft-azure-cache-for-redis
+name: Azure CLI — az redis
+official: true
+vendor: Microsoft
+docs: https://learn.microsoft.com/en-us/cli/azure/redis
+install:
+- method: installer/package manager
+  url: https://learn.microsoft.com/en-us/cli/azure/install-azure-cli
+  note: The `redis` command group ships in the Core Azure CLI; no extension required.
+- method: winget
+  command: winget install -e --id Microsoft.AzureCLI
+- method: homebrew
+  command: brew install azure-cli
+- method: apt
+  command: curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+auth: az login (Microsoft Entra ID); the CLI reuses the same token the REST API takes
+status: GA
+groups:
+- group: az redis
+  status: GA
+  commands:
+  - command: az redis create
+    description: Create new Redis Cache instance.
+    rest: Redis_Create
+  - command: az redis show
+    description: Get a Redis cache.
+    rest: Redis_Get
+  - command: az redis list
+    description: List Redis caches.
+    rest: Redis_ListBySubscription / Redis_ListByResourceGroup
+  - command: az redis update
+    description: Update a Redis cache.
+    rest: Redis_Update
+  - command: az redis delete
+    description: Delete a Redis cache.
+    rest: Redis_Delete
+  - command: az redis export
+    description: Export data stored in a Redis cache.
+    rest: Redis_ExportData
+  - command: az redis import
+    description: Import data into a Redis cache.
+    rest: Redis_ImportData
+  - command: az redis flush
+    description: Delete all keys in a cache.
+    rest: Redis_FlushCache
+  - command: az redis force-reboot
+    description: Reboot specified Redis node(s).
+    rest: Redis_ForceReboot
+  - command: az redis list-keys
+    description: Retrieve a Redis cache's access keys.
+    rest: Redis_ListKeys
+  - command: az redis regenerate-keys
+    description: Regenerate a Redis cache's access keys.
+    rest: Redis_RegenerateKey
+- group: az redis access-policy
+  status: GA
+  description: Manage Access Policies for Redis Cache.
+  commands:
+  - command: az redis access-policy create
+    rest: AccessPolicy_CreateUpdate
+  - command: az redis access-policy update
+    rest: AccessPolicy_CreateUpdate
+  - command: az redis access-policy show
+    rest: AccessPolicy_Get
+  - command: az redis access-policy list
+    rest: AccessPolicy_List
+  - command: az redis access-policy delete
+    rest: AccessPolicy_Delete
+- group: az redis access-policy-assignment
+  status: GA
+  description: Manage Access Policy Assignments (Redis Users) for Redis Cache.
+  commands:
+  - command: az redis access-policy-assignment create
+    rest: AccessPolicyAssignment_CreateUpdate
+  - command: az redis access-policy-assignment update
+    rest: AccessPolicyAssignment_CreateUpdate
+  - command: az redis access-policy-assignment show
+    rest: AccessPolicyAssignment_Get
+  - command: az redis access-policy-assignment list
+    rest: AccessPolicyAssignment_List
+  - command: az redis access-policy-assignment delete
+    rest: AccessPolicyAssignment_Delete
+- group: az redis firewall-rules
+  status: GA
+  description: Manage Redis firewall rules.
+  commands:
+  - command: az redis firewall-rules create
+    rest: FirewallRules_CreateOrUpdate
+  - command: az redis firewall-rules update
+    rest: FirewallRules_CreateOrUpdate
+  - command: az redis firewall-rules show
+    rest: FirewallRules_Get
+  - command: az redis firewall-rules list
+    rest: FirewallRules_List
+  - command: az redis firewall-rules delete
+    rest: FirewallRules_Delete
+- group: az redis patch-schedule
+  status: GA
+  description: Manage Redis patch schedules.
+  commands:
+  - command: az redis patch-schedule create
+    rest: PatchSchedules_CreateOrUpdate
+  - command: az redis patch-schedule update
+    rest: PatchSchedules_CreateOrUpdate
+  - command: az redis patch-schedule show
+    rest: PatchSchedules_Get
+  - command: az redis patch-schedule delete
+    rest: PatchSchedules_Delete
+- group: az redis server-link
+  status: GA
+  description: Manage Redis server links (geo-replication).
+  commands:
+  - command: az redis server-link create
+    rest: LinkedServer_Create
+  - command: az redis server-link show
+    rest: LinkedServer_Get
+  - command: az redis server-link list
+    rest: LinkedServer_List
+  - command: az redis server-link delete
+    rest: LinkedServer_Delete
+- group: az redis identity
+  status: GA
+  description: Manage the managed identity assigned to a Redis cache.
+  commands:
+  - command: az redis identity assign
+    rest: Redis_Update (identity block)
+  - command: az redis identity remove
+    rest: Redis_Update (identity block)
+  - command: az redis identity show
+    rest: Redis_Get (identity block)
+coverage:
+  command_count: 44
+  groups: 7
+  note: >-
+    The CLI covers every operation in the contract except Redis_CheckNameAvailability,
+    Operations_List, AsyncOperationStatus_Get, PrivateLinkResources_ListByRedisCache and the
+    PrivateEndpointConnections_* set, which are handled by the generic `az network
+    private-endpoint-connection` group.

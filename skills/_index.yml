@@ -1,0 +1,65 @@
+generated: '2026-09-17'
+method: generated
+source: >-
+  Authored from openapi/microsoft-azure-cache-for-redis-*-openapi.yml (api-version 2024-11-01),
+  conventions/, errors/ and rate-limits/. Every operationId named in a skill was grepped out of
+  the harvested contract; none is invented. Microsoft publishes no AGENTS.md or Agent Skills for
+  this product.
+provider: microsoft-azure-cache-for-redis
+api_version: '2024-11-01'
+skills:
+- name: provision-azure-cache-for-redis
+  file: microsoft-azure-cache-for-redis-provision-cache.md
+  summary: Create a cache, poll the long-running operation to Succeeded, return its connection facts.
+  operations:
+  - Redis_CheckNameAvailability
+  - Redis_Create
+  - AsyncOperationStatus_Get
+  - Redis_Get
+  - Redis_ListKeys
+- name: lock-down-azure-cache-for-redis-network
+  file: microsoft-azure-cache-for-redis-lock-down-network.md
+  summary: Firewall rules and private endpoint connections, in the order that does not lock the caller out.
+  operations:
+  - FirewallRules_List
+  - FirewallRules_Get
+  - FirewallRules_CreateOrUpdate
+  - FirewallRules_Delete
+  - PrivateLinkResources_ListByRedisCache
+  - PrivateEndpointConnections_List
+  - PrivateEndpointConnections_Get
+  - PrivateEndpointConnections_Put
+  - PrivateEndpointConnections_Delete
+  - Redis_Update
+- name: azure-cache-for-redis-entra-access-control
+  file: microsoft-azure-cache-for-redis-entra-access-control.md
+  summary: Move from shared access keys to Entra ID access policies and assignments, then rotate the keys.
+  operations:
+  - AccessPolicy_List
+  - AccessPolicy_Get
+  - AccessPolicy_CreateUpdate
+  - AccessPolicy_Delete
+  - AccessPolicyAssignment_List
+  - AccessPolicyAssignment_Get
+  - AccessPolicyAssignment_CreateUpdate
+  - AccessPolicyAssignment_Delete
+  - Redis_ListKeys
+  - Redis_RegenerateKey
+- name: azure-cache-for-redis-backup-and-restore
+  file: microsoft-azure-cache-for-redis-backup-and-restore.md
+  summary: Export to an RDB blob and import it back, with the data-loss rules stated up front.
+  operations:
+  - Redis_ExportData
+  - Redis_ImportData
+  - Redis_FlushCache
+  - AsyncOperationStatus_Get
+  - Redis_Get
+shared_rules:
+  auth: Entra ID bearer token for the https://management.azure.com/ audience.
+  api_version: Every request needs ?api-version=2024-11-01.
+  long_running: 202 + Azure-AsyncOperation (fall back to Location) + Retry-After; terminal provisioningState Succeeded/Failed/Canceled.
+  idempotency: PUT/DELETE by name are safe to retry; the five POST actions are not, and there is no Idempotency-Key header.
+  errors: ARM/OData envelope, not RFC 9457; read error.details[] for the actionable code.
+  throttling: 429 + Retry-After; x-ms-ratelimit-remaining-subscription-reads/-writes/-deletes.
+  secrets: Redis_ListKeys returns live credentials — never log or echo them.
+  lifecycle: The product is retiring (Enterprise 2027-03-31, Basic/Standard/Premium 2028-09-30).

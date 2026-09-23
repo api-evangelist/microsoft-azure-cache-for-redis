@@ -1,0 +1,87 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://learn.microsoft.com/en-us/azure/developer/azure-mcp-server/tools/azure-cache-for-redis
+  (Azure Redis tools for Azure MCP Server) and the microsoft/mcp repository —
+  https://raw.githubusercontent.com/microsoft/mcp/main/servers/Azure.Mcp.Server/docs/azmcp-commands.md
+  and .../docs/e2eTestPrompts.md, which name the tools as shipped.
+provider: microsoft-azure-cache-for-redis
+name: Azure MCP Server
+status: published
+official: true
+vendor: Microsoft
+deployment:
+  mode: local-stdio
+  install: npx -y @azure/mcp@latest server start
+  package: https://www.npmjs.com/package/@azure/mcp
+  package_version: 3.0.0-beta.44
+  package_published: '2026-09-15'
+  repository: https://github.com/microsoft/mcp
+  auth: oauth
+  auth_note: >-
+    No token is passed to the server. It authenticates with Microsoft Entra ID through the
+    ambient Azure credential chain on the machine it runs on (az login / managed identity /
+    environment credentials) and then calls management.azure.com with that token — the same
+    azure_auth OAuth2 scheme the OpenAPI declares.
+  verified: searched
+  note: >-
+    Microsoft ships NO remote/hosted MCP endpoint for Azure resource management. Azure MCP
+    Server is a stdio server a human installs and runs locally before any agent can reach it.
+    An agent cannot POST to a URL and manage a cache.
+tools:
+- name: redis_list
+  description: >-
+    Lists all Redis resources in a subscription — returns Azure Managed Redis, Azure Cache for
+    Redis and Azure Redis Enterprise resources.
+  read_only: true
+  destructive: false
+  idempotent: true
+- name: redis_create
+  description: >-
+    Creates a new Redis resource. Asynchronous — returns with provisioningState Creating; poll
+    until Succeeded.
+  read_only: false
+  destructive: true
+  idempotent: false
+  parameters:
+  - name: resource name
+    required: true
+  - name: resource group
+    required: true
+  - name: sku
+    required: true
+    default: Balanced_B0
+  - name: location
+    required: true
+  - name: access keys authentication
+    required: false
+    default: false
+  - name: modules
+    required: false
+    note: e.g. RedisBloom, RedisJSON (Azure Managed Redis)
+  - name: public network access
+    required: false
+coverage:
+  mcp_tools: 2
+  openapi_operations: 41
+  note: >-
+    The MCP surface is a 2-tool slice of a 41-operation contract. Firewall rules, patch
+    schedules, linked servers, access policies, private endpoints, key regeneration, flush,
+    import and export have no tool. See microsoft-azure-cache-for-redis-tool-crosswalk.yml.
+related_servers:
+- name: Microsoft Learn MCP Server
+  endpoint: https://learn.microsoft.com/api/mcp
+  mode: remote
+  auth: none
+  verified: probed
+  probed: '2026-09-17'
+  http_status: 200
+  tools:
+  - microsoft_docs_search
+  - microsoft_code_sample_search
+  - microsoft_docs_fetch
+  note: >-
+    Real, anonymous, agent-reachable Microsoft MCP endpoint — tools/list returned the three
+    tools above with input schemas. It serves Microsoft Learn DOCUMENTATION, including the
+    Azure Cache for Redis REST reference; it does not manage caches. Recorded as a related
+    surface, deliberately NOT as this provider's deployment.

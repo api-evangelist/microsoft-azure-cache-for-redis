@@ -1,0 +1,127 @@
+generated: '2026-09-17'
+method: derived
+source: >-
+  mcp/microsoft-azure-cache-for-redis-mcp.yml (tool names verified in microsoft/mcp) bound
+  against the operationIds in openapi/microsoft-azure-cache-for-redis-*-openapi.yml, harvested
+  from the Microsoft.Cache/Redis 2024-11-01 swagger.
+provider: microsoft-azure-cache-for-redis
+surfaces:
+  openapi: openapi/microsoft-azure-cache-for-redis-redisresources-api-openapi.yml
+  openapi_all: openapi/ (9 documents, 41 operations, api-version 2024-11-01)
+  mcp: 'local stdio: npx -y @azure/mcp@latest server start (no remote endpoint)'
+  graphql: null
+  gated:
+  - >-
+    The live MCP tool schemas require the server to be installed and running locally under an
+    Entra credential, so inputSchema was read from Microsoft's published tool documentation
+    rather than from a tools/list response.
+crosswalk:
+- tool: redis_list
+  category: read
+  rest:
+  - Redis_ListBySubscription
+  - Redis_ListByResourceGroup
+  binding: one-to-many
+  confidence: high
+  note: >-
+    The tool takes a subscription (and optionally a tenant) and lists Redis resources, which is
+    Redis_ListBySubscription. Redis_ListByResourceGroup is the narrower REST form of the same
+    read. The tool also returns Azure Managed Redis and Redis Enterprise resources, which live
+    under different resource providers and are not in this contract.
+- tool: redis_create
+  category: write
+  rest:
+  - Redis_Create
+  binding: one-to-one
+  confidence: high
+  note: >-
+    Tool parameters (resource name, resource group, sku, location, access keys authentication,
+    modules, public network access) map onto the RedisCreateParameters body of
+    PUT .../Microsoft.Cache/redis/{name}. Both are long-running — the operation carries
+    x-ms-long-running-operation and returns provisioningState.
+mcp_only: []
+rest_only:
+- operation: Redis_Get
+  reason: no tool — an agent can list but cannot fetch one cache's detail through MCP
+- operation: Redis_Update
+  reason: no tool
+- operation: Redis_Delete
+  reason: no tool
+- operation: Redis_ExportData
+  reason: no tool
+- operation: Redis_ImportData
+  reason: no tool
+- operation: Redis_FlushCache
+  reason: no tool
+- operation: Redis_ForceReboot
+  reason: no tool
+- operation: Redis_ListKeys
+  reason: no tool — secret-bearing operation, deliberately absent from the agent surface
+- operation: Redis_RegenerateKey
+  reason: no tool
+- operation: Redis_ListUpgradeNotifications
+  reason: no tool
+- operation: Redis_CheckNameAvailability
+  reason: no tool
+- operation: AsyncOperationStatus_Get
+  reason: no tool — the poll an agent needs after redis_create is not exposed as a tool
+- operation: Operations_List
+  reason: no tool
+- operation: FirewallRules_List
+  reason: no tool
+- operation: FirewallRules_Get
+  reason: no tool
+- operation: FirewallRules_CreateOrUpdate
+  reason: no tool
+- operation: FirewallRules_Delete
+  reason: no tool
+- operation: PatchSchedules_ListByRedisResource
+  reason: no tool
+- operation: PatchSchedules_Get
+  reason: no tool
+- operation: PatchSchedules_CreateOrUpdate
+  reason: no tool
+- operation: PatchSchedules_Delete
+  reason: no tool
+- operation: LinkedServer_List
+  reason: no tool
+- operation: LinkedServer_Get
+  reason: no tool
+- operation: LinkedServer_Create
+  reason: no tool
+- operation: LinkedServer_Delete
+  reason: no tool
+- operation: AccessPolicy_List
+  reason: no tool
+- operation: AccessPolicy_Get
+  reason: no tool
+- operation: AccessPolicy_CreateUpdate
+  reason: no tool
+- operation: AccessPolicy_Delete
+  reason: no tool
+- operation: AccessPolicyAssignment_List
+  reason: no tool
+- operation: AccessPolicyAssignment_Get
+  reason: no tool
+- operation: AccessPolicyAssignment_CreateUpdate
+  reason: no tool
+- operation: AccessPolicyAssignment_Delete
+  reason: no tool
+- operation: PrivateEndpointConnections_List
+  reason: no tool
+- operation: PrivateEndpointConnections_Get
+  reason: no tool
+- operation: PrivateEndpointConnections_Put
+  reason: no tool
+- operation: PrivateEndpointConnections_Delete
+  reason: no tool
+- operation: PrivateLinkResources_ListByRedisCache
+  reason: no tool
+coverage:
+  tools: 2
+  tools_bound: 2
+  rest_operations: 41
+  rest_operations_covered: 3
+  rest_only: 38
+  mcp_only: 0
+  percent_rest_covered: 7.3

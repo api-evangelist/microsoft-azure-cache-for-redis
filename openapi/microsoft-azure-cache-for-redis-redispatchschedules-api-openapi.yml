@@ -1,0 +1,462 @@
+openapi: 3.2.0
+info:
+  title: RedisManagementClient Redis Patch Schedules API
+  version: '2024-11-01'
+  description: REST API for Azure Redis Cache Service.
+  x-typespec-generated:
+  - emitter: '@azure-tools/typespec-autorest'
+servers:
+- url: https://management.azure.com
+security:
+- azure_auth:
+  - user_impersonation
+tags:
+- name: RedisPatchSchedules
+paths:
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/patchSchedules
+  : get:
+      operationId: PatchSchedules_ListByRedisResource
+      tags:
+      - RedisPatchSchedules
+      description: Gets all patch schedules in the specified redis cache (there is only one).
+      parameters:
+      - $ref: null
+      - $ref: null
+      - $ref: null
+      - name: cacheName
+        in: path
+        description: The name of the Redis cache.
+        required: true
+        schema:
+          type: string
+          pattern: ^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9])$
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedisPatchScheduleListResult'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: null
+      x-ms-examples:
+        RedisCachePatchSchedulesList:
+          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-patch-schedules-list-example.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/patchSchedules/{default}
+  : get:
+      operationId: PatchSchedules_Get
+      tags:
+      - RedisPatchSchedules
+      description: Gets the patching schedule of a redis cache.
+      parameters:
+      - $ref: null
+      - $ref: null
+      - $ref: null
+      - name: name
+        in: path
+        description: The name of the redis cache.
+        required: true
+        schema:
+          type: string
+      - name: default
+        in: path
+        description: The name of the RedisPatchSchedule
+        required: true
+        x-ms-enum:
+          name: DefaultName
+          modelAsString: true
+          values:
+          - name: default
+            value: default
+            description: The name of e.g. the patch schedules resource, which is a singleton, must always be 'Default'
+        schema:
+          type: string
+          enum:
+          - default
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedisPatchSchedule'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: null
+      x-ms-examples:
+        RedisCachePatchSchedulesGet:
+          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-patch-schedules-get-example.json
+    put:
+      operationId: PatchSchedules_CreateOrUpdate
+      tags:
+      - RedisPatchSchedules
+      description: Create or replace the patching schedule for Redis cache.
+      parameters:
+      - $ref: null
+      - $ref: null
+      - $ref: null
+      - name: name
+        in: path
+        description: The name of the redis cache.
+        required: true
+        schema:
+          type: string
+      - name: default
+        in: path
+        description: The name of the RedisPatchSchedule
+        required: true
+        x-ms-enum:
+          name: DefaultName
+          modelAsString: true
+          values:
+          - name: default
+            value: default
+            description: The name of e.g. the patch schedules resource, which is a singleton, must always be 'Default'
+        schema:
+          type: string
+          enum:
+          - default
+      responses:
+        '200':
+          description: Resource 'RedisPatchSchedule' update operation succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedisPatchSchedule'
+        '201':
+          description: Resource 'RedisPatchSchedule' create operation succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedisPatchSchedule'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: null
+      x-ms-examples:
+        RedisCachePatchSchedulesCreateOrUpdate:
+          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-patch-schedules-create-or-update-example.json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RedisPatchSchedule'
+        description: Parameters to set the patching schedule for Redis cache.
+        required: true
+    delete:
+      operationId: PatchSchedules_Delete
+      tags:
+      - RedisPatchSchedules
+      description: Deletes the patching schedule of a redis cache.
+      parameters:
+      - $ref: null
+      - $ref: null
+      - $ref: null
+      - name: name
+        in: path
+        description: The name of the redis cache.
+        required: true
+        schema:
+          type: string
+      - name: default
+        in: path
+        description: The name of the RedisPatchSchedule
+        required: true
+        x-ms-enum:
+          name: DefaultName
+          modelAsString: true
+          values:
+          - name: default
+            value: default
+            description: The name of e.g. the patch schedules resource, which is a singleton, must always be 'Default'
+        schema:
+          type: string
+          enum:
+          - default
+      responses:
+        '200':
+          description: Resource deleted successfully.
+        '204':
+          description: Resource does not exist.
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: null
+      x-ms-examples:
+        RedisCachePatchSchedulesDelete:
+          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-patch-schedules-delete-example.json
+components:
+  schemas:
+    DayOfWeek:
+      type: string
+      description: Day of the week when a cache can be patched.
+      enum:
+      - Monday
+      - Tuesday
+      - Wednesday
+      - Thursday
+      - Friday
+      - Saturday
+      - Sunday
+      - Everyday
+      - Weekend
+      x-ms-enum:
+        name: DayOfWeek
+        modelAsString: false
+        values:
+        - name: Monday
+          value: Monday
+        - name: Tuesday
+          value: Tuesday
+        - name: Wednesday
+          value: Wednesday
+        - name: Thursday
+          value: Thursday
+        - name: Friday
+          value: Friday
+        - name: Saturday
+          value: Saturday
+        - name: Sunday
+          value: Sunday
+        - name: Everyday
+          value: Everyday
+          description: As a convenience, 'Everyday' is also accepted and means the same as specifying all days of the week.
+        - name: Weekend
+          value: Weekend
+          description: As a convenience, 'Weekend' is also accepted and means the same as specifying Saturday and Sunday.
+    ScheduleEntries:
+      type: object
+      description: List of patch schedules for a Redis cache.
+      properties:
+        scheduleEntries:
+          type: array
+          description: List of patch schedules for a Redis cache.
+          items:
+            $ref: '#/components/schemas/ScheduleEntry'
+          x-ms-client-name: ScheduleEntries
+          x-ms-identifiers: []
+      required:
+      - scheduleEntries
+    RedisPatchSchedule:
+      type: object
+      description: Response to put/get patch schedules for Redis cache.
+      properties:
+        properties:
+          $ref: '#/components/schemas/ScheduleEntries'
+          description: List of patch schedules for a Redis cache.
+          x-ms-client-flatten: true
+        location:
+          type: string
+          description: The geo-location where the resource lives
+          readOnly: true
+      required:
+      - properties
+      allOf:
+      - $ref: null
+    RedisPatchScheduleListResult:
+      type: object
+      description: The response of a RedisPatchSchedule list operation.
+      properties:
+        value:
+          type: array
+          description: The RedisPatchSchedule items on this page
+          items:
+            $ref: '#/components/schemas/RedisPatchSchedule'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    ScheduleEntry:
+      type: object
+      description: Patch schedule entry for a Premium Redis Cache.
+      properties:
+        dayOfWeek:
+          $ref: '#/components/schemas/DayOfWeek'
+          description: Day of the week when a cache can be patched.
+        startHourUtc:
+          type: integer
+          format: int32
+          description: Start hour after which cache patching can start.
+        maintenanceWindow:
+          type: string
+          format: duration
+          description: ISO8601 timespan specifying how much time cache patching can take.
+      required:
+      - dayOfWeek
+      - startHourUtc
+    ErrorResponse:
+      type: object
+      title: Error response
+      description: Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+        (This also follows the OData error response format.).
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+          description: The error object.
+    ErrorDetail:
+      type: object
+      description: The error detail.
+      properties:
+        code:
+          type: string
+          description: The error code.
+          readOnly: true
+        message:
+          type: string
+          description: The error message.
+          readOnly: true
+        target:
+          type: string
+          description: The error target.
+          readOnly: true
+        details:
+          type: array
+          description: The error details.
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          readOnly: true
+          x-ms-identifiers:
+          - message
+          - target
+        additionalInfo:
+          type: array
+          description: The error additional info.
+          items:
+            $ref: '#/components/schemas/ErrorAdditionalInfo'
+          readOnly: true
+          x-ms-identifiers: []
+    ErrorAdditionalInfo:
+      type: object
+      description: The resource management error additional info.
+      properties:
+        type:
+          type: string
+          description: The additional info type.
+          readOnly: true
+        info:
+          type: object
+          description: The additional info.
+          readOnly: true
+    ProxyResource:
+      type: object
+      title: Proxy Resource
+      description: The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+        location
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+    Resource:
+      type: object
+      title: Resource
+      description: Common fields that are returned in the response for all Azure Resource Manager resources
+      properties:
+        id:
+          type: string
+          format: arm-id
+          description: Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+          readOnly: true
+        name:
+          type: string
+          description: The name of the resource
+          readOnly: true
+        type:
+          type: string
+          description: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+          readOnly: true
+        systemData:
+          $ref: '#/components/schemas/systemData'
+          type: object
+          description: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+          readOnly: true
+      x-ms-azure-resource: true
+    systemData:
+      type: object
+      description: Metadata pertaining to creation and last modification of the resource.
+      properties:
+        createdBy:
+          type: string
+          description: The identity that created the resource.
+        createdByType:
+          type: string
+          description: The type of identity that created the resource.
+          enum:
+          - User
+          - Application
+          - ManagedIdentity
+          - Key
+          x-ms-enum:
+            name: createdByType
+            modelAsString: true
+        createdAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource creation (UTC).
+        lastModifiedBy:
+          type: string
+          description: The identity that last modified the resource.
+        lastModifiedByType:
+          type: string
+          description: The type of identity that last modified the resource.
+          enum:
+          - User
+          - Application
+          - ManagedIdentity
+          - Key
+          x-ms-enum:
+            name: createdByType
+            modelAsString: true
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource last modification (UTC)
+      readOnly: true
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      flows:
+        implicit:
+          scopes:
+            user_impersonation: impersonate your user account
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+      description: Azure Active Directory OAuth2 Flow.
+  parameters:
+    ApiVersionParameter:
+      name: api-version
+      in: query
+      description: The API version to use for this operation.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+    SubscriptionIdParameter:
+      name: subscriptionId
+      in: path
+      description: The ID of the target subscription. The value must be an UUID.
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ResourceGroupNameParameter:
+      name: resourceGroupName
+      in: path
+      description: The name of the resource group. The name is case insensitive.
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90

@@ -1,0 +1,64 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  https://learn.microsoft.com/en-us/azure/event-grid/event-schema-azure-cache — "Azure Cache for
+  Redis as an Event Grid source", the published event catalog and payload samples.
+provider: microsoft-azure-cache-for-redis
+delivery: Azure Event Grid
+transport:
+- webhook (HTTP POST to a subscriber endpoint)
+- Azure Event Hubs
+- Azure Service Bus queue or topic
+- Azure Storage queue
+- Relay hybrid connection
+- Azure Function
+schemas_supported:
+- CloudEvents 1.0
+- Event Grid schema
+publisher: >-
+  The cache itself, as an Event Grid system topic of type Microsoft.Cache.Redis. The `source`
+  (CloudEvents) / `topic` (Event Grid schema) field is the cache's ARM resource ID.
+verification:
+  handshake: Event Grid webhook validation (SubscriptionValidationEvent, or the CloudEvents
+    HTTP OPTIONS abuse-protection handshake)
+  note: >-
+    A webhook subscriber must echo the validationCode (or answer the OPTIONS preflight) before
+    Event Grid will deliver. There is no per-message HMAC signature — authenticity comes from
+    the subscription handshake and, optionally, delivery with a managed identity.
+events:
+- type: Microsoft.Cache.PatchingCompleted
+  description: Triggered when patching is completed.
+  raised_by: Redis platform update (not a caller operation)
+  data_fields:
+  - name
+  - timestamp
+  - status
+- type: Microsoft.Cache.ScalingCompleted
+  description: Triggered when scaling is completed.
+  raised_by: Redis_Update
+  data_fields:
+  - name
+  - timestamp
+  - status
+- type: Microsoft.Cache.ImportRDBCompleted
+  description: Triggered when cache data is imported.
+  raised_by: Redis_ImportData
+  data_fields:
+  - name
+  - timestamp
+  - status
+- type: Microsoft.Cache.ExportRDBCompleted
+  description: Triggered when cache data is exported.
+  raised_by: Redis_ExportData
+  data_fields:
+  - name
+  - timestamp
+  - status
+event_count: 4
+asyncapi: asyncapi/microsoft-azure-cache-for-redis-events-asyncapi.yml
+note: >-
+  Microsoft publishes no AsyncAPI document for this surface; the AsyncAPI 3.0.0 file alongside
+  this one is an API Evangelist derivation of the documented catalog, marked as such in its own
+  x-method. These four events are the ONLY asynchronous notifications the service emits — there
+  is no per-key or per-command event stream on the control plane, and Redis keyspace
+  notifications are a data-plane Redis feature, not an Azure event surface.

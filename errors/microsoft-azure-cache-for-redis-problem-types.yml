@@ -1,0 +1,118 @@
+generated: '2026-09-17'
+method: derived
+source: >-
+  Derived from openapi/microsoft-azure-cache-for-redis-*-openapi.yml (api-version 2024-11-01) —
+  every operation declares a `default` error response bound to the ARM ErrorResponse schema —
+  then enriched by search from
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/troubleshooting/common-deployment-errors,
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling,
+  and one live probe of management.azure.com.
+provider: microsoft-azure-cache-for-redis
+format: azure-arm-error-response
+rfc9457: false
+media_type: application/json
+envelope:
+  shape: |
+    {
+      "error": {
+        "code": "<string, machine-readable>",
+        "message": "<string, human-readable>",
+        "target": "<string, the failing property or parameter>",
+        "details": [ { "code": ..., "message": ..., "target": ... } ],
+        "additionalInfo": [ { "type": "<string>", "info": {} } ]
+      }
+    }
+  schema: components.schemas.ErrorResponse (Azure common-types resource-management v4, inlined)
+  note: >-
+    Microsoft's own common-type says this follows the OData error response format. It is NOT
+    application/problem+json, so an RFC 9457 client will not parse it. The nested `details[]`
+    array is where the actionable code usually lives — a top-level DeploymentFailed or
+    BadRequest is a wrapper, not the cause.
+declared_responses:
+  '200': 41 operations
+  '201': 7 operations (create/update returning the new resource)
+  '202': 8 operations (long-running; poll Azure-AsyncOperation)
+  '204': 8 operations (delete of an absent resource — already gone, treat as success)
+  default: 41 operations (ErrorResponse; the spec declares no per-status 4xx/5xx shapes)
+gap:
+  note: >-
+    The contract declares NO explicit 4xx or 5xx responses — only `default`. A client cannot
+    learn from the spec which codes an operation can fail with, or what any of them mean. Every
+    entry below therefore comes from Microsoft's platform documentation or from a live probe,
+    not from the contract. This is the single largest contract-quality gap in this surface.
+problem_types:
+- code: MissingApiVersionParameter
+  status: 400
+  title: The api-version query parameter was not specified
+  observed: true
+  evidence: >-
+    Live GET https://management.azure.com/.well-known/security.txt on 2026-09-17 returned
+    HTTP 400 with {"error":{"code":"MissingApiVersionParameter", ...}}.
+  remediation: Append ?api-version=2024-11-01 to every request.
+- code: AuthorizationFailed
+  status: 403
+  title: The caller lacks permission for the requested scope
+  remediation: >-
+    Check the Entra principal's Azure RBAC role assignment on the subscription or resource
+    group, and that the Microsoft.Cache resource provider is registered.
+  source: common-deployment-errors
+- code: InvalidAuthenticationToken
+  status: 401
+  title: The bearer token is missing, malformed or expired
+  remediation: >-
+    Reacquire a token from the Entra endpoint in
+    well-known/microsoft-azure-cache-for-redis-openid-configuration.json for the
+    https://management.azure.com/ audience.
+  source: azure_auth securityScheme + Entra discovery document
+- code: ResourceNotFound
+  status: 404
+  title: The named cache, resource group or subscription does not exist
+  remediation: Verify subscriptionId, resourceGroupName and the cache name.
+  source: common-deployment-errors (Find error code)
+- code: Conflict
+  status: 409
+  title: The operation is not allowed in the resource's current state
+  remediation: >-
+    Poll AsyncOperationStatus_Get until provisioningState is Succeeded before issuing the next
+    write. Applies to scaling, import, export, flush and reboot on a cache that is still
+    provisioning.
+  source: common-deployment-errors
+- code: AnotherOperationInProgress
+  status: 409
+  title: A concurrent operation is already running on this resource
+  remediation: Wait for the in-flight long-running operation to complete, then retry.
+  source: common-deployment-errors
+- code: BadRequest
+  status: 400
+  title: The request body does not match what Resource Manager expects
+  remediation: Read error.details[] for the inner code; validate against the RedisCreateParameters schema.
+  source: common-deployment-errors
+- code: InvalidResourceName
+  status: 400
+  title: The cache name is not valid or not available
+  remediation: Call Redis_CheckNameAvailability before Redis_Create.
+  source: Redis_CheckNameAvailability operation in the contract
+- code: SubscriptionRequestsThrottled
+  status: 429
+  title: The subscription, service principal or tenant token bucket is empty
+  remediation: >-
+    Honour Retry-After. Read x-ms-ratelimit-remaining-subscription-reads / -writes / -deletes to
+    stay ahead of it. See rate-limits/microsoft-azure-cache-for-redis-rate-limits.yml.
+  source: request-limits-and-throttling
+- code: RetryableErrorDueToAnotherOperation
+  status: 429
+  title: A 429 that is a transient lock, not a quota exhaustion
+  remediation: >-
+    Distinguish by reading error.details — Microsoft documents that some resource providers
+    return 429 for a temporary condition rather than throttling. Back off and retry either way.
+  source: request-limits-and-throttling
+- code: InternalServerError
+  status: 500
+  title: Transient platform failure
+  remediation: Retry with exponential backoff; if persistent, open a support case.
+  source: common-deployment-errors
+- code: ServiceUnavailable
+  status: 503
+  title: The service is temporarily unavailable
+  remediation: Retry with backoff; check https://azure.status.microsoft/en-us/status.
+  source: common-deployment-errors

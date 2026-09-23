@@ -1,0 +1,82 @@
+generated: '2026-09-17'
+method: searched
+source: >-
+  Registry metadata endpoints queried directly (registry.npmjs.org, pypi.org/pypi, api.nuget.org,
+  search.maven.org, proxy.golang.org, rubygems.org) plus the Azure SDK release index
+  (https://azure.github.io/azure-sdk/releases/latest/index.html).
+provider: microsoft-azure-cache-for-redis
+summary:
+  total: 6
+  official: 6
+  note: >-
+    These are the first-party Azure SDK management-plane clients for the Microsoft.Cache/Redis
+    resource provider — the same surface as openapi/. The Redis DATA plane (GET/SET against the
+    cache itself) is spoken with ordinary open-source Redis clients (StackExchange.Redis,
+    redis-py, Jedis, node-redis); those are not Microsoft packages and are deliberately not
+    listed here as first-party.
+packages:
+- name: '@azure/arm-rediscache'
+  registry: npm
+  language: JavaScript/TypeScript
+  official: true
+  url: https://www.npmjs.com/package/@azure/arm-rediscache
+  version: 8.2.0
+  published: '2025-01-24'
+  source_code: https://github.com/Azure/azure-sdk-for-js/tree/main/sdk/rediscache/arm-rediscache
+  note: >-
+    Published by the microsoft1es npm account. Registry description is "A generated SDK for
+    RedisManagementClient" — the same client name as info.title in the harvested swagger.
+- name: azure-mgmt-redis
+  registry: pypi
+  language: Python
+  official: true
+  url: https://pypi.org/project/azure-mgmt-redis/
+  version: 14.5.0
+  published: '2025-01-20'
+  source_code: https://github.com/Azure/azure-sdk-for-python/tree/main/sdk/redis/azure-mgmt-redis
+- name: Azure.ResourceManager.Redis
+  registry: nuget
+  language: .NET
+  official: true
+  url: https://www.nuget.org/packages/Azure.ResourceManager.Redis
+  version: 1.5.1
+  published: '2025-07-29'
+  prerelease_version: 1.6.0-beta.1
+  prerelease_published: '2026-06-30'
+  source_code: https://github.com/Azure/azure-sdk-for-net/tree/main/sdk/redis/Azure.ResourceManager.Redis
+- name: com.azure.resourcemanager:azure-resourcemanager-redis
+  registry: maven
+  language: Java
+  official: true
+  url: https://central.sonatype.com/artifact/com.azure.resourcemanager/azure-resourcemanager-redis
+  version: 2.51.0
+  published: '2025-05-26'
+  source_code: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/redis/azure-resourcemanager-redis
+- name: github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v3
+  registry: go
+  language: Go
+  official: true
+  url: https://pkg.go.dev/github.com/Azure/azure-sdk-for-go/sdk/resourcemanager/redis/armredis/v3
+  version: v3.3.0
+  published: '2025-01-21'
+  source_code: https://github.com/Azure/azure-sdk-for-go/tree/main/sdk/resourcemanager/redis/armredis
+- name: azure_mgmt_redis
+  registry: rubygems
+  language: Ruby
+  official: true
+  url: https://rubygems.org/gems/azure_mgmt_redis
+  version: 0.17.4
+  published: '2020-06-02'
+  source_code: https://github.com/Azure/azure-sdk-for-ruby
+  status: retired
+  note: >-
+    DECAY SIGNAL. Last release 2020-06-02, five years and nine api-versions behind the
+    2024-11-01 contract in openapi/. Microsoft retired the Azure SDK for Ruby; there is no
+    Ruby client for the current Microsoft.Cache surface.
+currency:
+  checked: '2026-09-17'
+  contract_api_version: '2024-11-01'
+  note: >-
+    Five of six first-party clients were last published in 2025 against the 2024-11-01
+    api-version and are current for it; the Ruby gem is retired. No package predates the
+    contract it wraps except azure_mgmt_redis.

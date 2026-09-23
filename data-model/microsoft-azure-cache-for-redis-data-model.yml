@@ -1,0 +1,183 @@
+generated: '2026-09-17'
+method: derived
+source: >-
+  openapi/microsoft-azure-cache-for-redis-*-openapi.yml — 79 component schemas and their $ref
+  graph, plus the ARM resource-path hierarchy under
+  /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}.
+provider: microsoft-azure-cache-for-redis
+root_entity: RedisResource
+id_scheme:
+  style: ARM resource ID (hierarchical path, not an opaque prefixed token)
+  format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}
+  child_format: '{parent id}/{childCollection}/{childName}'
+  note: >-
+    Every entity's identity IS its path. Containment is expressed by the URL, which is why
+    almost every relationship below is a parent/child path relationship rather than a foreign
+    key in a body.
+entities:
+- name: RedisResource
+  description: A cache. The tracked ARM resource; carries location, tags, zones and identity.
+  properties_schema: RedisProperties
+  operations:
+  - Redis_Create
+  - Redis_Get
+  - Redis_Update
+  - Redis_Delete
+  - Redis_ListBySubscription
+  - Redis_ListByResourceGroup
+  key_fields:
+  - id
+  - name
+  - type
+  - location
+  - tags
+  - zones
+  - identity
+  - properties.provisioningState
+  - properties.sku
+  - properties.redisVersion
+  - properties.hostName
+  - properties.sslPort
+  - properties.port
+- name: Sku
+  description: Tier (Basic/Standard/Premium), family (C/P) and capacity of the cache.
+  embedded_in: RedisCreateProperties, RedisUpdateProperties
+- name: RedisAccessKeys
+  description: Primary and secondary access keys. Never returned on GET — only by Redis_ListKeys.
+  operations:
+  - Redis_ListKeys
+  - Redis_RegenerateKey
+  sensitive: true
+- name: RedisFirewallRule
+  description: An allowed client IP range on a cache.
+  operations:
+  - FirewallRules_CreateOrUpdate
+  - FirewallRules_Get
+  - FirewallRules_List
+  - FirewallRules_Delete
+- name: RedisPatchSchedule
+  description: The weekly maintenance window(s) for a cache. Singleton child, name is always `default`.
+  operations:
+  - PatchSchedules_CreateOrUpdate
+  - PatchSchedules_Get
+  - PatchSchedules_ListByRedisResource
+  - PatchSchedules_Delete
+- name: ScheduleEntry
+  description: One dayOfWeek + startHourUtc + maintenanceWindow entry inside a patch schedule.
+  embedded_in: RedisPatchSchedule
+- name: RedisLinkedServerWithProperties
+  description: A geo-replication link from this cache to another cache (primary or secondary role).
+  operations:
+  - LinkedServer_Create
+  - LinkedServer_Get
+  - LinkedServer_List
+  - LinkedServer_Delete
+- name: RedisCacheAccessPolicy
+  description: A named Entra-era permission set (built-in or custom) on a cache.
+  operations:
+  - AccessPolicy_CreateUpdate
+  - AccessPolicy_Get
+  - AccessPolicy_List
+  - AccessPolicy_Delete
+- name: RedisCacheAccessPolicyAssignment
+  description: Binds an access policy to an Entra object ID (a "Redis user").
+  operations:
+  - AccessPolicyAssignment_CreateUpdate
+  - AccessPolicyAssignment_Get
+  - AccessPolicyAssignment_List
+  - AccessPolicyAssignment_Delete
+- name: PrivateEndpointConnection
+  description: A Private Link connection request against a cache, with an approval state.
+  operations:
+  - PrivateEndpointConnections_Put
+  - PrivateEndpointConnections_Get
+  - PrivateEndpointConnections_List
+  - PrivateEndpointConnections_Delete
+- name: PrivateLinkResource
+  description: The private-link sub-resource(s) a cache exposes.
+  operations:
+  - PrivateLinkResources_ListByRedisCache
+- name: RedisInstanceDetails
+  description: Per-shard/per-node instance detail (sslPort, shardId, zone, isMaster, isPrimary).
+  embedded_in: RedisProperties
+- name: UpgradeNotification
+  description: A pending Redis-version upgrade notice for a cache.
+  operations:
+  - Redis_ListUpgradeNotifications
+- name: OperationStatusResult
+  description: The status document a long-running operation is polled through.
+  operations:
+  - AsyncOperationStatus_Get
+- name: ManagedServiceIdentity
+  description: System- and/or user-assigned managed identity attached to the cache.
+  embedded_in: RedisResource
+relationships:
+- from: RedisResource
+  to: RedisFirewallRule
+  type: has_many
+  via: URL path (.../redis/{cacheName}/firewallRules/{ruleName})
+- from: RedisResource
+  to: RedisPatchSchedule
+  type: has_one
+  via: URL path (.../redis/{name}/patchSchedules/default)
+- from: RedisResource
+  to: RedisLinkedServerWithProperties
+  type: has_many
+  via: URL path (.../redis/{name}/linkedServers/{linkedServerName})
+- from: RedisLinkedServerWithProperties
+  to: RedisResource
+  type: belongs_to
+  via: properties.linkedRedisCacheId (ARM resource ID of the partner cache)
+- from: RedisResource
+  to: RedisCacheAccessPolicy
+  type: has_many
+  via: URL path (.../redis/{cacheName}/accessPolicies/{accessPolicyName})
+- from: RedisCacheAccessPolicyAssignment
+  to: RedisCacheAccessPolicy
+  type: belongs_to
+  via: properties.accessPolicyName
+- from: RedisCacheAccessPolicyAssignment
+  to: Microsoft Entra principal
+  type: belongs_to
+  via: properties.objectId / properties.objectIdAlias (external to this contract)
+- from: RedisResource
+  to: RedisCacheAccessPolicyAssignment
+  type: has_many
+  via: URL path (.../redis/{cacheName}/accessPolicyAssignments/{accessPolicyAssignmentName})
+- from: RedisResource
+  to: PrivateEndpointConnection
+  type: has_many
+  via: URL path (.../redis/{cacheName}/privateEndpointConnections/{privateEndpointConnectionName})
+- from: RedisResource
+  to: PrivateLinkResource
+  type: has_many
+  via: URL path (.../redis/{cacheName}/privateLinkResources)
+- from: RedisResource
+  to: RedisInstanceDetails
+  type: has_many
+  via: properties.instances[]
+- from: RedisResource
+  to: RedisAccessKeys
+  type: has_one
+  via: Redis_ListKeys (never inlined on GET)
+- from: RedisResource
+  to: Sku
+  type: has_one
+  via: properties.sku
+- from: RedisResource
+  to: ManagedServiceIdentity
+  type: has_one
+  via: identity
+- from: RedisPatchSchedule
+  to: ScheduleEntry
+  type: has_many
+  via: properties.scheduleEntries[]
+- from: RedisResource
+  to: UpgradeNotification
+  type: has_many
+  via: Redis_ListUpgradeNotifications
+counts:
+  schemas: 79
+  entities: 15
+  relationships: 16
+  operations: 41

@@ -4,144 +4,141 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: microsoft-azure-cache-for-redis
 providerId: microsoft-azure-cache-for-redis
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
-tags: []
-description: Machine-readable plans and pricing scaffold for this API provider. Conforms to the API Commons
-  Plans schema. Tier limits and prices are scaffold defaults; replace with provider-published values.
+generated: '2026-09-17'
+modified: '2026-09-17'
+method: probed
+source: >-
+  https://prices.azure.com/api/retail/prices?$filter=serviceName eq 'Redis Cache' and
+  armRegionName eq 'eastus' — the Azure Retail Prices API, anonymous, HTTP 200, 193 items
+  returned on 2026-09-17. Tier descriptions, memory ranges and availability figures read from
+  https://azure.microsoft.com/en-us/pricing/details/cache/ (HTTP 200, same date).
+tags:
+- Pricing
+- Plans
+- Cache
+description: >-
+  Published tiers for Azure Cache for Redis, priced per cache instance per hour. There is no
+  request quota and no free tier: you pay for a provisioned cache by SKU size, not per API call.
+  The management REST API in openapi/ is itself free to call — it is billed only through the
+  Azure Resource Manager platform, which does not charge per request.
+currency: USD
+region_priced: eastus
+billing:
+  unit: 1 Hour
+  model: provisioned instance, billed hourly, pro-rated
+  commitment_options: >-
+    Reserved capacity (1-year and 3-year) is offered on Enterprise, Enterprise Flash and Azure
+    Managed Redis SKUs; those Reservation rows are present in the same API response and are not
+    itemised here.
+  api_call_charges: none
+retirement_notice: >-
+  Every tier below is retiring. Enterprise and Enterprise Flash are migrated to Azure Managed
+  Redis on 2027-03-31; Basic, Standard and Premium are turned off on 2028-09-30. See
+  lifecycle/microsoft-azure-cache-for-redis-lifecycle.yml. Azure Managed Redis SKUs are listed
+  here for the migration path only — they are a different product and a different resource
+  provider.
+plan_count: 5
 plans:
-  - id: microsoft-azure-cache-for-redis-free
-    name: Free
-    type: freemium
-    description: Free entry tier for the microsoft-azure-cache-for-redis API surface. Intended for evaluation,
-      prototyping, and low-volume integrations. Real limits and pricing must be reconciled with the provider's
-      published plan documentation.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota across all included endpoints
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 1000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the free tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 10
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-    elements:
-      - name: Public Documentation
-      - name: Community Support
-      - name: Sandbox Access
-      - name: Azure Cache for Redis REST API
-  - id: microsoft-azure-cache-for-redis-pro
-    name: Professional
-    type: paid
-    description: Production tier for microsoft-azure-cache-for-redis. Provides higher quotas, priority
-      support, and access to the broader API portfolio. Pricing placeholder; align with the provider's
-      pricing page.
-    entries:
-      - label: API Requests
-        description: Monthly API request quota
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: 100000
-        timeFrame: month
-        geo: global
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: TBD
-        userMultiplied: false
-      - label: Rate Limit
-        description: Maximum requests per minute on the professional tier
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 100
-        timeFrame: minute
-        geo: global
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: '0.00'
-        userMultiplied: false
-      - label: Overage
-        description: Per-request price after monthly quota is exceeded
-        name: overage
-        type: metered
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: global
-        domains:
-          - https://management.azure.com/
-        unit: 1000
-        price: TBD
-        userMultiplied: false
-    elements:
-      - name: All Production Endpoints
-      - name: Email Support
-      - name: SLA Targets
-      - name: Webhook Subscriptions
-      - name: Azure Cache for Redis REST API
-  - id: microsoft-azure-cache-for-redis-enterprise
-    name: Enterprise
-    type: enterprise
-    description: Custom-negotiated tier for microsoft-azure-cache-for-redis. Includes dedicated capacity,
-      contractual SLAs, security review, data residency options, and named technical account management.
-    entries:
-      - label: API Requests
-        description: Negotiated request volume; -1 indicates uncapped subject to fair use
-        name: api_requests
-        type: quota
-        metric: requests
-        limit: -1
-        timeFrame: month
-        geo: configurable
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: custom
-        userMultiplied: false
-      - label: Rate Limit
-        description: Negotiated burst and steady-state rate
-        name: rate_limit
-        type: rate
-        metric: requests_per_minute
-        limit: 1000
-        timeFrame: minute
-        geo: configurable
-        domains:
-          - https://management.azure.com/
-        unit: 1
-        price: custom
-        userMultiplied: false
-    elements:
-      - name: Unlimited / Negotiated Volume
-      - name: 24/7 Dedicated Support
-      - name: Contractual SLA
-      - name: Security & Compliance Review
-      - name: Dedicated Account Manager
-      - name: Custom Data Residency
-      - name: Azure Cache for Redis REST API
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- id: basic
+  name: Basic
+  type: paid
+  description: Single node, simplified cache ideal for development and testing.
+  memory: 250 MB - 53 GB
+  sku_family: C (C0-C6)
+  sku_count: 7
+  price_min: 0.022
+  price_max: 0.84
+  price_unit: USD per hour
+  sla: none
+  replication: false
+  private_link: true
+- id: standard
+  name: Standard
+  type: paid
+  description: Production-ready cache with primary/replica duplication.
+  memory: 250 MB - 53 GB
+  sku_family: C (C0-C6)
+  sku_count: 7
+  price_min: 0.0275
+  price_max: 2.1
+  price_unit: USD per hour
+  sla: 99.9%
+  replication: true
+  private_link: true
+- id: premium
+  name: Premium
+  type: paid
+  description: >-
+    Clustering, data persistence, VNet injection and geo-replication — the features large
+    enterprises need.
+  memory: 6 GB - 120 GB
+  sku_family: P (P1-P5)
+  sku_count: 5
+  price_min: 0.277
+  price_max: 10.05
+  price_unit: USD per hour
+  sla: up to 99.9%
+  replication: true
+  private_link: true
+- id: enterprise
+  name: Enterprise
+  type: paid
+  description: >-
+    Everything in Premium plus Redis modules (RedisBloom, RedisJSON, RediSearch,
+    RedisTimeSeries) and active geo-replication.
+  memory: 1,024 MB - 400 GB
+  sku_family: E (E1-E400)
+  sku_count: 9
+  price_min: 0.0156
+  price_max: 15.076
+  price_unit: USD per hour
+  sla: up to 99.999%
+  replication: true
+  private_link: true
+  retires: '2027-03-31'
+- id: enterprise-flash
+  name: Enterprise Flash
+  type: paid
+  description: >-
+    Enterprise reliability on non-volatile storage, for very large caches at lower cost per GB.
+  memory: 384 GB - 1.5 TB
+  sku_family: F (F300-F1500)
+  sku_count: 3
+  price_min: 2.006
+  price_max: 8.023
+  price_unit: USD per hour
+  sla: up to 99.999%
+  replication: true
+  private_link: true
+  retires: '2027-03-31'
+other_skus_in_price_feed:
+- name: Azure Redis Cache Isolated
+  sku_count: 1
+  price: 20.26
+  note: I100; not offered on the public pricing page.
+- name: Azure Managed Redis - Balanced
+  sku_count: 14
+  price_min: 0.016
+  price_max: 19.968
+  note: Successor product (different resource provider); listed for the migration path.
+- name: Azure Managed Redis - Memory Optimized
+  sku_count: 12
+  price_min: 0.216
+  price_max: 27.648
+- name: Azure Managed Redis - Compute Optimized
+  sku_count: 12
+  price_min: 0.146
+  price_max: 23.314
+- name: Azure Managed Redis - Flash Optimized
+  sku_count: 7
+  price_min: 1.56
+  price_max: 24.954
+free_tier:
+  exists: false
+  note: >-
+    No free Azure Cache for Redis tier. An Azure free account gives credit toward any service,
+    not a free cache. The record's accessModel says "freemium" on that basis; the cache itself
+    is paid from the first hour.
+signup: https://azure.microsoft.com/en-us/free/
+pricing_page: https://azure.microsoft.com/en-us/pricing/details/cache/
+calculator: https://azure.microsoft.com/en-us/pricing/calculator/

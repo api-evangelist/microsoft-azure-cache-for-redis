@@ -1,0 +1,380 @@
+openapi: 3.2.0
+info:
+  title: RedisManagementClient Redis Firewall Rules API
+  version: '2024-11-01'
+  description: REST API for Azure Redis Cache Service.
+  x-typespec-generated:
+  - emitter: '@azure-tools/typespec-autorest'
+servers:
+- url: https://management.azure.com
+security:
+- azure_auth:
+  - user_impersonation
+tags:
+- name: RedisFirewallRules
+paths:
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules
+  : get:
+      operationId: FirewallRules_List
+      tags:
+      - RedisFirewallRules
+      description: Gets all firewall rules in the specified redis cache.
+      parameters:
+      - $ref: null
+      - $ref: null
+      - $ref: null
+      - name: cacheName
+        in: path
+        description: The name of the Redis cache.
+        required: true
+        schema:
+          type: string
+          pattern: ^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9])$
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedisFirewallRuleListResult'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: null
+      x-ms-examples:
+        RedisCacheFirewallRulesList:
+          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-firewall-rules-list-example.json
+      x-ms-pageable:
+        nextLinkName: nextLink
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules/{ruleName}
+  : get:
+      operationId: FirewallRules_Get
+      tags:
+      - RedisFirewallRules
+      description: Gets a single firewall rule in a specified redis cache.
+      parameters:
+      - $ref: null
+      - $ref: null
+      - $ref: null
+      - name: cacheName
+        in: path
+        description: The name of the Redis cache.
+        required: true
+        schema:
+          type: string
+          pattern: ^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9])$
+      - name: ruleName
+        in: path
+        description: The name of the firewall rule.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Azure operation completed successfully.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedisFirewallRule'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: null
+      x-ms-examples:
+        RedisCacheFirewallRuleGet:
+          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-firewall-rule-get-example.json
+    put:
+      operationId: FirewallRules_CreateOrUpdate
+      tags:
+      - RedisFirewallRules
+      description: Create or update a redis cache firewall rule
+      parameters:
+      - $ref: null
+      - $ref: null
+      - $ref: null
+      - name: cacheName
+        in: path
+        description: The name of the Redis cache.
+        required: true
+        schema:
+          type: string
+          pattern: ^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9])$
+      - name: ruleName
+        in: path
+        description: The name of the firewall rule.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource 'RedisFirewallRule' update operation succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedisFirewallRule'
+        '201':
+          description: Resource 'RedisFirewallRule' create operation succeeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RedisFirewallRule'
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: null
+      x-ms-examples:
+        RedisCacheFirewallRuleCreate:
+          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-firewall-rule-create-example.json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RedisFirewallRule'
+        description: Parameters supplied to the create or update redis firewall rule operation.
+        required: true
+    delete:
+      operationId: FirewallRules_Delete
+      tags:
+      - RedisFirewallRules
+      description: Deletes a single firewall rule in a specified redis cache.
+      parameters:
+      - $ref: null
+      - $ref: null
+      - $ref: null
+      - name: cacheName
+        in: path
+        description: The name of the Redis cache.
+        required: true
+        schema:
+          type: string
+          pattern: ^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9])$
+      - name: ruleName
+        in: path
+        description: The name of the firewall rule.
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Resource deleted successfully.
+        '204':
+          description: Resource does not exist.
+        default:
+          description: An unexpected error response.
+          content:
+            application/json:
+              schema:
+                $ref: null
+      x-ms-examples:
+        RedisCacheFirewallRuleDelete:
+          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-firewall-rule-delete-example.json
+components:
+  schemas:
+    RedisFirewallRule:
+      type: object
+      description: A firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted
+        to connect
+      properties:
+        properties:
+          $ref: '#/components/schemas/RedisFirewallRuleProperties'
+          description: redis cache firewall rule properties
+          x-ms-client-flatten: true
+      required:
+      - properties
+      allOf:
+      - $ref: null
+    RedisFirewallRuleListResult:
+      type: object
+      description: The response of a RedisFirewallRule list operation.
+      properties:
+        value:
+          type: array
+          description: The RedisFirewallRule items on this page
+          items:
+            $ref: '#/components/schemas/RedisFirewallRule'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    RedisFirewallRuleProperties:
+      type: object
+      description: Specifies a range of IP addresses permitted to connect to the cache
+      properties:
+        startIP:
+          type: string
+          description: lowest IP address included in the range
+        endIP:
+          type: string
+          description: highest IP address included in the range
+      required:
+      - startIP
+      - endIP
+    ErrorResponse:
+      type: object
+      title: Error response
+      description: Common error response for all Azure Resource Manager APIs to return error details for failed operations.
+        (This also follows the OData error response format.).
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetail'
+          description: The error object.
+    ErrorDetail:
+      type: object
+      description: The error detail.
+      properties:
+        code:
+          type: string
+          description: The error code.
+          readOnly: true
+        message:
+          type: string
+          description: The error message.
+          readOnly: true
+        target:
+          type: string
+          description: The error target.
+          readOnly: true
+        details:
+          type: array
+          description: The error details.
+          items:
+            $ref: '#/components/schemas/ErrorDetail'
+          readOnly: true
+          x-ms-identifiers:
+          - message
+          - target
+        additionalInfo:
+          type: array
+          description: The error additional info.
+          items:
+            $ref: '#/components/schemas/ErrorAdditionalInfo'
+          readOnly: true
+          x-ms-identifiers: []
+    ErrorAdditionalInfo:
+      type: object
+      description: The resource management error additional info.
+      properties:
+        type:
+          type: string
+          description: The additional info type.
+          readOnly: true
+        info:
+          type: object
+          description: The additional info.
+          readOnly: true
+    ProxyResource:
+      type: object
+      title: Proxy Resource
+      description: The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
+        location
+      allOf:
+      - $ref: '#/components/schemas/Resource'
+    Resource:
+      type: object
+      title: Resource
+      description: Common fields that are returned in the response for all Azure Resource Manager resources
+      properties:
+        id:
+          type: string
+          format: arm-id
+          description: Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
+          readOnly: true
+        name:
+          type: string
+          description: The name of the resource
+          readOnly: true
+        type:
+          type: string
+          description: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
+          readOnly: true
+        systemData:
+          $ref: '#/components/schemas/systemData'
+          type: object
+          description: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+          readOnly: true
+      x-ms-azure-resource: true
+    systemData:
+      type: object
+      description: Metadata pertaining to creation and last modification of the resource.
+      properties:
+        createdBy:
+          type: string
+          description: The identity that created the resource.
+        createdByType:
+          type: string
+          description: The type of identity that created the resource.
+          enum:
+          - User
+          - Application
+          - ManagedIdentity
+          - Key
+          x-ms-enum:
+            name: createdByType
+            modelAsString: true
+        createdAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource creation (UTC).
+        lastModifiedBy:
+          type: string
+          description: The identity that last modified the resource.
+        lastModifiedByType:
+          type: string
+          description: The type of identity that last modified the resource.
+          enum:
+          - User
+          - Application
+          - ManagedIdentity
+          - Key
+          x-ms-enum:
+            name: createdByType
+            modelAsString: true
+        lastModifiedAt:
+          type: string
+          format: date-time
+          description: The timestamp of resource last modification (UTC)
+      readOnly: true
+  securitySchemes:
+    azure_auth:
+      type: oauth2
+      flows:
+        implicit:
+          scopes:
+            user_impersonation: impersonate your user account
+          authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
+      description: Azure Active Directory OAuth2 Flow.
+  parameters:
+    ApiVersionParameter:
+      name: api-version
+      in: query
+      description: The API version to use for this operation.
+      required: true
+      schema:
+        type: string
+        minLength: 1
+    SubscriptionIdParameter:
+      name: subscriptionId
+      in: path
+      description: The ID of the target subscription. The value must be an UUID.
+      required: true
+      schema:
+        type: string
+        format: uuid
+    ResourceGroupNameParameter:
+      name: resourceGroupName
+      in: path
+      description: The name of the resource group. The name is case insensitive.
+      required: true
+      x-ms-parameter-location: method
+      schema:
+        type: string
+        minLength: 1
+        maxLength: 90

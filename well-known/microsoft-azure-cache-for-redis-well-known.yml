@@ -1,0 +1,134 @@
+generated: '2026-09-17'
+method: probed
+source: >-
+  Live GET of each path on every host this record knows — the registrable domain and www, each
+  apis[].baseURL host, every OpenAPI servers[] host, the docs/portal hosts, and the OAuth
+  authorization-server host named in the contract's azure_auth securityScheme
+  (login.microsoftonline.com).
+provider: microsoft-azure-cache-for-redis
+checked: '2026-09-17'
+hosts:
+- host: www.microsoft.com
+  role: company website (Website pointer)
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain; charset=utf-8
+    file: microsoft-azure-cache-for-redis-security.txt
+    note: >-
+      Real RFC 9116 document. Names MSRC as Contact, the Microsoft bug bounty and Coordinated
+      Vulnerability Disclosure policies, a PGP key, and a CSAF provider-metadata endpoint.
+      Expires 2026-09-23 — six days after this probe.
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: microsoft.com
+  role: registrable domain
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain; charset=utf-8
+    file: microsoft-azure-cache-for-redis-security.txt
+    note: Byte-identical to the www host; saved once.
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+- host: login.microsoftonline.com
+  role: >-
+    OAuth authorization server named by the azure_auth securityScheme in
+    openapi/*-openapi.yml (authorizationUrl https://login.microsoftonline.com/common/oauth2/authorize)
+  documents:
+  - path: /common/v2.0/.well-known/openid-configuration
+    status: 200
+    content_type: application/json; charset=utf-8
+    file: microsoft-azure-cache-for-redis-openid-configuration.json
+    note: >-
+      Microsoft Entra ID v2.0 OpenID Provider metadata — issuer
+      https://login.microsoftonline.com/{tenantid}/v2.0, jwks_uri, token and authorization
+      endpoints, response_types code / id_token / code id_token / id_token token. This is the
+      discovery document an agent needs to obtain a management.azure.com token.
+  - path: /common/.well-known/openid-configuration
+    status: 200
+    note: v1.0 endpoint; also live. Not saved separately — v2.0 is the current document.
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/security.txt
+    status: 404
+- host: management.azure.com
+  role: API baseURL / OpenAPI servers[] host (Azure Resource Manager)
+  documents:
+  - path: /.well-known/security.txt
+    status: 400
+    note: >-
+      ARM answers every unrecognised path with 400 MissingApiVersionParameter rather than 404.
+      Not a document; recorded as a miss.
+  - path: /.well-known/openid-configuration
+    status: 400
+  - path: /.well-known/api-catalog
+    status: 400
+  - path: /.well-known/agent-card.json
+    status: 400
+  - path: /.well-known/agent.json
+    status: 400
+- host: azure.microsoft.com
+  role: product / pricing host
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: learn.microsoft.com
+  role: documentation / API reference host
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: portal.azure.com
+  role: console host (Portal pointer)
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 200
+    note: >-
+      SOFT-404. 200 returning 75KB of text/html — the Azure portal SPA shell, not a text
+      llms.txt. Not a document. See llms/microsoft-azure-cache-for-redis-llms-probe.yml.
+findings:
+  security_txt: served (www.microsoft.com and microsoft.com)
+  api_catalog: not served on any host
+  ai_plugin: not served on any host
+  agent_card: not served on any host — no A2A card exists to save (a2a/ deliberately absent)
+  oauth_discovery: >-
+    served, but on the Entra ID authorization-server host rather than on the API host; ARM
+    itself publishes no /.well-known/oauth-protected-resource.

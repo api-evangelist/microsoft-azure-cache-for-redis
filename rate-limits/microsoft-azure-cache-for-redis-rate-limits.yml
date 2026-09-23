@@ -4,84 +4,118 @@ schema: https://raw.githubusercontent.com/api-evangelist/interface-research/main
 provider: microsoft-azure-cache-for-redis
 providerId: microsoft-azure-cache-for-redis
 created: '2026-05-04'
-# Provenance stamped 2026-08-11: this artifact was written by the API Evangelist
-# bulk sweep dated 2026-05-04, not harvested from the provider. See roadmap#35.
-method: generated
-modified: '2026-05-04'
+generated: '2026-09-17'
+modified: '2026-09-17'
+method: searched
+source: >-
+  https://learn.microsoft.com/en-us/azure/azure-resource-manager/management/request-limits-and-throttling
+  — "Understand how Azure Resource Manager throttles requests" (fetched 2026-09-17, HTTP 200).
+  Replaces a 2026-05-04 bulk-sweep scaffold whose headers and tiers were invented.
 tags:
-  - Rate Limiting
-  - Quotas
-  - Throttling
-description: Machine-readable rate limit definitions for the microsoft-azure-cache-for-redis API surface.
-  Captures per-tier quotas, burst behavior, response signaling, and recovery semantics. Defaults are scaffold
-  values to be replaced with published provider limits.
+- Rate Limiting
+- Quotas
+- Throttling
+description: >-
+  Published throttling limits for the Azure Resource Manager control plane that serves
+  management.azure.com — the host every operation in openapi/ is called on. Microsoft.Cache
+  publishes no resource-provider-specific override, so the platform token-bucket limits below
+  are the limits that apply to this API.
+scope_note: >-
+  These are CONTROL-PLANE limits (creating, scaling, listing caches). They are unrelated to the
+  Redis data plane, where throughput is governed by the cache's tier and size, not by an HTTP
+  quota.
+algorithm:
+  name: token bucket
+  since: '2024'
+  granularity: per region, per subscription, per service principal, per operation type
+  note: >-
+    The bucket is the maximum number of requests you can have in flight in a second; the refill
+    rate is how quickly tokens return. Global per-subscription limits are 15x the individual
+    service-principal limits and apply across all service principals. Limits may be smaller for
+    free or trial customers.
 headers:
-  limit: X-RateLimit-Limit
-  remaining: X-RateLimit-Remaining
-  reset: X-RateLimit-Reset
   retryAfter: Retry-After
-  policy: RateLimit-Policy
+  remaining:
+  - x-ms-ratelimit-remaining-subscription-reads
+  - x-ms-ratelimit-remaining-subscription-writes
+  - x-ms-ratelimit-remaining-subscription-deletes
+  - x-ms-ratelimit-remaining-tenant-reads
+  - x-ms-ratelimit-remaining-tenant-writes
+  - x-ms-ratelimit-remaining-subscription-resource-requests
+  - x-ms-ratelimit-remaining-subscription-resource-entities-read
+  - x-ms-ratelimit-remaining-tenant-resource-requests
+  - x-ms-ratelimit-remaining-tenant-resource-entities-read
+  limit: null
+  reset: null
+  policy: null
+  note: >-
+    There is no X-RateLimit-Limit / -Reset / RateLimit-Policy header. ARM publishes only the
+    REMAINING counters above (read requests get the read counter, writes the write counter) and
+    Retry-After on exhaustion. The resource-request / resource-entities-read counters appear
+    only when a service overrides the default limit.
 responseCodes:
   throttled: 429
-  quotaExceeded: 429
-  serviceUnavailable: 503
+  retryable_non_throttle: 429
+  note: >-
+    Microsoft documents that some resource providers also return 429 for a temporary condition
+    (e.g. RetryableErrorDueToAnotherOperation when another operation locks the target). Read
+    error.details to tell a quota exhaustion from a transient lock.
 limits:
-  - tier: free
-    name: Free Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 10
-    burst: 20
-    timeFrame: minute
-    applies:
-      - Azure Cache for Redis REST API
-  - tier: free
-    name: Free Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 1000
-    timeFrame: month
-    applies:
-      - Azure Cache for Redis REST API
-  - tier: professional
-    name: Professional Tier Default
-    scope: api-key
-    metric: requests_per_minute
-    limit: 100
-    burst: 200
-    timeFrame: minute
-    applies:
-      - Azure Cache for Redis REST API
-  - tier: professional
-    name: Professional Tier Monthly Quota
-    scope: api-key
-    metric: requests_per_month
-    limit: 100000
-    timeFrame: month
-    applies:
-      - Azure Cache for Redis REST API
-  - tier: enterprise
-    name: Enterprise Negotiated Limit
-    scope: contract
-    metric: requests_per_minute
-    limit: 1000
-    burst: 5000
-    timeFrame: minute
-    applies:
-      - Azure Cache for Redis REST API
-policies:
-  - name: Backoff Strategy
-    description: Clients should implement exponential backoff with jitter, honoring the Retry-After header
-      when present.
-  - name: Burst Handling
-    description: Short bursts above the steady-state limit are tolerated up to the documented burst ceiling
-      before throttling engages.
-  - name: Quota Reset
-    description: Monthly quotas reset at the start of each calendar month in UTC. Per-minute and per-second
-      windows reset on a sliding-window basis.
-  - name: Fair Use
-    description: Even on uncapped enterprise tiers, sustained usage that materially impacts shared infrastructure
-      may be subject to fair-use throttling.
-maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- scope: per subscription (per service principal, per region)
+  operation_type: reads
+  burst: 250
+  limit: 25
+  window: second
+  unit: requests
+  note: bucket size 250, refill 25/sec
+- scope: per subscription (per service principal, per region)
+  operation_type: writes
+  burst: 200
+  limit: 10
+  window: second
+  unit: requests
+- scope: per subscription (per service principal, per region)
+  operation_type: deletes
+  burst: 200
+  limit: 10
+  window: second
+  unit: requests
+- scope: per tenant (per region)
+  operation_type: reads
+  burst: 250
+  limit: 25
+  window: second
+  unit: requests
+- scope: per tenant (per region)
+  operation_type: writes
+  burst: 200
+  limit: 10
+  window: second
+  unit: requests
+- scope: per tenant (per region)
+  operation_type: deletes
+  burst: 200
+  limit: 10
+  window: second
+  unit: requests
+- scope: global per subscription (all service principals)
+  operation_type: all
+  limit: null
+  window: second
+  unit: requests
+  note: >-
+    Documented as 15x the individual service-principal limit for each operation type. No
+    absolute number is published, so limit is null rather than guessed.
+limit_count: 6
+recovery:
+  strategy: >-
+    Honour Retry-After before the next request; a request sent before it elapses is not
+    processed and returns a fresh retry value. Read the remaining-counter header matching the
+    verb to stay ahead of exhaustion. Metrics reads via
+    */providers/microsoft.insights/metrics are called out by Microsoft as a common cause of
+    subscription throttling — use the getBatch API instead.
+observed:
+  probed: false
+  note: >-
+    Limits were read from Microsoft's documentation, not observed on the wire — every
+    management.azure.com call needs an Entra token this pipeline does not hold.

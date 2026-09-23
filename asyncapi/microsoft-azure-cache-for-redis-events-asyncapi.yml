@@ -1,0 +1,196 @@
+asyncapi: 3.0.0
+info:
+  title: Azure Cache for Redis — Event Grid events
+  version: '1.0'
+  description: >-
+    The four events Azure Cache for Redis publishes to Azure Event Grid. Derived by API
+    Evangelist from Microsoft's published event catalog and payload samples at
+    https://learn.microsoft.com/en-us/azure/event-grid/event-schema-azure-cache — Microsoft
+    does not publish an AsyncAPI document for this surface. Event names, payload fields and
+    example values are Microsoft's, verbatim; the AsyncAPI framing is ours.
+    Subscribers receive these over a webhook (HTTP POST), an Event Hub, a Service Bus queue or
+    topic, a storage queue, a relay hybrid connection, or an Azure Function.
+  contact:
+    name: Azure Cache for Redis documentation
+    url: https://learn.microsoft.com/en-us/azure/azure-cache-for-redis/
+x-generated-by: API Evangelist enrichment pipeline
+x-generated-from: https://learn.microsoft.com/en-us/azure/event-grid/event-schema-azure-cache
+x-method: derived
+x-generated: '2026-09-17'
+defaultContentType: application/json
+servers:
+  eventgrid:
+    host: eventgrid.azure.net
+    protocol: https
+    description: >-
+      Azure Event Grid. The publisher is the cache's own ARM resource ID, acting as an Event
+      Grid system topic of type Microsoft.Cache.Redis; delivery is to whichever handler the
+      subscriber registers.
+channels:
+  cache-events:
+    address: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{cacheName}'
+    title: Azure Cache for Redis system topic
+    description: The Event Grid system topic for one cache. Carries all four event types.
+    parameters:
+      subscriptionId:
+        description: Azure subscription ID that owns the cache.
+      resourceGroupName:
+        description: Resource group that contains the cache.
+      cacheName:
+        description: Name of the cache.
+    messages:
+      patchingCompleted:
+        $ref: '#/components/messages/PatchingCompleted'
+      scalingCompleted:
+        $ref: '#/components/messages/ScalingCompleted'
+      importRDBCompleted:
+        $ref: '#/components/messages/ImportRDBCompleted'
+      exportRDBCompleted:
+        $ref: '#/components/messages/ExportRDBCompleted'
+operations:
+  receiveCacheEvents:
+    action: receive
+    channel:
+      $ref: '#/channels/cache-events'
+    summary: Receive Azure Cache for Redis lifecycle events from Event Grid.
+    messages:
+    - $ref: '#/channels/cache-events/messages/patchingCompleted'
+    - $ref: '#/channels/cache-events/messages/scalingCompleted'
+    - $ref: '#/channels/cache-events/messages/importRDBCompleted'
+    - $ref: '#/channels/cache-events/messages/exportRDBCompleted'
+components:
+  messages:
+    PatchingCompleted:
+      name: Microsoft.Cache.PatchingCompleted
+      title: Patching completed
+      summary: Triggered when patching is completed. Raised by a Redis update, not by a caller.
+      payload:
+        $ref: '#/components/schemas/CloudEvent'
+      examples:
+      - name: patchingCompleted
+        payload:
+          id: 9b87886d-21a5-4af5-8e3e-10c4b8dac73b
+          type: Microsoft.Cache.PatchingCompleted
+          source: /subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Cache/Redis/{cache_name}
+          data:
+            name: PatchingCompleted
+            timestamp: '2020-12-09T21:50:19.9995668+00:00'
+            status: Succeeded
+          subject: PatchingCompleted
+          time: '2020-12-09T21:50:19.9995668+00:00'
+          specversion: '1.0'
+    ScalingCompleted:
+      name: Microsoft.Cache.ScalingCompleted
+      title: Scaling completed
+      summary: >-
+        Triggered when scaling is completed. Raised by Redis_Update changing the sku or shard
+        count.
+      payload:
+        $ref: '#/components/schemas/CloudEvent'
+      examples:
+      - name: scalingCompleted
+        payload:
+          id: 9b87886d-21a5-4af5-8e3e-10c4b8dac73b
+          type: Microsoft.Cache.ScalingCompleted
+          source: /subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Cache/Redis/{cache_name}
+          data:
+            name: ScalingCompleted
+            timestamp: '2020-12-09T21:50:19.9995668+00:00'
+            status: Succeeded
+          subject: ScalingCompleted
+          time: '2020-12-09T21:50:19.9995668+00:00'
+          specversion: '1.0'
+    ImportRDBCompleted:
+      name: Microsoft.Cache.ImportRDBCompleted
+      title: Import completed
+      summary: Triggered when cache data is imported. Raised by Redis_ImportData.
+      payload:
+        $ref: '#/components/schemas/CloudEvent'
+      examples:
+      - name: importRDBCompleted
+        payload:
+          id: 9b87886d-21a5-4af5-8e3e-10c4b8dac73b
+          type: Microsoft.Cache.ImportRDBCompleted
+          source: /subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Cache/Redis/{cache_name}
+          data:
+            name: ImportRDBCompleted
+            timestamp: '2020-12-09T21:50:19.9995668+00:00'
+            status: Succeeded
+          subject: ImportRDBCompleted
+          time: '2020-12-09T21:50:19.9995668+00:00'
+          specversion: '1.0'
+    ExportRDBCompleted:
+      name: Microsoft.Cache.ExportRDBCompleted
+      title: Export completed
+      summary: Triggered when cache data is exported. Raised by Redis_ExportData.
+      payload:
+        $ref: '#/components/schemas/CloudEvent'
+      examples:
+      - name: exportRDBCompleted
+        payload:
+          id: 9b87886d-21a5-4af5-8e3e-10c4b8dac73b
+          type: Microsoft.Cache.ExportRDBCompleted
+          source: /subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/Microsoft.Cache/Redis/{cache_name}
+          data:
+            name: ExportRDBCompleted
+            timestamp: '2020-12-09T21:50:19.9995668+00:00'
+            status: Succeeded
+          subject: ExportRDBCompleted
+          time: '2020-12-09T21:50:19.9995668+00:00'
+          specversion: '1.0'
+  schemas:
+    CloudEvent:
+      type: object
+      description: >-
+        CloudEvents 1.0 envelope as Event Grid delivers it. Event Grid can also deliver the
+        legacy Event Grid schema, in which `type` is `eventType`, `source` is `topic`, `time`
+        is `eventTime`, and `dataVersion` / `metadataVersion` are present instead of
+        `specversion`.
+      required:
+      - id
+      - source
+      - type
+      - specversion
+      - data
+      properties:
+        id:
+          type: string
+          description: Unique event identifier.
+        source:
+          type: string
+          description: The ARM resource ID of the cache that raised the event.
+        type:
+          type: string
+          enum:
+          - Microsoft.Cache.PatchingCompleted
+          - Microsoft.Cache.ScalingCompleted
+          - Microsoft.Cache.ImportRDBCompleted
+          - Microsoft.Cache.ExportRDBCompleted
+        subject:
+          type: string
+          description: The event name, repeated.
+        time:
+          type: string
+          format: date-time
+        specversion:
+          type: string
+          const: '1.0'
+        data:
+          $ref: '#/components/schemas/CacheEventData'
+    CacheEventData:
+      type: object
+      required:
+      - name
+      - timestamp
+      - status
+      properties:
+        name:
+          type: string
+          description: The operation that completed, e.g. PatchingCompleted.
+        timestamp:
+          type: string
+          format: date-time
+          description: When the operation completed.
+        status:
+          type: string
+          description: Outcome of the operation, e.g. Succeeded.
