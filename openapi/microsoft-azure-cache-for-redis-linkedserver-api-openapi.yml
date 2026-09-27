@@ -20,9 +20,9 @@ paths:
       - LinkedServer
       description: Gets the list of linked servers associated with this redis cache (requires Premium SKU).
       parameters:
-      - $ref: null
-      - $ref: null
-      - $ref: null
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ResourceGroupNameParameter
       - name: name
         in: path
         description: The name of the redis cache.
@@ -41,12 +41,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: null
+                $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
         LinkedServer_List:
-          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-linked-server_-list-example.json
+          $ref: ./examples/RedisCacheLinkedServer_List.json
       x-ms-pageable:
         nextLinkName: nextLink
+      summary: Linked server list
+      x-summary-source: derived
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{name}/linkedServers/{linkedServerName}
   : get:
       operationId: LinkedServer_Get
@@ -54,9 +56,9 @@ paths:
       - LinkedServer
       description: Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
       parameters:
-      - $ref: null
-      - $ref: null
-      - $ref: null
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ResourceGroupNameParameter
       - name: name
         in: path
         description: The name of the redis cache.
@@ -81,19 +83,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: null
+                $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
         LinkedServer_Get:
-          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-linked-server_-get-example.json
+          $ref: ./examples/RedisCacheLinkedServer_Get.json
+      summary: Linked server get
+      x-summary-source: derived
     put:
       operationId: LinkedServer_Create
       tags:
       - LinkedServer
       description: Adds a linked server to the Redis cache (requires Premium SKU).
       parameters:
-      - $ref: null
-      - $ref: null
-      - $ref: null
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ResourceGroupNameParameter
       - name: name
         in: path
         description: The name of the redis cache.
@@ -129,10 +133,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: null
+                $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
         LinkedServer_Create:
-          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-linked-server_-create-example.json
+          $ref: ./examples/RedisCacheLinkedServer_Create.json
       x-ms-long-running-operation-options:
         final-state-via: location
         final-state-schema: '#/definitions/RedisLinkedServerWithProperties'
@@ -144,15 +148,17 @@ paths:
               $ref: '#/components/schemas/RedisLinkedServerCreateParameters'
         description: Parameters supplied to the Create Linked server operation.
         required: true
+      summary: Linked server create
+      x-summary-source: derived
     delete:
       operationId: LinkedServer_Delete
       tags:
       - LinkedServer
       description: Deletes the linked server from a redis cache (requires Premium SKU).
       parameters:
-      - $ref: null
-      - $ref: null
-      - $ref: null
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ResourceGroupNameParameter
       - name: name
         in: path
         description: The name of the redis cache.
@@ -176,8 +182,7 @@ paths:
               schema:
                 type: string
             Retry-After:
-              description: The Retry-After header can indicate how long the client should wait before polling the operation
-                status.
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
               schema:
                 type: integer
                 format: int32
@@ -186,30 +191,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: null
+                $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
         LinkedServerDelete:
-          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-linked-server_-delete-example.json
+          $ref: ./examples/RedisCacheLinkedServer_Delete.json
       x-ms-long-running-operation-options:
         final-state-via: location
       x-ms-long-running-operation: true
+      summary: Linked server delete
+      x-summary-source: derived
 components:
   schemas:
-    RedisLinkedServerWithPropertiesList:
-      type: object
-      description: List of linked servers (with properties) of a Redis cache.
-      properties:
-        value:
-          type: array
-          description: The RedisLinkedServerWithProperties items on this page
-          items:
-            $ref: '#/components/schemas/RedisLinkedServerWithProperties'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
     ReplicationRole:
       type: string
       description: Role of the linked server.
@@ -226,26 +218,6 @@ components:
         - name: Secondary
           value: Secondary
           description: The linked server is in the read-only replica role
-    RedisLinkedServerWithProperties:
-      type: object
-      description: Response to put/get linked server (with properties) for Redis cache.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RedisLinkedServerProperties'
-          description: Properties of the linked server.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: null
-    RedisLinkedServerCreateParameters:
-      type: object
-      description: Parameter required for creating a linked server to redis cache.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RedisLinkedServerCreateProperties'
-          description: Properties required to create a linked server.
-          x-ms-client-flatten: true
-      required:
-      - properties
     RedisLinkedServerCreateProperties:
       type: object
       description: Create properties for a linked server
@@ -264,13 +236,11 @@ components:
           description: Role of the linked server.
         geoReplicatedPrimaryHostName:
           type: string
-          description: The unchanging DNS name which will always point to current geo-primary cache among the linked redis
-            caches for seamless Geo Failover experience.
+          description: The unchanging DNS name which will always point to current geo-primary cache among the linked redis caches for seamless Geo Failover experience.
           readOnly: true
         primaryHostName:
           type: string
-          description: The changing DNS name that resolves to the current geo-primary cache among the linked redis caches
-            before or after the Geo Failover.
+          description: The changing DNS name that resolves to the current geo-primary cache among the linked redis caches before or after the Geo Failover.
           readOnly: true
       required:
       - linkedRedisCacheId
@@ -286,131 +256,41 @@ components:
           readOnly: true
       allOf:
       - $ref: '#/components/schemas/RedisLinkedServerCreateProperties'
-    ErrorResponse:
+    RedisLinkedServerWithPropertiesList:
       type: object
-      title: Error response
-      description: Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-        (This also follows the OData error response format.).
+      description: List of linked servers (with properties) of a Redis cache.
       properties:
-        error:
-          $ref: '#/components/schemas/ErrorDetail'
-          description: The error object.
-    ErrorDetail:
-      type: object
-      description: The error detail.
-      properties:
-        code:
-          type: string
-          description: The error code.
-          readOnly: true
-        message:
-          type: string
-          description: The error message.
-          readOnly: true
-        target:
-          type: string
-          description: The error target.
-          readOnly: true
-        details:
+        value:
           type: array
-          description: The error details.
+          description: The RedisLinkedServerWithProperties items on this page
           items:
-            $ref: '#/components/schemas/ErrorDetail'
-          readOnly: true
-          x-ms-identifiers:
-          - message
-          - target
-        additionalInfo:
-          type: array
-          description: The error additional info.
-          items:
-            $ref: '#/components/schemas/ErrorAdditionalInfo'
-          readOnly: true
-          x-ms-identifiers: []
-    ErrorAdditionalInfo:
-      type: object
-      description: The resource management error additional info.
-      properties:
-        type:
+            $ref: '#/components/schemas/RedisLinkedServerWithProperties'
+        nextLink:
           type: string
-          description: The additional info type.
-          readOnly: true
-        info:
-          type: object
-          description: The additional info.
-          readOnly: true
-    ProxyResource:
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
+    RedisLinkedServerCreateParameters:
       type: object
-      title: Proxy Resource
-      description: The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-        location
+      description: Parameter required for creating a linked server to redis cache.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RedisLinkedServerCreateProperties'
+          description: Properties required to create a linked server.
+          x-ms-client-flatten: true
+      required:
+      - properties
+    RedisLinkedServerWithProperties:
+      type: object
+      description: Response to put/get linked server (with properties) for Redis cache.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RedisLinkedServerProperties'
+          description: Properties of the linked server.
+          x-ms-client-flatten: true
       allOf:
-      - $ref: '#/components/schemas/Resource'
-    Resource:
-      type: object
-      title: Resource
-      description: Common fields that are returned in the response for all Azure Resource Manager resources
-      properties:
-        id:
-          type: string
-          format: arm-id
-          description: Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-          readOnly: true
-        name:
-          type: string
-          description: The name of the resource
-          readOnly: true
-        type:
-          type: string
-          description: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-          readOnly: true
-        systemData:
-          $ref: '#/components/schemas/systemData'
-          type: object
-          description: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-          readOnly: true
-      x-ms-azure-resource: true
-    systemData:
-      type: object
-      description: Metadata pertaining to creation and last modification of the resource.
-      properties:
-        createdBy:
-          type: string
-          description: The identity that created the resource.
-        createdByType:
-          type: string
-          description: The type of identity that created the resource.
-          enum:
-          - User
-          - Application
-          - ManagedIdentity
-          - Key
-          x-ms-enum:
-            name: createdByType
-            modelAsString: true
-        createdAt:
-          type: string
-          format: date-time
-          description: The timestamp of resource creation (UTC).
-        lastModifiedBy:
-          type: string
-          description: The identity that last modified the resource.
-        lastModifiedByType:
-          type: string
-          description: The type of identity that last modified the resource.
-          enum:
-          - User
-          - Application
-          - ManagedIdentity
-          - Key
-          x-ms-enum:
-            name: createdByType
-            modelAsString: true
-        lastModifiedAt:
-          type: string
-          format: date-time
-          description: The timestamp of resource last modification (UTC)
-      readOnly: true
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -420,30 +300,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-  parameters:
-    ApiVersionParameter:
-      name: api-version
-      in: query
-      description: The API version to use for this operation.
-      required: true
-      schema:
-        type: string
-        minLength: 1
-    SubscriptionIdParameter:
-      name: subscriptionId
-      in: path
-      description: The ID of the target subscription. The value must be an UUID.
-      required: true
-      schema:
-        type: string
-        format: uuid
-    ResourceGroupNameParameter:
-      name: resourceGroupName
-      in: path
-      description: The name of the resource group. The name is case insensitive.
-      required: true
-      x-ms-parameter-location: method
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 90

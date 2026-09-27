@@ -20,7 +20,7 @@ paths:
       - Operations
       description: List the operations for the provider
       parameters:
-      - $ref: null
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
       responses:
         '200':
           description: Azure operation completed successfully.
@@ -33,14 +33,26 @@ paths:
           content:
             application/json:
               schema:
-                $ref: null
+                $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
         RedisCacheOperations:
-          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-operations-example.json
+          $ref: ./examples/RedisCacheOperations.json
       x-ms-pageable:
         nextLinkName: nextLink
+      summary: Operations list
+      x-summary-source: derived
 components:
   schemas:
+    Operation:
+      type: object
+      description: REST API operation
+      properties:
+        name:
+          type: string
+          description: 'Operation name: {provider}/{resource}/{operation}'
+        display:
+          $ref: '#/components/schemas/OperationDisplay'
+          description: The object that describes the operation.
     OperationDisplay:
       type: object
       description: The object that describes the operation.
@@ -59,8 +71,7 @@ components:
           description: Friendly name of the operation
     OperationListResult:
       type: object
-      description: Result of the request to list REST API operations. It contains a list of operations and a URL nextLink
-        to get the next set of results.
+      description: Result of the request to list REST API operations. It contains a list of operations and a URL nextLink to get the next set of results.
       properties:
         value:
           type: array
@@ -74,69 +85,6 @@ components:
           description: URL to get the next set of operation list results if there are any.
       required:
       - value
-    Operation:
-      type: object
-      description: REST API operation
-      properties:
-        name:
-          type: string
-          description: 'Operation name: {provider}/{resource}/{operation}'
-        display:
-          $ref: '#/components/schemas/OperationDisplay'
-          description: The object that describes the operation.
-    ErrorResponse:
-      type: object
-      title: Error response
-      description: Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-        (This also follows the OData error response format.).
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorDetail'
-          description: The error object.
-    ErrorDetail:
-      type: object
-      description: The error detail.
-      properties:
-        code:
-          type: string
-          description: The error code.
-          readOnly: true
-        message:
-          type: string
-          description: The error message.
-          readOnly: true
-        target:
-          type: string
-          description: The error target.
-          readOnly: true
-        details:
-          type: array
-          description: The error details.
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          readOnly: true
-          x-ms-identifiers:
-          - message
-          - target
-        additionalInfo:
-          type: array
-          description: The error additional info.
-          items:
-            $ref: '#/components/schemas/ErrorAdditionalInfo'
-          readOnly: true
-          x-ms-identifiers: []
-    ErrorAdditionalInfo:
-      type: object
-      description: The resource management error additional info.
-      properties:
-        type:
-          type: string
-          description: The additional info type.
-          readOnly: true
-        info:
-          type: object
-          description: The additional info.
-          readOnly: true
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -146,12 +94,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-  parameters:
-    ApiVersionParameter:
-      name: api-version
-      in: query
-      description: The API version to use for this operation.
-      required: true
-      schema:
-        type: string
-        minLength: 1

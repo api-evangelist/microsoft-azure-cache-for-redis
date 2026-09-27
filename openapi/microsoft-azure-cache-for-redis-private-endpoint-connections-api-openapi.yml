@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: RedisManagementClient Redis Firewall Rules API
+  title: RedisManagementClient Private Endpoint Connections API
   version: '2024-11-01'
   description: REST API for Azure Redis Cache Service.
   x-typespec-generated:
@@ -11,14 +11,14 @@ security:
 - azure_auth:
   - user_impersonation
 tags:
-- name: RedisFirewallRules
+- name: Private Endpoint Connections
 paths:
-  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/privateEndpointConnections
   : get:
-      operationId: FirewallRules_List
+      operationId: PrivateEndpointConnections_List
       tags:
-      - RedisFirewallRules
-      description: Gets all firewall rules in the specified redis cache.
+      - Private Endpoint Connections
+      description: List all the private endpoint connections associated with the redis cache.
       parameters:
       - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
       - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
@@ -32,11 +32,11 @@ paths:
           pattern: ^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9])$
       responses:
         '200':
-          description: Azure operation completed successfully.
+          description: The request has succeeded.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RedisFirewallRuleListResult'
+                $ref: '#/components/schemas/PrivateEndpointConnectionListResult'
         default:
           description: An unexpected error response.
           content:
@@ -44,18 +44,18 @@ paths:
               schema:
                 $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
-        RedisCacheFirewallRulesList:
-          $ref: ./examples/RedisCacheFirewallRulesList.json
+        RedisCacheListPrivateEndpointConnection:
+          $ref: ./examples/RedisCacheListPrivateEndpointConnections.json
       x-ms-pageable:
         nextLinkName: nextLink
-      summary: Firewall rules list
+      summary: Private endpoint connections list
       x-summary-source: derived
-  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/firewallRules/{ruleName}
+  ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/privateEndpointConnections/{privateEndpointConnectionName}
   : get:
-      operationId: FirewallRules_Get
+      operationId: PrivateEndpointConnections_Get
       tags:
-      - RedisFirewallRules
-      description: Gets a single firewall rule in a specified redis cache.
+      - Private Endpoint Connections
+      description: Gets the specified private endpoint connection associated with the redis cache.
       parameters:
       - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
       - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
@@ -67,19 +67,14 @@ paths:
         schema:
           type: string
           pattern: ^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9])$
-      - name: ruleName
-        in: path
-        description: The name of the firewall rule.
-        required: true
-        schema:
-          type: string
+      - $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/parameters/PrivateEndpointConnectionName
       responses:
         '200':
           description: Azure operation completed successfully.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RedisFirewallRule'
+                $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/definitions/PrivateEndpointConnection
         default:
           description: An unexpected error response.
           content:
@@ -87,15 +82,15 @@ paths:
               schema:
                 $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
-        RedisCacheFirewallRuleGet:
-          $ref: ./examples/RedisCacheFirewallRuleGet.json
-      summary: Firewall rules get
+        RedisCacheGetPrivateEndpointConnection:
+          $ref: ./examples/RedisCacheGetPrivateEndpointConnection.json
+      summary: Private endpoint connections get
       x-summary-source: derived
     put:
-      operationId: FirewallRules_CreateOrUpdate
+      operationId: PrivateEndpointConnections_Put
       tags:
-      - RedisFirewallRules
-      description: Create or update a redis cache firewall rule
+      - Private Endpoint Connections
+      description: Update the state of specified private endpoint connection associated with the redis cache.
       parameters:
       - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
       - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
@@ -107,25 +102,30 @@ paths:
         schema:
           type: string
           pattern: ^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9])$
-      - name: ruleName
-        in: path
-        description: The name of the firewall rule.
-        required: true
-        schema:
-          type: string
+      - $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/parameters/PrivateEndpointConnectionName
       responses:
         '200':
-          description: Resource 'RedisFirewallRule' update operation succeeded
+          description: Resource 'PrivateEndpointConnection' update operation succeeded
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RedisFirewallRule'
+                $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/definitions/PrivateEndpointConnection
         '201':
-          description: Resource 'RedisFirewallRule' create operation succeeded
+          description: Resource 'PrivateEndpointConnection' create operation succeeded
+          headers:
+            Location:
+              description: The Location header contains the URL where the status of the long running operation can be checked.
+              schema:
+                type: string
+            Retry-After:
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
+              schema:
+                type: integer
+                format: int32
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RedisFirewallRule'
+                $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/definitions/PrivateEndpointConnection
         default:
           description: An unexpected error response.
           content:
@@ -133,22 +133,26 @@ paths:
               schema:
                 $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
-        RedisCacheFirewallRuleCreate:
-          $ref: ./examples/RedisCacheFirewallRuleCreate.json
+        RedisCachePutPrivateEndpointConnection:
+          $ref: ./examples/RedisCachePutPrivateEndpointConnection.json
+      x-ms-long-running-operation-options:
+        final-state-via: location
+        final-state-schema: ../../../../../../common-types/resource-management/v4/privatelinks.json#/definitions/PrivateEndpointConnection
+      x-ms-long-running-operation: true
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/RedisFirewallRule'
-        description: Parameters supplied to the create or update redis firewall rule operation.
+              $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/definitions/PrivateEndpointConnection
+        description: The private endpoint connection properties.
         required: true
-      summary: Firewall rules create or update
+      summary: Private endpoint connections put
       x-summary-source: derived
     delete:
-      operationId: FirewallRules_Delete
+      operationId: PrivateEndpointConnections_Delete
       tags:
-      - RedisFirewallRules
-      description: Deletes a single firewall rule in a specified redis cache.
+      - Private Endpoint Connections
+      description: Deletes the specified private endpoint connection associated with the redis cache.
       parameters:
       - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
       - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
@@ -160,12 +164,7 @@ paths:
         schema:
           type: string
           pattern: ^([a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9]|[a-zA-Z0-9])$
-      - name: ruleName
-        in: path
-        description: The name of the firewall rule.
-        required: true
-        schema:
-          type: string
+      - $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/parameters/PrivateEndpointConnectionName
       responses:
         '200':
           description: Resource deleted successfully.
@@ -178,52 +177,27 @@ paths:
               schema:
                 $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
-        RedisCacheFirewallRuleDelete:
-          $ref: ./examples/RedisCacheFirewallRuleDelete.json
-      summary: Firewall rules delete
+        RedisCacheDeletePrivateEndpointConnection:
+          $ref: ./examples/RedisCacheDeletePrivateEndpointConnection.json
+      summary: Private endpoint connections delete
       x-summary-source: derived
 components:
   schemas:
-    RedisFirewallRuleProperties:
+    PrivateEndpointConnectionListResult:
       type: object
-      description: Specifies a range of IP addresses permitted to connect to the cache
-      properties:
-        startIP:
-          type: string
-          description: lowest IP address included in the range
-        endIP:
-          type: string
-          description: highest IP address included in the range
-      required:
-      - startIP
-      - endIP
-    RedisFirewallRuleListResult:
-      type: object
-      description: The response of a RedisFirewallRule list operation.
+      description: The response of a PrivateEndpointConnection list operation.
       properties:
         value:
           type: array
-          description: The RedisFirewallRule items on this page
+          description: The PrivateEndpointConnection items on this page
           items:
-            $ref: '#/components/schemas/RedisFirewallRule'
+            $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/definitions/PrivateEndpointConnection
         nextLink:
           type: string
           format: uri
           description: The link to the next page of items
       required:
       - value
-    RedisFirewallRule:
-      type: object
-      description: A firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted to connect
-      properties:
-        properties:
-          $ref: '#/components/schemas/RedisFirewallRuleProperties'
-          description: redis cache firewall rule properties
-          x-ms-client-flatten: true
-      required:
-      - properties
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
   securitySchemes:
     azure_auth:
       type: oauth2

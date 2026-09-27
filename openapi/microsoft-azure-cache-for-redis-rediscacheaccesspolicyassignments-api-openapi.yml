@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: RedisManagementClient Redis Cache Access Policy Assignments API
+  title: RedisManagementClient Redis Cache Access Policy Assignments…
   version: '2024-11-01'
   description: REST API for Azure Redis Cache Service.
   x-typespec-generated:
@@ -20,9 +20,9 @@ paths:
       - RedisCacheAccessPolicyAssignments
       description: Gets the list of access policy assignments associated with this redis cache
       parameters:
-      - $ref: null
-      - $ref: null
-      - $ref: null
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ResourceGroupNameParameter
       - name: cacheName
         in: path
         description: The name of the Redis cache.
@@ -42,12 +42,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: null
+                $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
         RedisCacheAccessPolicyAssignmentList:
-          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-access-policy-assignment-list-example.json
+          $ref: ./examples/RedisCacheAccessPolicyAssignmentList.json
       x-ms-pageable:
         nextLinkName: nextLink
+      summary: Access policy assignment list
+      x-summary-source: derived
   ? /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redis/{cacheName}/accessPolicyAssignments/{accessPolicyAssignmentName}
   : get:
       operationId: AccessPolicyAssignment_Get
@@ -55,9 +57,9 @@ paths:
       - RedisCacheAccessPolicyAssignments
       description: Gets the list of assignments for an access policy of a redis cache
       parameters:
-      - $ref: null
-      - $ref: null
-      - $ref: null
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ResourceGroupNameParameter
       - name: cacheName
         in: path
         description: The name of the Redis cache.
@@ -86,19 +88,21 @@ paths:
           content:
             application/json:
               schema:
-                $ref: null
+                $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
         RedisCacheAccessPolicyAssignmentGet:
-          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-access-policy-assignment-get-example.json
+          $ref: ./examples/RedisCacheAccessPolicyAssignmentGet.json
+      summary: Access policy assignment get
+      x-summary-source: derived
     put:
       operationId: AccessPolicyAssignment_CreateUpdate
       tags:
       - RedisCacheAccessPolicyAssignments
       description: Adds the access policy assignment to the specified users
       parameters:
-      - $ref: null
-      - $ref: null
-      - $ref: null
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ResourceGroupNameParameter
       - name: cacheName
         in: path
         description: The name of the Redis cache.
@@ -130,8 +134,7 @@ paths:
               schema:
                 type: string
             Retry-After:
-              description: The Retry-After header can indicate how long the client should wait before polling the operation
-                status.
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
               schema:
                 type: integer
                 format: int32
@@ -144,10 +147,10 @@ paths:
           content:
             application/json:
               schema:
-                $ref: null
+                $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
         RedisCacheAccessPolicyAssignmentCreateUpdate:
-          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-access-policy-assignment-create-update-example.json
+          $ref: ./examples/RedisCacheAccessPolicyAssignmentCreateUpdate.json
       x-ms-long-running-operation-options:
         final-state-via: location
         final-state-schema: '#/definitions/RedisCacheAccessPolicyAssignment'
@@ -159,15 +162,17 @@ paths:
               $ref: '#/components/schemas/RedisCacheAccessPolicyAssignment'
         description: Parameters supplied to the Create Update Access Policy Assignment operation.
         required: true
+      summary: Access policy assignment create update
+      x-summary-source: derived
     delete:
       operationId: AccessPolicyAssignment_Delete
       tags:
       - RedisCacheAccessPolicyAssignments
       description: Deletes the access policy assignment from a redis cache
       parameters:
-      - $ref: null
-      - $ref: null
-      - $ref: null
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ApiVersionParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/SubscriptionIdParameter
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/parameters/ResourceGroupNameParameter
       - name: cacheName
         in: path
         description: The name of the Redis cache.
@@ -195,8 +200,7 @@ paths:
               schema:
                 type: string
             Retry-After:
-              description: The Retry-After header can indicate how long the client should wait before polling the operation
-                status.
+              description: The Retry-After header can indicate how long the client should wait before polling the operation status.
               schema:
                 type: integer
                 format: int32
@@ -207,37 +211,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: null
+                $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ErrorResponse
       x-ms-examples:
         RedisCacheAccessPolicyAssignmentDelete:
-          $ref: ../examples/microsoft-azure-cache-for-redis-redis-cache-access-policy-assignment-delete-example.json
+          $ref: ./examples/RedisCacheAccessPolicyAssignmentDelete.json
       x-ms-long-running-operation-options:
         final-state-via: location
       x-ms-long-running-operation: true
+      summary: Access policy assignment delete
+      x-summary-source: derived
 components:
   schemas:
-    RedisCacheAccessPolicyAssignmentProperties:
-      type: object
-      description: Properties for an access policy assignment
-      properties:
-        provisioningState:
-          $ref: '#/components/schemas/AccessPolicyAssignmentProvisioningState'
-          description: Provisioning state of an access policy assignment set
-          readOnly: true
-        objectId:
-          type: string
-          description: Object Id to assign access policy to
-        objectIdAlias:
-          type: string
-          description: User friendly name for object id. Also represents username for token based authentication
-        accessPolicyName:
-          type: string
-          description: The name of the access policy that is being assigned
-          pattern: ^([a-zA-Z0-9][a-zA-Z0-9- ]*[a-zA-Z0-9]|[a-zA-Z0-9])$
-      required:
-      - objectId
-      - objectIdAlias
-      - accessPolicyName
     AccessPolicyAssignmentProvisioningState:
       type: string
       description: Provisioning state of an access policy assignment set
@@ -266,12 +250,32 @@ components:
           description: The access policy assignments are considered deleted, meaning no custom access policies are applied.
         - name: Canceled
           value: Canceled
-          description: The operation was canceled. Access policy assignments may be in a partially updated state. Update them
-            again to have a well-defined state.
+          description: The operation was canceled. Access policy assignments may be in a partially updated state. Update them again to have a well-defined state.
         - name: Failed
           value: Failed
-          description: The operation failed. Access policy assignments may be in a partially updated state. Update them again
-            to have a well-defined state.
+          description: The operation failed. Access policy assignments may be in a partially updated state. Update them again to have a well-defined state.
+    RedisCacheAccessPolicyAssignmentProperties:
+      type: object
+      description: Properties for an access policy assignment
+      properties:
+        provisioningState:
+          $ref: '#/components/schemas/AccessPolicyAssignmentProvisioningState'
+          description: Provisioning state of an access policy assignment set
+          readOnly: true
+        objectId:
+          type: string
+          description: Object Id to assign access policy to
+        objectIdAlias:
+          type: string
+          description: User friendly name for object id. Also represents username for token based authentication
+        accessPolicyName:
+          type: string
+          description: The name of the access policy that is being assigned
+          pattern: ^([a-zA-Z0-9][a-zA-Z0-9- ]*[a-zA-Z0-9]|[a-zA-Z0-9])$
+      required:
+      - objectId
+      - objectIdAlias
+      - accessPolicyName
     RedisCacheAccessPolicyAssignment:
       type: object
       description: Response to an operation on access policy assignment
@@ -281,7 +285,7 @@ components:
           description: Properties of an access policy assignment
           x-ms-client-flatten: true
       allOf:
-      - $ref: null
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
     RedisCacheAccessPolicyAssignmentList:
       type: object
       description: List of access policies assignments (with properties) of a Redis cache.
@@ -297,131 +301,6 @@ components:
           description: The link to the next page of items
       required:
       - value
-    ErrorResponse:
-      type: object
-      title: Error response
-      description: Common error response for all Azure Resource Manager APIs to return error details for failed operations.
-        (This also follows the OData error response format.).
-      properties:
-        error:
-          $ref: '#/components/schemas/ErrorDetail'
-          description: The error object.
-    ErrorDetail:
-      type: object
-      description: The error detail.
-      properties:
-        code:
-          type: string
-          description: The error code.
-          readOnly: true
-        message:
-          type: string
-          description: The error message.
-          readOnly: true
-        target:
-          type: string
-          description: The error target.
-          readOnly: true
-        details:
-          type: array
-          description: The error details.
-          items:
-            $ref: '#/components/schemas/ErrorDetail'
-          readOnly: true
-          x-ms-identifiers:
-          - message
-          - target
-        additionalInfo:
-          type: array
-          description: The error additional info.
-          items:
-            $ref: '#/components/schemas/ErrorAdditionalInfo'
-          readOnly: true
-          x-ms-identifiers: []
-    ErrorAdditionalInfo:
-      type: object
-      description: The resource management error additional info.
-      properties:
-        type:
-          type: string
-          description: The additional info type.
-          readOnly: true
-        info:
-          type: object
-          description: The additional info.
-          readOnly: true
-    ProxyResource:
-      type: object
-      title: Proxy Resource
-      description: The resource model definition for a Azure Resource Manager proxy resource. It will not have tags and a
-        location
-      allOf:
-      - $ref: '#/components/schemas/Resource'
-    Resource:
-      type: object
-      title: Resource
-      description: Common fields that are returned in the response for all Azure Resource Manager resources
-      properties:
-        id:
-          type: string
-          format: arm-id
-          description: Fully qualified resource ID for the resource. E.g. "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}"
-          readOnly: true
-        name:
-          type: string
-          description: The name of the resource
-          readOnly: true
-        type:
-          type: string
-          description: The type of the resource. E.g. "Microsoft.Compute/virtualMachines" or "Microsoft.Storage/storageAccounts"
-          readOnly: true
-        systemData:
-          $ref: '#/components/schemas/systemData'
-          type: object
-          description: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-          readOnly: true
-      x-ms-azure-resource: true
-    systemData:
-      type: object
-      description: Metadata pertaining to creation and last modification of the resource.
-      properties:
-        createdBy:
-          type: string
-          description: The identity that created the resource.
-        createdByType:
-          type: string
-          description: The type of identity that created the resource.
-          enum:
-          - User
-          - Application
-          - ManagedIdentity
-          - Key
-          x-ms-enum:
-            name: createdByType
-            modelAsString: true
-        createdAt:
-          type: string
-          format: date-time
-          description: The timestamp of resource creation (UTC).
-        lastModifiedBy:
-          type: string
-          description: The identity that last modified the resource.
-        lastModifiedByType:
-          type: string
-          description: The type of identity that last modified the resource.
-          enum:
-          - User
-          - Application
-          - ManagedIdentity
-          - Key
-          x-ms-enum:
-            name: createdByType
-            modelAsString: true
-        lastModifiedAt:
-          type: string
-          format: date-time
-          description: The timestamp of resource last modification (UTC)
-      readOnly: true
   securitySchemes:
     azure_auth:
       type: oauth2
@@ -431,30 +310,3 @@ components:
             user_impersonation: impersonate your user account
           authorizationUrl: https://login.microsoftonline.com/common/oauth2/authorize
       description: Azure Active Directory OAuth2 Flow.
-  parameters:
-    ApiVersionParameter:
-      name: api-version
-      in: query
-      description: The API version to use for this operation.
-      required: true
-      schema:
-        type: string
-        minLength: 1
-    SubscriptionIdParameter:
-      name: subscriptionId
-      in: path
-      description: The ID of the target subscription. The value must be an UUID.
-      required: true
-      schema:
-        type: string
-        format: uuid
-    ResourceGroupNameParameter:
-      name: resourceGroupName
-      in: path
-      description: The name of the resource group. The name is case insensitive.
-      required: true
-      x-ms-parameter-location: method
-      schema:
-        type: string
-        minLength: 1
-        maxLength: 90

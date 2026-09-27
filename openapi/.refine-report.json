@@ -14,9 +14,7 @@
     "microsoft-azure-cache-for-redis-redisresources-api-openapi.yml",
     "microsoft-azure-cache-for-redis-subscriptions-api-openapi.yml"
   ],
-  "archived": [
-    "deleted 1 superseded output(s) from the previous generation"
-  ],
+  "archived": [],
   "errors": [],
   "warnings": [],
   "notes": [
@@ -26,12 +24,18 @@
     "microsoft-azure-cache-for-redis-redis-2024-11-01-swagger.json: tagged paths POST /subscriptions/{subscriptionId}/providers/Microsoft.Cache/checkNameAvailability -> Subscriptions",
     "microsoft-azure-cache-for-redis-redis-2024-11-01-swagger.json: tagged paths GET /subscriptions/{subscriptionId}/providers/Microsoft.Cache/locations/{location}/asyncOperations/{operationId} -> Subscriptions",
     "microsoft-azure-cache-for-redis-redis-2024-11-01-swagger.json: declared missing tag: Subscriptions",
-    "superseded outputs removed: microsoft-azure-cache-for-redis-redis-api-openapi.yml",
-    "apis.yml register: written (+8 apis, 9 total)"
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "_ae-authored/microsoft-azure-cache-for-redis-openapi.yml: archived document superseded by a larger archived document",
+    "microsoft-azure-cache-for-redis-linkedserver-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "microsoft-azure-cache-for-redis-operations-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "microsoft-azure-cache-for-redis-redis-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "microsoft-azure-cache-for-redis-privateendpointconnections-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cache-for-redis-rediscacheaccesspolicies-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cache-for-redis-rediscacheaccesspolicyassignments-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cache-for-redis-redisfirewallrules-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cache-for-redis-redispatchschedules-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cache-for-redis-redisresources-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "microsoft-azure-cache-for-redis-subscriptions-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }
