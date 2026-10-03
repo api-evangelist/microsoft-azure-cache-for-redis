@@ -222,6 +222,21 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    RedisCacheAccessPolicyAssignmentList:
+      type: object
+      description: List of access policies assignments (with properties) of a Redis cache.
+      properties:
+        value:
+          type: array
+          description: The RedisCacheAccessPolicyAssignment items on this page
+          items:
+            $ref: '#/components/schemas/RedisCacheAccessPolicyAssignment'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
     AccessPolicyAssignmentProvisioningState:
       type: string
       description: Provisioning state of an access policy assignment set
@@ -286,21 +301,6 @@ components:
           x-ms-client-flatten: true
       allOf:
       - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
-    RedisCacheAccessPolicyAssignmentList:
-      type: object
-      description: List of access policies assignments (with properties) of a Redis cache.
-      properties:
-        value:
-          type: array
-          description: The RedisCacheAccessPolicyAssignment items on this page
-          items:
-            $ref: '#/components/schemas/RedisCacheAccessPolicyAssignment'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
   securitySchemes:
     azure_auth:
       type: oauth2

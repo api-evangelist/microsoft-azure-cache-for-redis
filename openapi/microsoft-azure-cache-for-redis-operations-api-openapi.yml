@@ -43,16 +43,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    Operation:
-      type: object
-      description: REST API operation
-      properties:
-        name:
-          type: string
-          description: 'Operation name: {provider}/{resource}/{operation}'
-        display:
-          $ref: '#/components/schemas/OperationDisplay'
-          description: The object that describes the operation.
     OperationDisplay:
       type: object
       description: The object that describes the operation.
@@ -85,6 +75,16 @@ components:
           description: URL to get the next set of operation list results if there are any.
       required:
       - value
+    Operation:
+      type: object
+      description: REST API operation
+      properties:
+        name:
+          type: string
+          description: 'Operation name: {provider}/{resource}/{operation}'
+        display:
+          $ref: '#/components/schemas/OperationDisplay'
+          description: The object that describes the operation.
   securitySchemes:
     azure_auth:
       type: oauth2

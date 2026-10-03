@@ -222,6 +222,47 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    AccessPolicyType:
+      type: string
+      description: Built-In or Custom access policy
+      enum:
+      - Custom
+      - BuiltIn
+      x-ms-enum:
+        name: AccessPolicyType
+        modelAsString: true
+        values:
+        - name: Custom
+          value: Custom
+          description: User-configurable access policy, using the redis access policy authoring language
+        - name: BuiltIn
+          value: BuiltIn
+          description: Built-in or well-known access policies, whose policy is not configurable.
+    RedisCacheAccessPolicy:
+      type: object
+      description: Response to get/put access policy.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RedisCacheAccessPolicyProperties'
+          description: Properties of an access policy.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
+    RedisCacheAccessPolicyList:
+      type: object
+      description: List of access policies (with properties) of a Redis cache.
+      properties:
+        value:
+          type: array
+          description: The RedisCacheAccessPolicy items on this page
+          items:
+            $ref: '#/components/schemas/RedisCacheAccessPolicy'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
     RedisCacheAccessPolicyProperties:
       type: object
       description: All properties of an access policy.
@@ -271,47 +312,6 @@ components:
         - name: Failed
           value: Failed
           description: The operation failed. Access policies may be in a partially updated state. Update them again to have a well-defined state.
-    AccessPolicyType:
-      type: string
-      description: Built-In or Custom access policy
-      enum:
-      - Custom
-      - BuiltIn
-      x-ms-enum:
-        name: AccessPolicyType
-        modelAsString: true
-        values:
-        - name: Custom
-          value: Custom
-          description: User-configurable access policy, using the redis access policy authoring language
-        - name: BuiltIn
-          value: BuiltIn
-          description: Built-in or well-known access policies, whose policy is not configurable.
-    RedisCacheAccessPolicyList:
-      type: object
-      description: List of access policies (with properties) of a Redis cache.
-      properties:
-        value:
-          type: array
-          description: The RedisCacheAccessPolicy items on this page
-          items:
-            $ref: '#/components/schemas/RedisCacheAccessPolicy'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    RedisCacheAccessPolicy:
-      type: object
-      description: Response to get/put access policy.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RedisCacheAccessPolicyProperties'
-          description: Properties of an access policy.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
   securitySchemes:
     azure_auth:
       type: oauth2

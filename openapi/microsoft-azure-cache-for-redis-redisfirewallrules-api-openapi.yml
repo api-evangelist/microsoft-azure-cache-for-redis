@@ -184,6 +184,18 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    RedisFirewallRule:
+      type: object
+      description: A firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted to connect
+      properties:
+        properties:
+          $ref: '#/components/schemas/RedisFirewallRuleProperties'
+          description: redis cache firewall rule properties
+          x-ms-client-flatten: true
+      required:
+      - properties
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
     RedisFirewallRuleProperties:
       type: object
       description: Specifies a range of IP addresses permitted to connect to the cache
@@ -212,18 +224,6 @@ components:
           description: The link to the next page of items
       required:
       - value
-    RedisFirewallRule:
-      type: object
-      description: A firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted to connect
-      properties:
-        properties:
-          $ref: '#/components/schemas/RedisFirewallRuleProperties'
-          description: redis cache firewall rule properties
-          x-ms-client-flatten: true
-      required:
-      - properties
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
   securitySchemes:
     azure_auth:
       type: oauth2

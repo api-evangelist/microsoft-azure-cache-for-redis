@@ -202,6 +202,36 @@ paths:
       x-summary-source: derived
 components:
   schemas:
+    RedisLinkedServerProperties:
+      type: object
+      description: Properties of a linked server to be returned in get/put response
+      properties:
+        provisioningState:
+          type: string
+          description: Terminal state of the link between primary and secondary redis cache.
+          readOnly: true
+      allOf:
+      - $ref: '#/components/schemas/RedisLinkedServerCreateProperties'
+    RedisLinkedServerWithProperties:
+      type: object
+      description: Response to put/get linked server (with properties) for Redis cache.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RedisLinkedServerProperties'
+          description: Properties of the linked server.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
+    RedisLinkedServerCreateParameters:
+      type: object
+      description: Parameter required for creating a linked server to redis cache.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RedisLinkedServerCreateProperties'
+          description: Properties required to create a linked server.
+          x-ms-client-flatten: true
+      required:
+      - properties
     ReplicationRole:
       type: string
       description: Role of the linked server.
@@ -218,6 +248,21 @@ components:
         - name: Secondary
           value: Secondary
           description: The linked server is in the read-only replica role
+    RedisLinkedServerWithPropertiesList:
+      type: object
+      description: List of linked servers (with properties) of a Redis cache.
+      properties:
+        value:
+          type: array
+          description: The RedisLinkedServerWithProperties items on this page
+          items:
+            $ref: '#/components/schemas/RedisLinkedServerWithProperties'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
     RedisLinkedServerCreateProperties:
       type: object
       description: Create properties for a linked server
@@ -246,51 +291,6 @@ components:
       - linkedRedisCacheId
       - linkedRedisCacheLocation
       - serverRole
-    RedisLinkedServerProperties:
-      type: object
-      description: Properties of a linked server to be returned in get/put response
-      properties:
-        provisioningState:
-          type: string
-          description: Terminal state of the link between primary and secondary redis cache.
-          readOnly: true
-      allOf:
-      - $ref: '#/components/schemas/RedisLinkedServerCreateProperties'
-    RedisLinkedServerWithPropertiesList:
-      type: object
-      description: List of linked servers (with properties) of a Redis cache.
-      properties:
-        value:
-          type: array
-          description: The RedisLinkedServerWithProperties items on this page
-          items:
-            $ref: '#/components/schemas/RedisLinkedServerWithProperties'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    RedisLinkedServerCreateParameters:
-      type: object
-      description: Parameter required for creating a linked server to redis cache.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RedisLinkedServerCreateProperties'
-          description: Properties required to create a linked server.
-          x-ms-client-flatten: true
-      required:
-      - properties
-    RedisLinkedServerWithProperties:
-      type: object
-      description: Response to put/get linked server (with properties) for Redis cache.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RedisLinkedServerProperties'
-          description: Properties of the linked server.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
   securitySchemes:
     azure_auth:
       type: oauth2

@@ -208,19 +208,22 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    ScheduleEntries:
+    RedisPatchSchedule:
       type: object
-      description: List of patch schedules for a Redis cache.
+      description: Response to put/get patch schedules for Redis cache.
       properties:
-        scheduleEntries:
-          type: array
+        properties:
+          $ref: '#/components/schemas/ScheduleEntries'
           description: List of patch schedules for a Redis cache.
-          items:
-            $ref: '#/components/schemas/ScheduleEntry'
-          x-ms-client-name: ScheduleEntries
-          x-ms-identifiers: []
+          x-ms-client-flatten: true
+        location:
+          type: string
+          description: The geo-location where the resource lives
+          readOnly: true
       required:
-      - scheduleEntries
+      - properties
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
     ScheduleEntry:
       type: object
       description: Patch schedule entry for a Premium Redis Cache.
@@ -254,22 +257,6 @@ components:
           description: The link to the next page of items
       required:
       - value
-    RedisPatchSchedule:
-      type: object
-      description: Response to put/get patch schedules for Redis cache.
-      properties:
-        properties:
-          $ref: '#/components/schemas/ScheduleEntries'
-          description: List of patch schedules for a Redis cache.
-          x-ms-client-flatten: true
-        location:
-          type: string
-          description: The geo-location where the resource lives
-          readOnly: true
-      required:
-      - properties
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
     DayOfWeek:
       type: string
       description: Day of the week when a cache can be patched.
@@ -307,6 +294,19 @@ components:
         - name: Weekend
           value: Weekend
           description: As a convenience, 'Weekend' is also accepted and means the same as specifying Saturday and Sunday.
+    ScheduleEntries:
+      type: object
+      description: List of patch schedules for a Redis cache.
+      properties:
+        scheduleEntries:
+          type: array
+          description: List of patch schedules for a Redis cache.
+          items:
+            $ref: '#/components/schemas/ScheduleEntry'
+          x-ms-client-name: ScheduleEntries
+          x-ms-identifiers: []
+      required:
+      - scheduleEntries
   securitySchemes:
     azure_auth:
       type: oauth2
