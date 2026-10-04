@@ -43,22 +43,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    OperationDisplay:
-      type: object
-      description: The object that describes the operation.
-      properties:
-        provider:
-          type: string
-          description: Friendly name of the resource provider
-        operation:
-          type: string
-          description: 'Operation type: read, write, delete, listKeys/action, etc.'
-        resource:
-          type: string
-          description: Resource type on which the operation is performed.
-        description:
-          type: string
-          description: Friendly name of the operation
     OperationListResult:
       type: object
       description: Result of the request to list REST API operations. It contains a list of operations and a URL nextLink to get the next set of results.
@@ -75,6 +59,22 @@ components:
           description: URL to get the next set of operation list results if there are any.
       required:
       - value
+    OperationDisplay:
+      type: object
+      description: The object that describes the operation.
+      properties:
+        provider:
+          type: string
+          description: Friendly name of the resource provider
+        operation:
+          type: string
+          description: 'Operation type: read, write, delete, listKeys/action, etc.'
+        resource:
+          type: string
+          description: Resource type on which the operation is performed.
+        description:
+          type: string
+          description: Friendly name of the operation
     Operation:
       type: object
       description: REST API operation

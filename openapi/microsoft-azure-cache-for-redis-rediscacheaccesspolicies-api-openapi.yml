@@ -238,31 +238,6 @@ components:
         - name: BuiltIn
           value: BuiltIn
           description: Built-in or well-known access policies, whose policy is not configurable.
-    RedisCacheAccessPolicy:
-      type: object
-      description: Response to get/put access policy.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RedisCacheAccessPolicyProperties'
-          description: Properties of an access policy.
-          x-ms-client-flatten: true
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
-    RedisCacheAccessPolicyList:
-      type: object
-      description: List of access policies (with properties) of a Redis cache.
-      properties:
-        value:
-          type: array
-          description: The RedisCacheAccessPolicy items on this page
-          items:
-            $ref: '#/components/schemas/RedisCacheAccessPolicy'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
     RedisCacheAccessPolicyProperties:
       type: object
       description: All properties of an access policy.
@@ -280,6 +255,16 @@ components:
           description: Permissions for the access policy. Learn how to configure permissions at https://aka.ms/redis/AADPreRequisites
       required:
       - permissions
+    RedisCacheAccessPolicy:
+      type: object
+      description: Response to get/put access policy.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RedisCacheAccessPolicyProperties'
+          description: Properties of an access policy.
+          x-ms-client-flatten: true
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
     AccessPolicyProvisioningState:
       type: string
       description: Provisioning state of access policy
@@ -312,6 +297,21 @@ components:
         - name: Failed
           value: Failed
           description: The operation failed. Access policies may be in a partially updated state. Update them again to have a well-defined state.
+    RedisCacheAccessPolicyList:
+      type: object
+      description: List of access policies (with properties) of a Redis cache.
+      properties:
+        value:
+          type: array
+          description: The RedisCacheAccessPolicy items on this page
+          items:
+            $ref: '#/components/schemas/RedisCacheAccessPolicy'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
   securitySchemes:
     azure_auth:
       type: oauth2

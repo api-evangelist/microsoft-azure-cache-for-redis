@@ -639,102 +639,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    RedisProperties:
-      type: object
-      description: Properties of the redis cache.
-      properties:
-        provisioningState:
-          $ref: '#/components/schemas/ProvisioningState'
-          description: Redis instance provisioning status.
-          readOnly: true
-        hostName:
-          type: string
-          description: Redis host name.
-          readOnly: true
-        port:
-          type: integer
-          format: int32
-          description: Redis non-SSL port.
-          readOnly: true
-        sslPort:
-          type: integer
-          format: int32
-          description: Redis SSL port.
-          readOnly: true
-        accessKeys:
-          $ref: '#/components/schemas/RedisAccessKeys'
-          description: The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
-          readOnly: true
-        linkedServers:
-          type: array
-          description: List of the linked servers associated with the cache
-          items:
-            $ref: '#/components/schemas/RedisLinkedServer'
-          readOnly: true
-        instances:
-          type: array
-          description: List of the Redis instances associated with the cache
-          items:
-            $ref: '#/components/schemas/RedisInstanceDetails'
-          readOnly: true
-          x-ms-identifiers:
-          - shardId
-        privateEndpointConnections:
-          type: array
-          description: List of private endpoint connection associated with the specified redis cache
-          items:
-            $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/definitions/PrivateEndpointConnection
-          readOnly: true
-      allOf:
-      - $ref: '#/components/schemas/RedisCreateProperties'
-      x-ms-external: true
-    RedisCreateParameters:
-      type: object
-      description: Parameters supplied to the Create Redis operation.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RedisCreateProperties'
-          description: Redis cache properties.
-          x-ms-client-flatten: true
-        zones:
-          type: array
-          description: A list of availability zones denoting where the resource needs to come from.
-          items:
-            type: string
-        location:
-          type: string
-          description: The geo-location where the resource lives
-          x-ms-mutability:
-          - read
-          - create
-        tags:
-          type: object
-          description: Resource tags.
-          additionalProperties:
-            type: string
-        identity:
-          $ref: ../../../../../../common-types/resource-management/v4/managedidentity.json#/definitions/ManagedServiceIdentity
-          description: The identity of the resource.
-      required:
-      - properties
-      - location
-    RedisRebootParameters:
-      type: object
-      description: Specifies which Redis node(s) to reboot.
-      properties:
-        rebootType:
-          $ref: '#/components/schemas/RebootType'
-          description: Which Redis node(s) to reboot. Depending on this value data loss is possible.
-        shardId:
-          type: integer
-          format: int32
-          description: If clustering is enabled, the ID of the shard to be rebooted.
-        ports:
-          type: array
-          description: A list of redis instances to reboot, specified by per-instance SSL ports or non-SSL ports.
-          items:
-            type: integer
-            format: int32
     SkuName:
       type: string
       description: 'The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)'
@@ -755,55 +659,152 @@ components:
         - name: Premium
           value: Premium
           description: The well known 'Premium' SKU for Azure Cache for Redis. Premium SKU has an availability SLA, and higher performance tiers and more features compared with Standard SKU.
-    UpgradeNotification:
-      type: object
-      description: Properties of upgrade notification.
-      properties:
-        name:
-          type: string
-          description: Name of upgrade notification.
-          readOnly: true
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp when upgrade notification occurred.
-          readOnly: true
-        upsellNotification:
-          type: object
-          description: Details about this upgrade notification
-          additionalProperties:
-            type: string
-          readOnly: true
-    RedisUpdateProperties:
-      type: object
-      description: Patchable properties of the redis cache.
-      properties:
-        sku:
-          $ref: '#/components/schemas/Sku'
-          description: The SKU of the Redis cache to deploy.
-      allOf:
-      - $ref: '#/components/schemas/RedisCommonProperties'
-      x-ms-external: true
-    ZonalAllocationPolicy:
+    PublicNetworkAccess:
       type: string
-      description: 'Optional: Specifies how availability zones are allocated to the Redis cache. ''Automatic'' enables zone redundancy and Azure will automatically select zones based on regional availability and capacity. ''UserDefined'' will select availability zones passed in by you using the ''zones'' parameter. ''NoZones'' will produce a non-zonal cache. If ''zonalAllocationPolicy'' is not passed, it will be set to ''UserDefined'' when zones are passed in, otherwise, it will be set to ''Automatic'' in regions where zones are supported and ''NoZones'' in regions where zones are not supported.'
+      description: Whether or not public endpoint access is allowed for this cache.  Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method. Default value is 'Enabled'
       enum:
-      - Automatic
-      - UserDefined
-      - NoZones
+      - Enabled
+      - Disabled
       x-ms-enum:
-        name: ZonalAllocationPolicy
+        name: PublicNetworkAccess
         modelAsString: true
         values:
-        - name: Automatic
-          value: Automatic
-          description: The zones for the cache will be selected automatically based on availability and capacity.
-        - name: UserDefined
-          value: UserDefined
-          description: UserDefined means the zones for the cache are manually configured using the 'zones' property, and can not be automatically selected.
-        - name: NoZones
-          value: NoZones
-          description: The cache will not use multiple availability zones.
+        - name: Enabled
+          value: Enabled
+          description: Public internet access to the cache, via its public IP address, is enabled. Connections may use any network path.
+        - name: Disabled
+          value: Disabled
+          description: Public internet access to the cache, via its public IP address, is disabled. Connections must use be made via private endpoints.
+    RedisRegenerateKeyParameters:
+      type: object
+      description: Specifies which Redis access keys to reset.
+      properties:
+        keyType:
+          $ref: '#/components/schemas/RedisKeyType'
+          description: The Redis access key to regenerate.
+      required:
+      - keyType
+    ImportRDBParameters:
+      type: object
+      description: Parameters for Redis import operation.
+      properties:
+        format:
+          type: string
+          description: File format.
+        files:
+          type: array
+          description: files to import.
+          items:
+            type: string
+        preferred-data-archive-auth-method:
+          type: string
+          description: Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity, default value is SAS
+        storage-subscription-id:
+          type: string
+          description: Subscription id of the storage container containing files to import using Managed Identity.
+      required:
+      - files
+    ExportRDBParameters:
+      type: object
+      description: Parameters for Redis export operation.
+      properties:
+        format:
+          type: string
+          description: File format.
+        prefix:
+          type: string
+          description: Prefix to use for exported files.
+        container:
+          type: string
+          description: Container name to export to.
+        preferred-data-archive-auth-method:
+          type: string
+          description: Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity, default value is SAS
+        storage-subscription-id:
+          type: string
+          description: Subscription id of the storage container for data to be exported using ManagedIdentity.
+      required:
+      - prefix
+      - container
+    RedisResource:
+      type: object
+      description: A single Redis item in List or Get Operation.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RedisProperties'
+          description: Redis cache properties.
+          x-ms-client-flatten: true
+        zones:
+          type: array
+          description: The availability zones.
+          items:
+            type: string
+        identity:
+          $ref: ../../../../../../common-types/resource-management/v4/managedidentity.json#/definitions/ManagedServiceIdentity
+          description: The managed service identities assigned to this resource.
+      required:
+      - properties
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/TrackedResource
+    UpdateChannel:
+      type: string
+      description: 'Optional: Specifies the update channel for the monthly Redis updates your Redis Cache will receive. Caches using ''Preview'' update channel get latest Redis updates at least 4 weeks ahead of ''Stable'' channel caches. Default value is ''Stable''.'
+      enum:
+      - Stable
+      - Preview
+      x-ms-enum:
+        name: UpdateChannel
+        modelAsString: true
+        values:
+        - name: Stable
+          value: Stable
+          description: Stable channel receives updates, which may include important security and stability updates, later than Preview channel.
+        - name: Preview
+          value: Preview
+          description: Preview channel normally receives updates before Stable channel, and is the recommended channel for non-production workloads.
+    RedisUpdateParameters:
+      type: object
+      description: Parameters supplied to the Update Redis operation.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RedisUpdateProperties'
+          description: Redis cache properties.
+          x-ms-client-flatten: true
+        tags:
+          type: object
+          description: Resource tags.
+          additionalProperties:
+            type: string
+        identity:
+          $ref: ../../../../../../common-types/resource-management/v4/managedidentity.json#/definitions/ManagedServiceIdentity
+          description: The identity of the resource.
+    RedisAccessKeys:
+      type: object
+      description: Redis cache access keys.
+      properties:
+        primaryKey:
+          type: string
+          description: The current primary key that clients can use to authenticate with Redis cache.
+          readOnly: true
+        secondaryKey:
+          type: string
+          description: The current secondary key that clients can use to authenticate with Redis cache.
+          readOnly: true
+    PrivateLinkResourceListResult:
+      type: object
+      description: The response of a PrivateLinkResource list operation.
+      properties:
+        value:
+          type: array
+          description: The PrivateLinkResource items on this page
+          items:
+            $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/definitions/PrivateLinkResource
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
     RedisCommonPropertiesRedisConfiguration:
       type: object
       description: 'All Redis Settings. Few possible keys: rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta, maxmemory-policy,notify-keyspace-events, aof-backup-enabled, aof-storage-connection-string-0, aof-storage-connection-string-1 etc.'
@@ -886,45 +887,6 @@ components:
           description: Specifies whether AAD based authentication has been enabled or disabled for the cache
           x-ms-client-name: aadEnabled
       additionalProperties: {}
-    RedisCreateProperties:
-      type: object
-      description: Properties supplied to Create Redis operation.
-      properties:
-        sku:
-          $ref: '#/components/schemas/Sku'
-          description: The SKU of the Redis cache to deploy.
-        subnetId:
-          type: string
-          description: 'The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1'
-          pattern: ^/subscriptions/[^/]*/resourceGroups/[^/]*/providers/Microsoft.(ClassicNetwork|Network)/virtualNetworks/[^/]*/subnets/[^/]*$
-        staticIP:
-          type: string
-          description: Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default.
-          pattern: ^\d+\.\d+\.\d+\.\d+$
-          x-ms-mutability:
-          - read
-          - create
-      required:
-      - sku
-      allOf:
-      - $ref: '#/components/schemas/RedisCommonProperties'
-      x-ms-external: true
-    PublicNetworkAccess:
-      type: string
-      description: Whether or not public endpoint access is allowed for this cache.  Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints are the exclusive access method. Default value is 'Enabled'
-      enum:
-      - Enabled
-      - Disabled
-      x-ms-enum:
-        name: PublicNetworkAccess
-        modelAsString: true
-        values:
-        - name: Enabled
-          value: Enabled
-          description: Public internet access to the cache, via its public IP address, is enabled. Connections may use any network path.
-        - name: Disabled
-          value: Disabled
-          description: Public internet access to the cache, via its public IP address, is disabled. Connections must use be made via private endpoints.
     RedisKeyType:
       type: string
       description: The Redis access key to regenerate.
@@ -941,80 +903,91 @@ components:
         - name: Secondary
           value: Secondary
           description: The secondary access key
-    ExportRDBParameters:
-      type: object
-      description: Parameters for Redis export operation.
-      properties:
-        format:
-          type: string
-          description: File format.
-        prefix:
-          type: string
-          description: Prefix to use for exported files.
-        container:
-          type: string
-          description: Container name to export to.
-        preferred-data-archive-auth-method:
-          type: string
-          description: Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity, default value is SAS
-        storage-subscription-id:
-          type: string
-          description: Subscription id of the storage container for data to be exported using ManagedIdentity.
-      required:
-      - prefix
-      - container
-    UpdateChannel:
+    ZonalAllocationPolicy:
       type: string
-      description: 'Optional: Specifies the update channel for the monthly Redis updates your Redis Cache will receive. Caches using ''Preview'' update channel get latest Redis updates at least 4 weeks ahead of ''Stable'' channel caches. Default value is ''Stable''.'
+      description: 'Optional: Specifies how availability zones are allocated to the Redis cache. ''Automatic'' enables zone redundancy and Azure will automatically select zones based on regional availability and capacity. ''UserDefined'' will select availability zones passed in by you using the ''zones'' parameter. ''NoZones'' will produce a non-zonal cache. If ''zonalAllocationPolicy'' is not passed, it will be set to ''UserDefined'' when zones are passed in, otherwise, it will be set to ''Automatic'' in regions where zones are supported and ''NoZones'' in regions where zones are not supported.'
       enum:
-      - Stable
-      - Preview
+      - Automatic
+      - UserDefined
+      - NoZones
       x-ms-enum:
-        name: UpdateChannel
+        name: ZonalAllocationPolicy
         modelAsString: true
         values:
-        - name: Stable
-          value: Stable
-          description: Stable channel receives updates, which may include important security and stability updates, later than Preview channel.
-        - name: Preview
-          value: Preview
-          description: Preview channel normally receives updates before Stable channel, and is the recommended channel for non-production workloads.
-    RedisLinkedServer:
+        - name: Automatic
+          value: Automatic
+          description: The zones for the cache will be selected automatically based on availability and capacity.
+        - name: UserDefined
+          value: UserDefined
+          description: UserDefined means the zones for the cache are manually configured using the 'zones' property, and can not be automatically selected.
+        - name: NoZones
+          value: NoZones
+          description: The cache will not use multiple availability zones.
+    RedisListResult:
       type: object
-      description: Linked server Id
+      description: The response of list Redis operation.
       properties:
-        id:
+        value:
+          type: array
+          description: The RedisResource items on this page
+          items:
+            $ref: '#/components/schemas/RedisResource'
+        nextLink:
           type: string
-          description: Linked server Id.
-          readOnly: true
-    RedisAccessKeys:
-      type: object
-      description: Redis cache access keys.
-      properties:
-        primaryKey:
-          type: string
-          description: The current primary key that clients can use to authenticate with Redis cache.
-          readOnly: true
-        secondaryKey:
-          type: string
-          description: The current secondary key that clients can use to authenticate with Redis cache.
-          readOnly: true
-    RedisRegenerateKeyParameters:
-      type: object
-      description: Specifies which Redis access keys to reset.
-      properties:
-        keyType:
-          $ref: '#/components/schemas/RedisKeyType'
-          description: The Redis access key to regenerate.
+          format: uri
+          description: The link to the next page of items
       required:
-      - keyType
-    RedisForceRebootResponse:
+      - value
+    TlsVersion:
+      type: string
+      description: 'Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, ''1.0'', ''1.1'', ''1.2'')'
+      enum:
+      - '1.0'
+      - '1.1'
+      - '1.2'
+      x-ms-enum:
+        name: TlsVersion
+        modelAsString: true
+        values:
+        - name: '1.0'
+          value: '1.0'
+          description: TLS protocol version 1.0 -- deprecated for security reasons. Do not use this value for new caches.
+        - name: '1.1'
+          value: '1.1'
+          description: TLS protocol version 1.1 -- deprecated for security reasons. Do not use this value for new caches.
+        - name: '1.2'
+          value: '1.2'
+          description: TLS protocol version 1.2 -- use this value, or higher, for new caches. Or do not specify, so that your cache uses the recommended default value
+    RedisInstanceDetails:
       type: object
-      description: Response to force reboot for Redis cache.
+      description: Details of single instance of redis.
       properties:
-        message:
+        sslPort:
+          type: integer
+          format: int32
+          description: Redis instance SSL port.
+          readOnly: true
+        nonSslPort:
+          type: integer
+          format: int32
+          description: If enableNonSslPort is true, provides Redis instance Non-SSL port.
+          readOnly: true
+        zone:
           type: string
-          description: Status message
+          description: If the Cache uses availability zones, specifies availability zone where this instance is located.
+          readOnly: true
+        shardId:
+          type: integer
+          format: int32
+          description: If clustering is enabled, the Shard ID of Redis Instance
+          readOnly: true
+        isMaster:
+          type: boolean
+          description: Specifies whether the instance is a primary node.
+          readOnly: true
+        isPrimary:
+          type: boolean
+          description: Specifies whether the instance is a primary node.
           readOnly: true
     RedisCommonProperties:
       type: object
@@ -1064,181 +1037,43 @@ components:
           $ref: '#/components/schemas/ZonalAllocationPolicy'
           description: 'Optional: Specifies how availability zones are allocated to the Redis cache. ''Automatic'' enables zone redundancy and Azure will automatically select zones based on regional availability and capacity. ''UserDefined'' will select availability zones passed in by you using the ''zones'' parameter. ''NoZones'' will produce a non-zonal cache. If ''zonalAllocationPolicy'' is not passed, it will be set to ''UserDefined'' when zones are passed in, otherwise, it will be set to ''Automatic'' in regions where zones are supported and ''NoZones'' in regions where zones are not supported.'
       x-ms-external: true
-    RebootType:
-      type: string
-      description: Which Redis node(s) to reboot. Depending on this value data loss is possible.
-      enum:
-      - PrimaryNode
-      - SecondaryNode
-      - AllNodes
-      x-ms-enum:
-        name: RebootType
-        modelAsString: true
-        values:
-        - name: PrimaryNode
-          value: PrimaryNode
-          description: Reboot the primary nodes used for redis write operations. (This may trigger role changes.)
-        - name: SecondaryNode
-          value: SecondaryNode
-          description: Reboot only the secondary or replica nodes
-        - name: AllNodes
-          value: AllNodes
-          description: Reboot all nodes, not guaranteed to happen simultaneously.
-    RedisUpdateParameters:
+    UpgradeNotification:
       type: object
-      description: Parameters supplied to the Update Redis operation.
+      description: Properties of upgrade notification.
       properties:
-        properties:
-          $ref: '#/components/schemas/RedisUpdateProperties'
-          description: Redis cache properties.
-          x-ms-client-flatten: true
-        tags:
+        name:
+          type: string
+          description: Name of upgrade notification.
+          readOnly: true
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when upgrade notification occurred.
+          readOnly: true
+        upsellNotification:
           type: object
-          description: Resource tags.
+          description: Details about this upgrade notification
           additionalProperties:
             type: string
-        identity:
-          $ref: ../../../../../../common-types/resource-management/v4/managedidentity.json#/definitions/ManagedServiceIdentity
-          description: The identity of the resource.
-    RedisInstanceDetails:
+          readOnly: true
+    Sku:
       type: object
-      description: Details of single instance of redis.
+      description: SKU parameters supplied to the create Redis operation.
       properties:
-        sslPort:
+        name:
+          $ref: '#/components/schemas/SkuName'
+          description: 'The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)'
+        family:
+          $ref: '#/components/schemas/SkuFamily'
+          description: 'The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).'
+        capacity:
           type: integer
           format: int32
-          description: Redis instance SSL port.
-          readOnly: true
-        nonSslPort:
-          type: integer
-          format: int32
-          description: If enableNonSslPort is true, provides Redis instance Non-SSL port.
-          readOnly: true
-        zone:
-          type: string
-          description: If the Cache uses availability zones, specifies availability zone where this instance is located.
-          readOnly: true
-        shardId:
-          type: integer
-          format: int32
-          description: If clustering is enabled, the Shard ID of Redis Instance
-          readOnly: true
-        isMaster:
-          type: boolean
-          description: Specifies whether the instance is a primary node.
-          readOnly: true
-        isPrimary:
-          type: boolean
-          description: Specifies whether the instance is a primary node.
-          readOnly: true
-    RedisResource:
-      type: object
-      description: A single Redis item in List or Get Operation.
-      properties:
-        properties:
-          $ref: '#/components/schemas/RedisProperties'
-          description: Redis cache properties.
-          x-ms-client-flatten: true
-        zones:
-          type: array
-          description: The availability zones.
-          items:
-            type: string
-        identity:
-          $ref: ../../../../../../common-types/resource-management/v4/managedidentity.json#/definitions/ManagedServiceIdentity
-          description: The managed service identities assigned to this resource.
+          description: 'The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).'
       required:
-      - properties
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/TrackedResource
-    TlsVersion:
-      type: string
-      description: 'Optional: requires clients to use a specified TLS version (or higher) to connect (e,g, ''1.0'', ''1.1'', ''1.2'')'
-      enum:
-      - '1.0'
-      - '1.1'
-      - '1.2'
-      x-ms-enum:
-        name: TlsVersion
-        modelAsString: true
-        values:
-        - name: '1.0'
-          value: '1.0'
-          description: TLS protocol version 1.0 -- deprecated for security reasons. Do not use this value for new caches.
-        - name: '1.1'
-          value: '1.1'
-          description: TLS protocol version 1.1 -- deprecated for security reasons. Do not use this value for new caches.
-        - name: '1.2'
-          value: '1.2'
-          description: TLS protocol version 1.2 -- use this value, or higher, for new caches. Or do not specify, so that your cache uses the recommended default value
-    NotificationListResponse:
-      type: object
-      description: The response of listUpgradeNotifications.
-      properties:
-        value:
-          type: array
-          description: The UpgradeNotification items on this page
-          items:
-            $ref: '#/components/schemas/UpgradeNotification'
-          x-ms-identifiers:
-          - name
-          - timestamp
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    ImportRDBParameters:
-      type: object
-      description: Parameters for Redis import operation.
-      properties:
-        format:
-          type: string
-          description: File format.
-        files:
-          type: array
-          description: files to import.
-          items:
-            type: string
-        preferred-data-archive-auth-method:
-          type: string
-          description: Preferred auth method to communicate to storage account used for data archive, specify SAS or ManagedIdentity, default value is SAS
-        storage-subscription-id:
-          type: string
-          description: Subscription id of the storage container containing files to import using Managed Identity.
-      required:
-      - files
-    RedisListResult:
-      type: object
-      description: The response of list Redis operation.
-      properties:
-        value:
-          type: array
-          description: The RedisResource items on this page
-          items:
-            $ref: '#/components/schemas/RedisResource'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    PrivateLinkResourceListResult:
-      type: object
-      description: The response of a PrivateLinkResource list operation.
-      properties:
-        value:
-          type: array
-          description: The PrivateLinkResource items on this page
-          items:
-            $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/definitions/PrivateLinkResource
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
+      - name
+      - family
+      - capacity
     SkuFamily:
       type: string
       description: 'The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).'
@@ -1255,6 +1090,82 @@ components:
         - name: P
           value: P
           description: The SKU family to use - must be 'P' for Premium SKU redis caches.
+    RedisRebootParameters:
+      type: object
+      description: Specifies which Redis node(s) to reboot.
+      properties:
+        rebootType:
+          $ref: '#/components/schemas/RebootType'
+          description: Which Redis node(s) to reboot. Depending on this value data loss is possible.
+        shardId:
+          type: integer
+          format: int32
+          description: If clustering is enabled, the ID of the shard to be rebooted.
+        ports:
+          type: array
+          description: A list of redis instances to reboot, specified by per-instance SSL ports or non-SSL ports.
+          items:
+            type: integer
+            format: int32
+    RedisUpdateProperties:
+      type: object
+      description: Patchable properties of the redis cache.
+      properties:
+        sku:
+          $ref: '#/components/schemas/Sku'
+          description: The SKU of the Redis cache to deploy.
+      allOf:
+      - $ref: '#/components/schemas/RedisCommonProperties'
+      x-ms-external: true
+    RedisProperties:
+      type: object
+      description: Properties of the redis cache.
+      properties:
+        provisioningState:
+          $ref: '#/components/schemas/ProvisioningState'
+          description: Redis instance provisioning status.
+          readOnly: true
+        hostName:
+          type: string
+          description: Redis host name.
+          readOnly: true
+        port:
+          type: integer
+          format: int32
+          description: Redis non-SSL port.
+          readOnly: true
+        sslPort:
+          type: integer
+          format: int32
+          description: Redis SSL port.
+          readOnly: true
+        accessKeys:
+          $ref: '#/components/schemas/RedisAccessKeys'
+          description: The keys of the Redis cache - not set if this object is not the response to Create or Update redis cache
+          readOnly: true
+        linkedServers:
+          type: array
+          description: List of the linked servers associated with the cache
+          items:
+            $ref: '#/components/schemas/RedisLinkedServer'
+          readOnly: true
+        instances:
+          type: array
+          description: List of the Redis instances associated with the cache
+          items:
+            $ref: '#/components/schemas/RedisInstanceDetails'
+          readOnly: true
+          x-ms-identifiers:
+          - shardId
+        privateEndpointConnections:
+          type: array
+          description: List of private endpoint connection associated with the specified redis cache
+          items:
+            $ref: ../../../../../../common-types/resource-management/v4/privatelinks.json#/definitions/PrivateEndpointConnection
+          readOnly: true
+      allOf:
+      - $ref: '#/components/schemas/RedisCreateProperties'
+      x-ms-external: true
     ProvisioningState:
       type: string
       description: Redis instance provisioning status.
@@ -1315,24 +1226,113 @@ components:
         - name: ConfiguringAAD
           value: ConfiguringAAD
           description: An AAD configuration update operation is in progress.
-    Sku:
+    RedisForceRebootResponse:
       type: object
-      description: SKU parameters supplied to the create Redis operation.
+      description: Response to force reboot for Redis cache.
       properties:
-        name:
-          $ref: '#/components/schemas/SkuName'
-          description: 'The type of Redis cache to deploy. Valid values: (Basic, Standard, Premium)'
-        family:
-          $ref: '#/components/schemas/SkuFamily'
-          description: 'The SKU family to use. Valid values: (C, P). (C = Basic/Standard, P = Premium).'
-        capacity:
-          type: integer
-          format: int32
-          description: 'The size of the Redis cache to deploy. Valid values: for C (Basic/Standard) family (0, 1, 2, 3, 4, 5, 6), for P (Premium) family (1, 2, 3, 4).'
+        message:
+          type: string
+          description: Status message
+          readOnly: true
+    RebootType:
+      type: string
+      description: Which Redis node(s) to reboot. Depending on this value data loss is possible.
+      enum:
+      - PrimaryNode
+      - SecondaryNode
+      - AllNodes
+      x-ms-enum:
+        name: RebootType
+        modelAsString: true
+        values:
+        - name: PrimaryNode
+          value: PrimaryNode
+          description: Reboot the primary nodes used for redis write operations. (This may trigger role changes.)
+        - name: SecondaryNode
+          value: SecondaryNode
+          description: Reboot only the secondary or replica nodes
+        - name: AllNodes
+          value: AllNodes
+          description: Reboot all nodes, not guaranteed to happen simultaneously.
+    RedisLinkedServer:
+      type: object
+      description: Linked server Id
+      properties:
+        id:
+          type: string
+          description: Linked server Id.
+          readOnly: true
+    RedisCreateProperties:
+      type: object
+      description: Properties supplied to Create Redis operation.
+      properties:
+        sku:
+          $ref: '#/components/schemas/Sku'
+          description: The SKU of the Redis cache to deploy.
+        subnetId:
+          type: string
+          description: 'The full resource ID of a subnet in a virtual network to deploy the Redis cache in. Example format: /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/Microsoft.{Network|ClassicNetwork}/VirtualNetworks/vnet1/subnets/subnet1'
+          pattern: ^/subscriptions/[^/]*/resourceGroups/[^/]*/providers/Microsoft.(ClassicNetwork|Network)/virtualNetworks/[^/]*/subnets/[^/]*$
+        staticIP:
+          type: string
+          description: Static IP address. Optionally, may be specified when deploying a Redis cache inside an existing Azure Virtual Network; auto assigned by default.
+          pattern: ^\d+\.\d+\.\d+\.\d+$
+          x-ms-mutability:
+          - read
+          - create
       required:
-      - name
-      - family
-      - capacity
+      - sku
+      allOf:
+      - $ref: '#/components/schemas/RedisCommonProperties'
+      x-ms-external: true
+    RedisCreateParameters:
+      type: object
+      description: Parameters supplied to the Create Redis operation.
+      properties:
+        properties:
+          $ref: '#/components/schemas/RedisCreateProperties'
+          description: Redis cache properties.
+          x-ms-client-flatten: true
+        zones:
+          type: array
+          description: A list of availability zones denoting where the resource needs to come from.
+          items:
+            type: string
+        location:
+          type: string
+          description: The geo-location where the resource lives
+          x-ms-mutability:
+          - read
+          - create
+        tags:
+          type: object
+          description: Resource tags.
+          additionalProperties:
+            type: string
+        identity:
+          $ref: ../../../../../../common-types/resource-management/v4/managedidentity.json#/definitions/ManagedServiceIdentity
+          description: The identity of the resource.
+      required:
+      - properties
+      - location
+    NotificationListResponse:
+      type: object
+      description: The response of listUpgradeNotifications.
+      properties:
+        value:
+          type: array
+          description: The UpgradeNotification items on this page
+          items:
+            $ref: '#/components/schemas/UpgradeNotification'
+          x-ms-identifiers:
+          - name
+          - timestamp
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
   securitySchemes:
     azure_auth:
       type: oauth2

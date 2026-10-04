@@ -84,16 +84,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    OperationStatus:
-      type: object
-      description: Asynchronous operation status
-      properties:
-        properties:
-          type: object
-          description: Additional properties from RP, only when operation is successful
-          additionalProperties: {}
-      allOf:
-      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/OperationStatusResult
     CheckNameAvailabilityParameters:
       type: object
       description: Parameters body to pass for resource name availability check.
@@ -107,6 +97,16 @@ components:
       required:
       - name
       - type
+    OperationStatus:
+      type: object
+      description: Asynchronous operation status
+      properties:
+        properties:
+          type: object
+          description: Additional properties from RP, only when operation is successful
+          additionalProperties: {}
+      allOf:
+      - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/OperationStatusResult
   securitySchemes:
     azure_auth:
       type: oauth2
