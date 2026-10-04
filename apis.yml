@@ -184,6 +184,8 @@ apis:
   humanURL: https://learn.microsoft.com/en-us/rest/api/redis/
   baseURL: https://management.azure.com/
   tags:
+  - PrivateEndpointConnections
+  tags_raw:
   - Private Endpoint Connections
   properties:
   - type: OpenAPI
@@ -191,6 +193,9 @@ apis:
   - type: Documentation
     url: https://learn.microsoft.com/en-us/rest/api/redis/
 common:
+- type: CapabilityMap
+  url: capabilities/microsoft-azure-cache-for-redis-capability-edges.yml
+  name: Microsoft Azure Cache For Redis Business Capability Map
 - type: Overlay
   url: overlays/microsoft-azure-cache-for-redis-privateendpointconnections-overlay.yaml
 - type: TrustCenter
