@@ -1,0 +1,53 @@
+slug: microsoft-azure-cache-for-redis
+provider: Microsoft Azure Cache For Redis
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: RedisResources
+  spec_file: microsoft-azure-cache-for-redis-redisresources-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.85
+  evidence: Redis_Create; Redis_ForceReboot  Redis force reboot; Redis_ListKeys; Redis_FlushCache
+  reason: Control-plane lifecycle of managed in-memory cache instances (create, scale, reboot, flush,
+    import/export, keys) — provisioning and running cloud infrastructure resources.
+- tag: LinkedServer
+  spec_file: microsoft-azure-cache-for-redis-linkedserver-api-openapi.yml
+  capability_id: BC-600.50
+  capability_id_l1: BC-600
+  capability_name: IT Infrastructure Management
+  confidence: 0.7
+  evidence: LinkedServer_Create under 'Microsoft.Cache/redis/{name}/linkedServers'; schemas RedisLinkedServerProperties,
+    ReplicationRole
+  reason: Control-plane linking/geo-replication of managed Redis cache instances — cloud data infrastructure
+    configuration. Resilience reading is possible but the surface is infrastructure provisioning.
+- tag: RedisCacheAccessPolicies
+  spec_file: microsoft-azure-cache-for-redis-rediscacheaccesspolicies-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: 'AccessPolicy_CreateUpdate  Access policy create update; schemas: RedisCacheAccessPolicy,
+    AccessPolicyType'
+  reason: CRUD over access policies defining permissions on the cache resource — access control definition,
+    mapping to Identity & Access Management rather than any product/business capability.
+- tag: RedisCacheAccessPolicyAssignments
+  spec_file: microsoft-azure-cache-for-redis-rediscacheaccesspolicyassignments-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.7
+  evidence: AccessPolicyAssignment_CreateUpdate  Access policy assignment create update
+  reason: Assigns access policies to identities for the cache resource — granting/revoking access, i.e.
+    Identity & Access Management.
