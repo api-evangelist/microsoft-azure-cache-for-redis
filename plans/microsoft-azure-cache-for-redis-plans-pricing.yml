@@ -142,3 +142,40 @@ free_tier:
 signup: https://azure.microsoft.com/en-us/free/
 pricing_page: https://azure.microsoft.com/en-us/pricing/details/cache/
 calculator: https://azure.microsoft.com/en-us/pricing/calculator/
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - metered
+  units: []
+  plans:
+  - name: Basic
+    access: paid
+    model: metered
+    model_how: derived
+    units: []
+    periods: []
+  - name: Standard
+    access: paid
+    model: metered
+    model_how: derived
+    units: []
+    periods: []
+  - name: Premium
+    access: paid
+    model: metered
+    model_how: derived
+    units: []
+    periods: []
+  - name: Enterprise
+    access: paid
+    model: metered
+    model_how: derived
+    units: []
+    periods: []
+  - name: Enterprise Flash
+    access: paid
+    model: metered
+    model_how: derived
+    units: []
+    periods: []
