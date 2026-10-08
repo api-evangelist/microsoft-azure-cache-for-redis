@@ -191,6 +191,10 @@ apis:
   - type: Documentation
     url: https://learn.microsoft.com/en-us/rest/api/redis/
 common:
+- type: Plans
+  url: plans/microsoft-azure-cache-for-redis-plans-pricing.yml
+- type: FinOps
+  url: finops/microsoft-azure-cache-for-redis-finops.yml
 - type: CapabilityMap
   url: capabilities/microsoft-azure-cache-for-redis-capability-edges.yml
   name: Microsoft Azure Cache For Redis Business Capability Map
