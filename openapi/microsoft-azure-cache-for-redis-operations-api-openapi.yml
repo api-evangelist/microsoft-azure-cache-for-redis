@@ -43,22 +43,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    OperationListResult:
-      type: object
-      description: Result of the request to list REST API operations. It contains a list of operations and a URL nextLink to get the next set of results.
-      properties:
-        value:
-          type: array
-          description: List of operations supported by the resource provider.
-          items:
-            $ref: '#/components/schemas/Operation'
-          x-ms-identifiers:
-          - name
-        nextLink:
-          type: string
-          description: URL to get the next set of operation list results if there are any.
-      required:
-      - value
     OperationDisplay:
       type: object
       description: The object that describes the operation.
@@ -85,6 +69,22 @@ components:
         display:
           $ref: '#/components/schemas/OperationDisplay'
           description: The object that describes the operation.
+    OperationListResult:
+      type: object
+      description: Result of the request to list REST API operations. It contains a list of operations and a URL nextLink to get the next set of results.
+      properties:
+        value:
+          type: array
+          description: List of operations supported by the resource provider.
+          items:
+            $ref: '#/components/schemas/Operation'
+          x-ms-identifiers:
+          - name
+        nextLink:
+          type: string
+          description: URL to get the next set of operation list results if there are any.
+      required:
+      - value
   securitySchemes:
     azure_auth:
       type: oauth2

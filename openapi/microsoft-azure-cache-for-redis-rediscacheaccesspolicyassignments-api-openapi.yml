@@ -222,43 +222,6 @@ paths:
       x-summary-source: derived
 components:
   schemas:
-    RedisCacheAccessPolicyAssignmentList:
-      type: object
-      description: List of access policies assignments (with properties) of a Redis cache.
-      properties:
-        value:
-          type: array
-          description: The RedisCacheAccessPolicyAssignment items on this page
-          items:
-            $ref: '#/components/schemas/RedisCacheAccessPolicyAssignment'
-        nextLink:
-          type: string
-          format: uri
-          description: The link to the next page of items
-      required:
-      - value
-    RedisCacheAccessPolicyAssignmentProperties:
-      type: object
-      description: Properties for an access policy assignment
-      properties:
-        provisioningState:
-          $ref: '#/components/schemas/AccessPolicyAssignmentProvisioningState'
-          description: Provisioning state of an access policy assignment set
-          readOnly: true
-        objectId:
-          type: string
-          description: Object Id to assign access policy to
-        objectIdAlias:
-          type: string
-          description: User friendly name for object id. Also represents username for token based authentication
-        accessPolicyName:
-          type: string
-          description: The name of the access policy that is being assigned
-          pattern: ^([a-zA-Z0-9][a-zA-Z0-9- ]*[a-zA-Z0-9]|[a-zA-Z0-9])$
-      required:
-      - objectId
-      - objectIdAlias
-      - accessPolicyName
     AccessPolicyAssignmentProvisioningState:
       type: string
       description: Provisioning state of an access policy assignment set
@@ -291,6 +254,28 @@ components:
         - name: Failed
           value: Failed
           description: The operation failed. Access policy assignments may be in a partially updated state. Update them again to have a well-defined state.
+    RedisCacheAccessPolicyAssignmentProperties:
+      type: object
+      description: Properties for an access policy assignment
+      properties:
+        provisioningState:
+          $ref: '#/components/schemas/AccessPolicyAssignmentProvisioningState'
+          description: Provisioning state of an access policy assignment set
+          readOnly: true
+        objectId:
+          type: string
+          description: Object Id to assign access policy to
+        objectIdAlias:
+          type: string
+          description: User friendly name for object id. Also represents username for token based authentication
+        accessPolicyName:
+          type: string
+          description: The name of the access policy that is being assigned
+          pattern: ^([a-zA-Z0-9][a-zA-Z0-9- ]*[a-zA-Z0-9]|[a-zA-Z0-9])$
+      required:
+      - objectId
+      - objectIdAlias
+      - accessPolicyName
     RedisCacheAccessPolicyAssignment:
       type: object
       description: Response to an operation on access policy assignment
@@ -301,6 +286,21 @@ components:
           x-ms-client-flatten: true
       allOf:
       - $ref: ../../../../../../common-types/resource-management/v4/types.json#/definitions/ProxyResource
+    RedisCacheAccessPolicyAssignmentList:
+      type: object
+      description: List of access policies assignments (with properties) of a Redis cache.
+      properties:
+        value:
+          type: array
+          description: The RedisCacheAccessPolicyAssignment items on this page
+          items:
+            $ref: '#/components/schemas/RedisCacheAccessPolicyAssignment'
+        nextLink:
+          type: string
+          format: uri
+          description: The link to the next page of items
+      required:
+      - value
   securitySchemes:
     azure_auth:
       type: oauth2

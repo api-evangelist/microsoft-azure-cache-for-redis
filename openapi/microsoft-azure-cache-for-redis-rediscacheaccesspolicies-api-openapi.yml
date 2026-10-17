@@ -238,23 +238,6 @@ components:
         - name: BuiltIn
           value: BuiltIn
           description: Built-in or well-known access policies, whose policy is not configurable.
-    RedisCacheAccessPolicyProperties:
-      type: object
-      description: All properties of an access policy.
-      properties:
-        provisioningState:
-          $ref: '#/components/schemas/AccessPolicyProvisioningState'
-          description: Provisioning state of access policy
-          readOnly: true
-        type:
-          $ref: '#/components/schemas/AccessPolicyType'
-          description: Built-In or Custom access policy
-          readOnly: true
-        permissions:
-          type: string
-          description: Permissions for the access policy. Learn how to configure permissions at https://aka.ms/redis/AADPreRequisites
-      required:
-      - permissions
     RedisCacheAccessPolicy:
       type: object
       description: Response to get/put access policy.
@@ -297,6 +280,23 @@ components:
         - name: Failed
           value: Failed
           description: The operation failed. Access policies may be in a partially updated state. Update them again to have a well-defined state.
+    RedisCacheAccessPolicyProperties:
+      type: object
+      description: All properties of an access policy.
+      properties:
+        provisioningState:
+          $ref: '#/components/schemas/AccessPolicyProvisioningState'
+          description: Provisioning state of access policy
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/AccessPolicyType'
+          description: Built-In or Custom access policy
+          readOnly: true
+        permissions:
+          type: string
+          description: Permissions for the access policy. Learn how to configure permissions at https://aka.ms/redis/AADPreRequisites
+      required:
+      - permissions
     RedisCacheAccessPolicyList:
       type: object
       description: List of access policies (with properties) of a Redis cache.
