@@ -203,7 +203,7 @@ artifacts:
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-10-31T095417.yml:
+  kin/checks-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -258,6 +258,15 @@ artifacts:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-10-31T095417.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-01T171331.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-01T200237.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   lifecycle/microsoft-azure-cache-for-redis-lifecycle.yml:
@@ -363,11 +372,17 @@ artifacts:
   packages/microsoft-azure-cache-for-redis-packages.yml:
     method: searched
     evidence: declared in the artifact
+  patterns/microsoft-azure-cache-for-redis-patterns.yml:
+    method: derived
+    evidence: declared in the artifact
   plans/microsoft-azure-cache-for-redis-plans-pricing.yml:
     method: searched
     evidence: declared in the artifact
   rate-limits/microsoft-azure-cache-for-redis-rate-limits.yml:
     method: searched
+    evidence: declared in the artifact
+  rules/microsoft-azure-cache-for-redis-rules.yml:
+    method: generated
     evidence: declared in the artifact
   scopes/microsoft-azure-cache-for-redis-scopes.yml:
     method: derived
