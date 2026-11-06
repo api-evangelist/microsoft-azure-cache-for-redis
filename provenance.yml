@@ -200,6 +200,81 @@ artifacts:
   front-door-ai/2026-09-17.yml:
     method: unknown
     evidence: no authorship recorded
+  hosts/microsoft-azure-cache-for-redis-hosts.yml:
+    method: derived
+    evidence: declared in the artifact
+  integrations/_index.yml:
+    method: generated
+    evidence: carries an API Evangelist house phrase
+  integrations/microsoft-azure-cache-for-redis-integration-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
+  json-ld/microsoft-azure-cache-for-redis-context.jsonld:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-check-name-availability-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-export-rdbparameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-import-rdbparameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-operation-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-operation-status-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-private-endpoint-connection-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-cache-access-policy-assignment-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-cache-access-policy-assignment-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-cache-access-policy-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-cache-access-policy-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-create-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-firewall-rule-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-firewall-rule-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-linked-server-create-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-linked-server-with-properties-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-linked-server-with-properties-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-patch-schedule-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-patch-schedule-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-reboot-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-resource-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-redis-update-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
@@ -275,9 +350,12 @@ artifacts:
   llms/microsoft-azure-cache-for-redis-llms-probe.yml:
     method: searched
     evidence: 'derive-llms-provenance.py: harvested'
+  llms/microsoft-azure-cache-for-redis-llms-provenance.yml:
+    method: searched
+    evidence: 'derive-llms-provenance.py: harvested'
   llms/microsoft-azure-cache-for-redis-llms.txt:
-    method: generated
-    evidence: carries an API Evangelist house phrase
+    method: searched
+    evidence: 'derive-llms-provenance.py: harvested'
   mcp/microsoft-azure-cache-for-redis-mcp.yml:
     method: searched
     evidence: declared in the artifact
@@ -410,6 +488,12 @@ artifacts:
     evidence: declared in the artifact
   skills/microsoft-azure-cache-for-redis-provision-cache.md:
     method: generated
+    evidence: declared in the artifact
+  vendors/microsoft-azure-cache-for-redis-vendors.yml:
+    method: unknown
+    evidence: no authorship recorded
+  vocabulary/microsoft-azure-cache-for-redis-vocabulary.yml:
+    method: derived
     evidence: declared in the artifact
   well-known/microsoft-azure-cache-for-redis-openid-configuration.json:
     method: unknown
