@@ -1,7 +1,5 @@
 name: Microsoft Azure Cache For Redis
-
 aid: microsoft-azure-cache-for-redis
-
 deliveryModel:
   model: saas
   open_source: false
@@ -14,9 +12,7 @@ deliveryModel:
   - pricing
   generated: '2026-08-28'
   method: derived
-
 specificationVersion: '0.23'
-
 accessModel:
   pricing: unknown
   onboarding: self-serve
@@ -32,12 +28,10 @@ accessModel:
   - authentication
   - rate-limits
   - security
-  generated: '2026-11-06'
+  generated: '2026-11-13'
   method: derived
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-cache-for-redis.png
-
 url: https://raw.githubusercontent.com/api-evangelist/microsoft-azure-cache-for-redis/refs/heads/main/apis.yml
-
 tags:
 - Microsoft Azure
 - Cache
@@ -47,23 +41,22 @@ tags:
 - Managed Service
 - Microsoft
 - Redis
-
 created: '2026-03-13'
-
 modified: '2026-09-17'
-
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
-
 description: 'Azure Cache for Redis is Microsoft''s managed in-memory data store built on the open-source Redis software, used to put a low-latency
   cache, session store or message broker in front of a slower backing store. This record covers the management (control-plane) REST API — the
   Microsoft.Cache/redis resource provider on Azure Resource Manager — which creates, scales, secures, backs up and deletes caches across the Basic,
   Standard, Premium, Enterprise and Enterprise Flash tiers. The Redis data plane itself is plain Redis, spoken with an ordinary Redis client and
   not described by an OpenAPI. Microsoft announced in October 2025 that every Azure Cache for Redis SKU is retiring: Enterprise and Enterprise
   Flash on 2027-03-31, Basic, Standard and Premium on 2028-09-30, with Azure Managed Redis as the successor.'
-
 common:
+- type: Overlay
+  url: overlays/microsoft-azure-cache-for-redis-operations-overlay.yaml
+- type: Overlay
+  url: overlays/microsoft-azure-cache-for-redis-subscriptions-overlay.yaml
 - type: Spectral
   url: rules/microsoft-azure-cache-for-redis-rules.yml
 - type: JSONLD
@@ -167,27 +160,17 @@ common:
   url: rate-limits/microsoft-azure-cache-for-redis-rate-limits.yml
 - type: Examples
   url: examples/_index.yml
-
+- type: UsageTerms
+  url: terms/microsoft-azure-cache-for-redis-terms-of-service.yml
+- type: DeprecationSchedule
+  url: deprecation/microsoft-azure-cache-for-redis-deprecation-policy.yml
+- type: Eligibility
+  url: eligibility/microsoft-azure-cache-for-redis-eligibility.yml
+- type: AIPreferences
+  url: ai-preferences/microsoft-azure-cache-for-redis-ai-preferences.yml
+- type: DataLicense
+  url: data-license/microsoft-azure-cache-for-redis-data-license.yml
 apis:
-- aid: microsoft-azure-cache-for-redis:microsoft-azure-cache-for-redis-operations-api
-  name: microsoft-azure-cache-for-redis Operations API
-  description: Operations operations
-  humanURL: https://learn.microsoft.com/en-us/rest/api/redis/
-  image: >-
-    https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-cache-for-redis.png
-  baseURL: https://management.azure.com/
-  tags: []
-  tags_raw:
-  - Operations
-  properties:
-  - type: OpenAPI
-    url: openapi/microsoft-azure-cache-for-redis-operations-api-openapi.yml
-  - type: Overlay
-    url: overlays/microsoft-azure-cache-for-redis-operations-overlay.yaml
-  - type: Documentation
-    url: https://learn.microsoft.com/en-us/rest/api/redis/
-  - type: JSONSchema
-    url: json-schema/microsoft-azure-cache-for-redis-operation-list-result-schema.json
 - aid: microsoft-azure-cache-for-redis:microsoft-azure-cache-for-redis-linkedserver-api
   name: Microsoft Azure Cache For Redis Linked Server API
   description: >-
@@ -337,35 +320,117 @@ apis:
     url: json-schema/microsoft-azure-cache-for-redis-redis-reboot-parameters-schema.json
   - type: JSONSchema
     url: json-schema/microsoft-azure-cache-for-redis-redis-update-parameters-schema.json
-- aid: microsoft-azure-cache-for-redis:microsoft-azure-cache-for-redis-subscriptions-api
-  name: Microsoft Azure Cache For Redis Subscriptions API
+- aid: >-
+    microsoft-azure-cache-for-redis:microsoft-azure-cache-for-redis-accesspolicyassignments-api
+  name: Microsoft Azure Cache For Redis Access Policy Assignments API
   description: >-
-    The Subscriptions API from Microsoft Azure Cache For Redis — 2 operation(s) for subscriptions.
+    The AccessPolicyAssignments API from Microsoft Azure Cache For Redis — 2 operation(s) for accesspolicyassignments.
   humanURL: https://learn.microsoft.com/en-us/rest/api/redis/
-  image: >-
-    https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/microsoft-azure-cache-for-redis.png
-  baseURL: https://management.azure.com/
+  baseURL: https://management.azure.com
   tags:
-  - Subscription
-  tags_raw:
-  - Subscriptions
+  - AccessPolicyAssignments
   properties:
   - type: OpenAPI
-    url: openapi/microsoft-azure-cache-for-redis-subscriptions-api-openapi.yml
-  - type: Overlay
-    url: overlays/microsoft-azure-cache-for-redis-subscriptions-overlay.yaml
+    url: openapi/microsoft-azure-cache-for-redis-accesspolicyassignments-api-openapi.yml
   - type: Documentation
     url: https://learn.microsoft.com/en-us/rest/api/redis/
   - type: JSONSchema
-    url: >-
-      json-schema/microsoft-azure-cache-for-redis-check-name-availability-parameters-schema.json
+    url: json-schema/microsoft-azure-cache-for-redis-access-policy-assignment-list-schema.json
   - type: JSONSchema
-    url: json-schema/microsoft-azure-cache-for-redis-operation-status-schema.json
+    url: json-schema/microsoft-azure-cache-for-redis-access-policy-assignment-schema.json
+- aid: microsoft-azure-cache-for-redis:microsoft-azure-cache-for-redis-clusters-api
+  name: Microsoft Azure Cache For Redis Clusters API
+  description: The Clusters API from Microsoft Azure Cache For Redis — 6 operation(s) for clusters.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/redis/
+  baseURL: https://management.azure.com
+  tags:
+  - Cluster
+  tags_raw:
+  - Clusters
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cache-for-redis-clusters-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/redis/
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-cluster-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-cluster-update-schema.json
+  - type: JSONSchema
+    url: >-
+      json-schema/microsoft-azure-cache-for-redis-private-link-resource-list-result-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-cluster-list-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-sku-details-list-schema.json
+- aid: microsoft-azure-cache-for-redis:microsoft-azure-cache-for-redis-databases-api
+  name: Microsoft Azure Cache For Redis Databases API
+  description: The Databases API from Microsoft Azure Cache For Redis — 10 operation(s) for databases.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/redis/
+  baseURL: https://management.azure.com
+  tags:
+  - Database
+  tags_raw:
+  - Databases
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cache-for-redis-databases-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/redis/
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-flush-parameters-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-force-unlink-parameters-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-force-link-parameters-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-access-keys-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-database-list-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-database-schema.json
+- aid: microsoft-azure-cache-for-redis:microsoft-azure-cache-for-redis-migrations-api
+  name: Microsoft Azure Cache For Redis Migrations API
+  description: The Migrations API from Microsoft Azure Cache For Redis — 5 operation(s) for migrations.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/redis/
+  baseURL: https://management.azure.com
+  tags:
+  - Migrations
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cache-for-redis-migrations-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/redis/
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-migration-validation-response-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-migration-validation-request-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-migration-undo-request-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-migration-list-schema.json
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-migration-schema.json
+- aid: microsoft-azure-cache-for-redis:microsoft-azure-cache-for-redis-operations-api
+  name: Microsoft Azure Cache For Redis Operations API
+  description: The Operations API from Microsoft Azure Cache For Redis — 1 operation(s) for operations.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/redis/
+  baseURL: https://management.azure.com
+  tags: []
+  tags_raw:
+  - Operations
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cache-for-redis-operations-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/redis/
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-operation-list-result-schema.json
 - aid: >-
     microsoft-azure-cache-for-redis:microsoft-azure-cache-for-redis-private-endpoint-connections-api
   name: Microsoft Azure Cache For Redis Private Endpoint Connections API
   description: >-
-    The Private Endpoint Connections API from Microsoft Azure Cache For Redis — 2 operation(s) for private
+    The Private Endpoint Connections API from Microsoft Azure Cache For Redis — 4 operation(s) for private
     endpoint connections.
   humanURL: https://learn.microsoft.com/en-us/rest/api/redis/
   baseURL: https://management.azure.com
@@ -381,6 +446,26 @@ apis:
   - type: JSONSchema
     url: >-
       json-schema/microsoft-azure-cache-for-redis-private-endpoint-connection-list-result-schema.json
+- aid: microsoft-azure-cache-for-redis:microsoft-azure-cache-for-redis-subscriptions-api
+  name: Microsoft Azure Cache For Redis Subscriptions API
+  description: >-
+    The Subscriptions API from Microsoft Azure Cache For Redis — 3 operation(s) for subscriptions.
+  humanURL: https://learn.microsoft.com/en-us/rest/api/redis/
+  baseURL: https://management.azure.com
+  tags:
+  - Subscription
+  tags_raw:
+  - Subscriptions
+  properties:
+  - type: OpenAPI
+    url: openapi/microsoft-azure-cache-for-redis-subscriptions-api-openapi.yml
+  - type: Documentation
+    url: https://learn.microsoft.com/en-us/rest/api/redis/
+  - type: JSONSchema
+    url: json-schema/microsoft-azure-cache-for-redis-operation-status-schema.json
+  - type: JSONSchema
+    url: >-
+      json-schema/microsoft-azure-cache-for-redis-check-name-availability-parameters-schema.json
 tags_raw:
 - Azure
 - Cache
@@ -390,12 +475,10 @@ tags_raw:
 - Managed Service
 - Microsoft
 - Redis
-
 x-parent: microsoft-azure
-
 x-relationship: product
 x-enrichment:
-  date: '2026-11-05'
+  date: '2026-11-12'
   status: enriched
   artifacts_added: 0
   pass: local-v6

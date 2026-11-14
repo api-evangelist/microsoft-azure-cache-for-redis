@@ -5,6 +5,9 @@ artifacts:
   agentic-access/microsoft-azure-cache-for-redis-agentic-access.yml:
     method: generated
     evidence: declared in the artifact
+  ai-preferences/microsoft-azure-cache-for-redis-ai-preferences.yml:
+    method: harvested
+    evidence: declared in the artifact
   asyncapi/microsoft-azure-cache-for-redis-events-asyncapi.yml:
     method: derived
     evidence: declared in the artifact
@@ -15,6 +18,12 @@ artifacts:
     method: derived
     evidence: declared in the artifact
   capabilities/microsoft-azure-cache-for-redis-capability-edges.yml:
+    method: unknown
+    evidence: no authorship recorded
+  certification/observations-2026-11-11.jsonl:
+    method: unknown
+    evidence: no authorship recorded
+  certification/status.yml:
     method: unknown
     evidence: no authorship recorded
   changelog/microsoft-azure-cache-for-redis-changelog.yml:
@@ -47,8 +56,17 @@ artifacts:
   conventions/microsoft-azure-cache-for-redis-conventions.yml:
     method: searched
     evidence: declared in the artifact
+  data-license/microsoft-azure-cache-for-redis-data-license.yml:
+    method: harvested
+    evidence: declared in the artifact
   data-model/microsoft-azure-cache-for-redis-data-model.yml:
     method: derived
+    evidence: declared in the artifact
+  deprecation/microsoft-azure-cache-for-redis-deprecation-policy.yml:
+    method: harvested
+    evidence: declared in the artifact
+  eligibility/microsoft-azure-cache-for-redis-eligibility.yml:
+    method: harvested
     evidence: declared in the artifact
   errors/microsoft-azure-cache-for-redis-problem-types.yml:
     method: derived
@@ -212,13 +230,61 @@ artifacts:
   json-ld/microsoft-azure-cache-for-redis-context.jsonld:
     method: unknown
     evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-access-keys-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-access-policy-assignment-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-access-policy-assignment-schema.json:
+    method: unknown
+    evidence: no authorship recorded
   json-schema/microsoft-azure-cache-for-redis-check-name-availability-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-cluster-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-cluster-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-cluster-update-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-database-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-database-schema.json:
     method: unknown
     evidence: no authorship recorded
   json-schema/microsoft-azure-cache-for-redis-export-rdbparameters-schema.json:
     method: unknown
     evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-flush-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-force-link-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-force-unlink-parameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
   json-schema/microsoft-azure-cache-for-redis-import-rdbparameters-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-migration-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-migration-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-migration-undo-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-migration-validation-request-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-migration-validation-response-schema.json:
     method: unknown
     evidence: no authorship recorded
   json-schema/microsoft-azure-cache-for-redis-operation-list-result-schema.json:
@@ -228,6 +294,9 @@ artifacts:
     method: unknown
     evidence: no authorship recorded
   json-schema/microsoft-azure-cache-for-redis-private-endpoint-connection-list-result-schema.json:
+    method: unknown
+    evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-private-link-resource-list-result-schema.json:
     method: unknown
     evidence: no authorship recorded
   json-schema/microsoft-azure-cache-for-redis-redis-cache-access-policy-assignment-list-schema.json:
@@ -275,10 +344,13 @@ artifacts:
   json-schema/microsoft-azure-cache-for-redis-redis-update-parameters-schema.json:
     method: unknown
     evidence: no authorship recorded
+  json-schema/microsoft-azure-cache-for-redis-sku-details-list-schema.json:
+    method: unknown
+    evidence: no authorship recorded
   kin/checks-2026-10-23T222754.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
-  kin/checks-2026-11-02T082323.yml:
+  kin/checks-2026-11-06T143934.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
   kin/score-2026-09-23T000603.yml:
@@ -344,6 +416,9 @@ artifacts:
   kin/score-2026-11-02T082323.yml:
     method: generated
     evidence: Kin Score snapshot written by score.rb
+  kin/score-2026-11-06T143934.yml:
+    method: generated
+    evidence: Kin Score snapshot written by score.rb
   lifecycle/microsoft-azure-cache-for-redis-lifecycle.yml:
     method: searched
     evidence: declared in the artifact
@@ -366,7 +441,33 @@ artifacts:
     method: harvested
     evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
       to the provider's source is unverified
+  ? openapi/_original/microsoft-azure-cache-for-redis-redis-resource-manager-Microsoft.Cache-Redis-stable-2024-11-01-redis.json
+  : method: harvested
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
+  ? openapi/_original/microsoft-azure-cache-for-redis-redis-resource-manager-Microsoft.Cache-Redis-stable-2024-11-01-redis.json.provenance.txt
+  : method: searched
+    evidence: declared in the artifact
+  ? openapi/_original/microsoft-azure-cache-for-redis-redisenterprise-resource-manager-Microsoft.Cache-RedisEnterprise-stable-2026-09-01-redisenterprise.json
+  : method: harvested
+    evidence: found in openapi/_original/; the fetch URL and bytes were not recorded, so byte-identity
+      to the provider's source is unverified
+  ? openapi/_original/microsoft-azure-cache-for-redis-redisenterprise-resource-manager-Microsoft.Cache-RedisEnterprise-stable-2026-09-01-redisenterprise.json.provenance.txt
+  : method: searched
+    evidence: declared in the artifact
+  openapi/microsoft-azure-cache-for-redis-accesspolicyassignments-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/microsoft-azure-cache-for-redis-clusters-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/microsoft-azure-cache-for-redis-databases-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/microsoft-azure-cache-for-redis-linkedserver-api-openapi.yml:
+    method: derived
+    evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
+  openapi/microsoft-azure-cache-for-redis-migrations-api-openapi.yml:
     method: derived
     evidence: paths are a subset of openapi/_original/ (split from the harvested spec)
   openapi/microsoft-azure-cache-for-redis-operations-api-openapi.yml:
@@ -488,6 +589,9 @@ artifacts:
     evidence: declared in the artifact
   skills/microsoft-azure-cache-for-redis-provision-cache.md:
     method: generated
+    evidence: declared in the artifact
+  terms/microsoft-azure-cache-for-redis-terms-of-service.yml:
+    method: harvested
     evidence: declared in the artifact
   vendors/microsoft-azure-cache-for-redis-vendors.yml:
     method: unknown
